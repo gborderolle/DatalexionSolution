@@ -1,0 +1,51 @@
+PWA para React:
+https://www.youtube.com/watch?v=sFsRylCQblw&ab_channel=Fireship
+
+--------------------------------------------------
+
+Funciones generales:
+- Integrar con ChatGPT "pour la gallerie", para analizar datos resultantes.
+
+Lado Delegados:
+
+Lado Admin:
+- Mensajería a Delegados
+
+Issues:
+- Todos los FormSlate2.js, xxx2, etc.: Cuando cambio votos pero no confirmo, el acumulado se queda cambiado
+- Corregir click en lateral que no funca de una.
+
+Testing:
+- Probar recepción de votos en TR (dashbaord)
+
+Arquitectura:
+- Agregar TypeScript?
+
+- Separar backend: para evitar que la sobrecarga de delegados afecte el uso del dashboard
+    A) Analistas B) Delegados
+
+- Separar frontend: para evitar sobrecarga y mezcla de roles (intrusos)
+    A) Analistas B) Delegados
+
+
+DONE:
+- ConsoleApp para agregar votos automático
+
+
+--------------------------------------------------
+
+
+Funciones del Demo:
+- Login básico
+- Formulario de votos básico
+- Datos base dummy (partidos, etc.)
+- Sistema de gráficas básico
+- Mobile responsive
+- Deployed
+
+TODO para Producción:
+- Sistema de autenticación fuerte
+- Tokens para submits
+- Protección de rutas
+
+---> React Native para mobile.

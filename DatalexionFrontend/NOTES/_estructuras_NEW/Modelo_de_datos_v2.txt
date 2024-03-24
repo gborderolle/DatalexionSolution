@@ -1,0 +1,121 @@
+Estructura del modelo de datos y sus relaciones:
+
+
+Clase Circuit:
+    {
+        public int Id { get; set; }
+        public DateTime Creation { get; set; } = DateTime.Now;
+        public DateTime Update { get; set; } = DateTime.Now;
+        public string Comments { get; set; }
+        public int Number { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string? LatLong { get; set; }
+        public int BlankVotes { get; set; }
+        public int NullVotes { get; set; }
+        public int ObservedVotes { get; set; }
+        public int RecurredVotes { get; set; }
+        public bool Step1completed { get; set; } = false;
+        public bool Step2completed { get; set; } = false;
+        public bool Step3completed { get; set; } = false;
+        public List<CircuitDelegado> ListCircuitDelegates { get; set; }
+        public List<CircuitSlate> ListCircuitSlates { get; set; }
+        public List<CircuitParty> ListCircuitParties { get; set; }
+        public int MunicipalityId { get; set; }
+        public Municipality Municipality { get; set; }
+    }
+
+    Clase CircuitSlate
+    {
+        public int CircuitId { get; set; }
+        public Circuit Circuit { get; set; }
+        public int SlateId { get; set; }
+        public Slate Slate { get; set; }
+        public int? Votes { get; set; }
+    }
+
+    public class CircuitParty
+    {
+        public int CircuitId { get; set; }
+        public Circuit Circuit { get; set; }
+        public int PartyId { get; set; }
+        public Party Party { get; set; }
+        public int? Votes { get; set; }
+    }
+
+    Clase Slate
+    {
+        public int Id { get; set; }
+        public DateTime Creation { get; set; } = DateTime.Now;
+        public DateTime Update { get; set; } = DateTime.Now;
+        public string Comments { get; set; }
+        public string Name { get; set; }
+        public string Color { get; set; }
+        public int? Votes { get; set; }
+        public List<Participant> ListParticipants { get; set; } = new();
+        public List<CircuitSlate> ListCircuitSlates { get; set; }
+        public int? CandidateId { get; set; }
+        public Candidate Candidate { get; set; }
+        public int WingId { get; set; }
+        public Wing Wing { get; set; }
+        public int ProvinceId { get; set; }
+        public Province Province { get; set; }
+    }
+
+Clase Party
+    {
+        public int Id { get; set; }
+        public DateTime Creation { get; set; } = DateTime.Now;
+        public DateTime Update { get; set; } = DateTime.Now;
+        public string Comments { get; set; }
+        public string Name { get; set; }
+        [StringLength(maximumLength: 6, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
+        public string ShortName { get; set; }
+        public string Color { get; set; }
+        public int? Votes { get; set; }
+        public List<Wing> ListWings { get; set; } = new();
+        public Photo PhotoLong { get; set; }
+        public Photo PhotoShort { get; set; }
+        public List<CircuitParty> ListCircuitParties { get; set; }
+    }
+
+
+Clase Wing
+    {
+        public int Id { get; set; }
+        public DateTime Creation { get; set; } = DateTime.Now;
+        public DateTime Update { get; set; } = DateTime.Now;
+        public string Comments { get; set; }
+        public string Name { get; set; }
+        public List<Slate> ListSlates { get; set; } = new();
+        public Photo Photo { get; set; }
+        public int PartyId { get; set; }
+        public Party Party { get; set; }
+    }
+
+    Clase Province
+    {
+        public int Id { get; set; }
+        public DateTime Creation { get; set; } = DateTime.Now;
+        public DateTime Update { get; set; } = DateTime.Now;
+        public string Comments { get; set; }
+        public string Name { get; set; }
+        public string? Center { get; set; }
+        public int? Zoom { get; set; }
+        public List<Slate> ListSlates { get; set; }
+        public List<Municipality> ListMunicipalities { get; set; }
+    }
+
+    Clase Municipality
+{
+    public int Id { get; set; }
+    public DateTime Creation { get; set; } = DateTime.Now;
+    public DateTime Update { get; set; } = DateTime.Now;
+    public string Comments { get; set; }
+    public string Name { get; set; }
+    public List<Circuit> ListCircuits { get; set; }
+    public int ProvinceId { get; set; }
+    public Province Province { get; set; }
+    public int? DelegadoId { get; set; }
+    public Delegado? Delegado { get; set; }
+}

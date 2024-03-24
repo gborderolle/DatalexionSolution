@@ -1,0 +1,200 @@
+Estructura del modelo de datos (entidades) y sus relaciones:
+
+    public interface IId
+    {
+        public int Id { get; set; }
+    }
+
+public class Circuit : IId
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public DateTime Creation { get; set; } = DateTime.Now;
+        public DateTime Update { get; set; } = DateTime.Now;
+        public string Comments { get; set; }
+        public int Number { get; set; }
+        [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
+        [StringLength(maximumLength: 100, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
+        public string Name { get; set; }
+        [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
+        public string Address { get; set; }
+        public string? LatLong { get; set; }
+        public int BlankVotes { get; set; }
+        public int NullVotes { get; set; }
+        public int ObservedVotes { get; set; }
+        public int RecurredVotes { get; set; }
+        public bool Step1completed { get; set; } = false;
+        public bool Step2completed { get; set; } = false;
+        public bool Step3completed { get; set; } = false;
+
+        /// <summary>
+        /// N-N
+        /// </summary>
+        public List<CircuitDelegado> ListCircuitDelegates { get; set; }
+
+        /// <summary>
+        /// N-N
+        /// </summary>
+        public List<CircuitSlate> ListCircuitSlates { get; set; }
+
+        // -- Vueltas --
+        [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
+        public int MunicipalityId { get; set; }
+        public Municipality Municipality { get; set; }
+    }
+
+    public class CircuitSlate
+    {
+        public int CircuitId { get; set; }
+        public Circuit Circuit { get; set; }
+        public int SlateId { get; set; }
+        public Slate Slate { get; set; }
+
+        // Uniques
+        public int? Votes { get; set; }
+    }
+
+    public class Slate : IId
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public DateTime Creation { get; set; } = DateTime.Now;
+        public DateTime Update { get; set; } = DateTime.Now;
+        public string Comments { get; set; }
+
+        // Uniques
+        [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
+        [StringLength(maximumLength: 100, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
+        public string Name { get; set; }
+        public string Color { get; set; }
+        public int? Votes { get; set; }
+
+        /// <summary>
+        /// 0-N
+        /// </summary>
+        public List<Participant> ListParticipants { get; set; } = new();
+
+        /// <summary>
+        /// N-N
+        /// </summary>
+        public List<CircuitSlate> ListCircuitSlates { get; set; }
+
+        public int? CandidateId { get; set; }
+        public Candidate Candidate { get; set; }
+
+        // -- Vueltas --
+        [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
+        public int WingId { get; set; }
+        public Wing Wing { get; set; }
+
+        [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
+        public int ProvinceId { get; set; }
+        public Province Province { get; set; }
+    }
+
+public class Wing : IId
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public DateTime Creation { get; set; } = DateTime.Now;
+        public DateTime Update { get; set; } = DateTime.Now;
+        public string Comments { get; set; }
+
+        // Uniques
+        [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
+        [StringLength(maximumLength: 100, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 0-N
+        /// </summary>
+        public List<Slate> ListSlates { get; set; } = new();
+        public Photo Photo { get; set; }
+
+        // -- Vueltas --
+        [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
+        public int PartyId { get; set; }
+        public Party Party { get; set; }
+    }
+
+public class Party : IId
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public DateTime Creation { get; set; } = DateTime.Now;
+        public DateTime Update { get; set; } = DateTime.Now;
+        public string Comments { get; set; }
+
+        // Uniques
+        [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
+        [StringLength(maximumLength: 100, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
+        public string Name { get; set; }
+        [StringLength(maximumLength: 6, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
+        public string ShortName { get; set; }
+        public string Color { get; set; }
+        public int? Votes { get; set; }
+
+        /// <summary>
+        /// 0-N
+        /// </summary>
+        public List<Wing> ListWings { get; set; } = new();
+        public Photo Photo { get; set; }
+    }
+
+    public class Province : IId
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public DateTime Creation { get; set; } = DateTime.Now;
+        public DateTime Update { get; set; } = DateTime.Now;
+        public string Comments { get; set; }
+
+        // Uniques
+        [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
+        [StringLength(maximumLength: 100, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
+        public string Name { get; set; }
+        public string? Center { get; set; }
+        public int? Zoom { get; set; }
+
+        /// <summary>
+        /// 0-N
+        /// </summary>
+        public List<Slate> ListSlates { get; set; }
+
+        /// <summary>
+        /// 0-N
+        /// </summary>
+        public List<Municipality> ListMunicipalities { get; set; }
+    }
+
+    public class Municipality : IId
+{
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+    public DateTime Creation { get; set; } = DateTime.Now;
+    public DateTime Update { get; set; } = DateTime.Now;
+    public string Comments { get; set; }
+
+    // Uniques
+    [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
+    [StringLength(maximumLength: 100, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
+    public string Name { get; set; }
+
+    /// <summary>
+    /// 0-N
+    /// </summary>
+    public List<Circuit> ListCircuits { get; set; }
+
+    // -- Vueltas --
+    [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
+    public int ProvinceId { get; set; }
+    public Province Province { get; set; }
+    public int? DelegadoId { get; set; }
+    public Delegado? Delegado { get; set; }
+}

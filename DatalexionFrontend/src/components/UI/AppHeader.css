@@ -1,0 +1,36 @@
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .CImage {
+    /* display: none; */
+    /* width: 30px; */
+    width: 70px;
+    margin-left: 15px;
+  }
+  .iconContainer {
+    position: absolute;
+    right: 21%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+/* AppHeader.css */
+.badgeWordWrap {
+  white-space: normal;
+  text-align: center;
+  width: auto; /* Cambiado de 100% a auto para permitir ajuste natural */
+  max-width: 100%; /* Asegura que el contenido no sobrepase el ancho del contenedor */
+  padding: 0.25em; /* Añade un poco de espacio interno para evitar que el texto toque los bordes */
+  overflow-wrap: break-word; /* Asegura que las palabras largas se rompan adecuadamente */
+}
+
+@media (max-width: 768px) {
+  .badgeWordWrap {
+    font-size: 0.75em; /* Reduce el tamaño del texto en pantallas pequeñas */
+  }
+}
+
+.usernameStyle {
+  font-size: 16px; /* Ejemplo de tamaño de fuente */
+  margin: 8px; /* Espacio antes de la foto de perfil/dropdown */
+}

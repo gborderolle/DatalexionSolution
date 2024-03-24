@@ -1,0 +1,13 @@
+Estructura de slateList:
+{
+    "provinceId": 1,
+    "pushId": "-NjEIcmjOj3qzuGcP7Mx",
+    "slateDescription": "",
+    "slateId": 1,
+    "slateName": "71",
+    "slateVotes": 0,
+    "slateColor":"",
+    "candidateId": 1
+}
+
+// no tiene más "circuitId"

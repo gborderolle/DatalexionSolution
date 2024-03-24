@@ -1,0 +1,23 @@
+poner package original de CoreUI (template original) -> dx1
+npm install
+npm install -g npm@latest -> Corregir versión npm
+chequear versiones: npm doctor
+- PROBAR
+hacer instalaciones varias (NO ES NECESARIO, con el package.json.BACKUP ya basta)
+	gpt me da los installs del proyecto anterior con respecto al nuevo: dame los install correspondiente a las dependencias que están en Proyecto 2 pero faltan en Proyecto 1
+
+	npm install --save @reduxjs/toolkit@^1.9.7
+	npm install --save firebase@^10.4.0
+	npm install --save framer-motion@^10.16.4
+	npm install --save leaflet@^1.9.4
+	---> ROMPIÓ: npm install --save node@^21.0.0 
+	npm install --save react-leaflet@^4.2.1
+	npm install --save react-leaflet-cluster@^2.1.0
+	npm install --save react-redux@^8.1.3
+	npm install --save sweetalert2@^11.7.32
+
+- PROBAR
+Traer código completo
+- PROBAR
+Instalar nvm
+Instalar Node v18.18.2

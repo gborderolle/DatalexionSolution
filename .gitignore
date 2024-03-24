@@ -1,23 +1,26 @@
+DatalexionBackend/.vs/
 .vs/
 
-DatalexionBackend.Core/obj/
-DatalexionBackend.Core/bin/
+DatalexionBackend/DatalexionBackend.Core/obj/
+DatalexionBackend/DatalexionBackend.Core/bin/
 
-DatalexionBackend.EmailService/obj/
-DatalexionBackend.EmailService/bin/
+DatalexionBackend/DatalexionBackend.EmailService/obj/
+DatalexionBackend/DatalexionBackend.EmailService/bin/
 
-DatalexionBackend.Infrastructure/obj/
-DatalexionBackend.Infrastructure/bin/
+DatalexionBackend/DatalexionBackend.Infrastructure/obj/
+DatalexionBackend/DatalexionBackend.Infrastructure/bin/
 
-DatalexionBackend.UI/obj/
-DatalexionBackend.UI/bin/
+DatalexionBackend/DatalexionBackend.UI/obj/
+DatalexionBackend/DatalexionBackend.UI/bin/
 
-DatalexionBackend.ControllerTests/bin/
-DatalexionBackend.ControllerTests/obj/
+DatalexionBackend/DatalexionBackend.ControllerTests/bin/
+DatalexionBackend/DatalexionBackend.ControllerTests/obj/
 
-DatalexionBackend.IntegrationTests/obj/
-DatalexionBackend.IntegrationTests/bin/
+DatalexionBackend/DatalexionBackend.IntegrationTests/obj/
+DatalexionBackend/DatalexionBackend.IntegrationTests/bin/
 
-DatalexionBackend.ServiceTests/obj/
-DatalexionBackend.ServiceTests/bin/
+DatalexionBackend/DatalexionBackend.ServiceTests/obj/
+DatalexionBackend/DatalexionBackend.ServiceTests/bin/
 
+DatalexionFrontend/.vs/
+DatalexionFrontend/node_modules/

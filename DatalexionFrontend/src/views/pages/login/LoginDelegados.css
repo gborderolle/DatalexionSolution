@@ -1,0 +1,16 @@
+.fullViewportCard {
+  position: fixed; /* Hace que el card sea fijo y sobreponga los demás elementos */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Ancho del viewport completo */
+  height: 100vh; /* Altura del viewport completo */
+  z-index: 100; /* Asegura que esté por encima de otros elementos */
+}
+
+.cardBodyCentered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Asegura que el CCardBody ocupe todo el espacio del CCard */
+  text-align: center; /* Centra el texto para elementos internos, si los hay */
+}

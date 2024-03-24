@@ -1,0 +1,12 @@
+Estructura de partyList:
+{
+    "partyDescription": "",
+    "partyId": 1,
+    "partyName": "FA",
+    "partyVotes": 5,
+    "partyImageURL": "",
+    "partyColor":"#37e162",
+    "pushId": "-Nh9-B9YocJFe8jCMQWy",
+}
+
+// no tiene más "circuitList"
