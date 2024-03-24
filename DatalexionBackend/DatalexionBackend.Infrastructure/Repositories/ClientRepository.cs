@@ -9,7 +9,7 @@ namespace Datalexion.Repository
 {
     public class ClientRepository : Repository<Client>, IClientRepository
     {
-        private readonly DbContext _dbContext;
+        private readonly ContextDB _dbContext;
 
         public ClientRepository(ContextDB dbContext, ILogService logService) : base(dbContext)
         {

@@ -1,7 +1,6 @@
-﻿using System.Linq.Expressions;
-using DatalexionBackend.Core.Domain.Entities;
-using DatalexionBackend.Core.DTO;
+﻿using DatalexionBackend.Core.DTO;
 using Microsoft.AspNetCore.Http;
+using System.Linq.Expressions;
 
 namespace DatalexionBackend.Core.Domain.RepositoryContracts
 {
@@ -21,12 +20,12 @@ namespace DatalexionBackend.Core.Domain.RepositoryContracts
             );
 
         Task<T> Get
-            (
-                Expression<Func<T, bool>>? filter = null,
-                IEnumerable<IncludePropertyConfiguration<T>> includes = null,
-                IEnumerable<ThenIncludePropertyConfiguration<T>> thenIncludes = null,
-                bool tracked = true
-            );
+    (
+        Expression<Func<T, bool>>? filter = null,
+        IEnumerable<IncludePropertyConfiguration<T>> includes = null,
+        IEnumerable<ThenIncludePropertyConfiguration<T>> thenIncludes = null,
+        bool tracked = true
+    );
 
         Task<T> Update(T entity);
 

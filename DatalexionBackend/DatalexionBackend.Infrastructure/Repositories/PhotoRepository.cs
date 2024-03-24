@@ -1,14 +1,14 @@
-﻿using DatalexionBackend.Core.Domain.RepositoryContracts;
-using Microsoft.EntityFrameworkCore;
+﻿using DatalexionBackend.Core.Domain.Entities;
+using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Infrastructure.DbContext;
-using DatalexionBackend.Core.Domain.Entities;
 using DatalexionBackend.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace DatalexionBackend.Infrastructure.Repositories
 {
     public class PhotoRepository : Repository<Photo>, IPhotoRepository
     {
-        private readonly DbContext _dbContext;
+        private readonly ContextDB _dbContext;
 
         public PhotoRepository(ContextDB dbContext, ILogService logService) : base(dbContext)
         {

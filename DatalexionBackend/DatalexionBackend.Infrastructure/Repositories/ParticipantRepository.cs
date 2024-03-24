@@ -1,13 +1,13 @@
-﻿using DatalexionBackend.Infrastructure.DbContext;
+﻿using DatalexionBackend.Core.Domain.Entities;
 using DatalexionBackend.Core.Domain.RepositoryContracts;
+using DatalexionBackend.Infrastructure.DbContext;
 using DatalexionBackend.Infrastructure.Services;
-using DatalexionBackend.Core.Domain.Entities;
 
 namespace DatalexionBackend.Infrastructure.Repositories;
 
 public class ParticipantRepository : Repository<Participant>, IParticipantRepository
 {
-    private readonly DbContext _dbContext;
+    private readonly ContextDB _dbContext;
 
     public ParticipantRepository(ContextDB dbContext, ILogService logService) : base(dbContext)
     {

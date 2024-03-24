@@ -3,7 +3,7 @@ using AutoMapper;
 using DatalexionBackend.Core.DTO;
 using DatalexionBackend.Core.Domain.Entities;
 using DatalexionBackend.Core.Domain.RepositoryContracts;
-using Datalexion.Services;
+using DatalexionBackend.Infrastructure.Services;
 using DatalexionBackend.Core.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Net;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Datalexion.Controllers.V1
+namespace DatalexionBackend.UI.Controllers.V1
 {
     [ApiController]
     [HasHeader("x-version", "1")]

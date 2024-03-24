@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using System.Net;
 
-namespace Datalexion.Controllers.V1
+namespace DatalexionBackend.UI.Controllers.V1
 {
     /// <summary>
     /// Esta versión simplifica los Controllers con esta base, mantengo ambas por si falla.

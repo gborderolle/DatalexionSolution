@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Datalexion.Services;
+using DatalexionBackend.Infrastructure.Services;
 
-namespace Datalexion.Controllers.V1
+namespace DatalexionBackend.UI.Controllers.V1
 {
     [ApiController]
     [HasHeader("x-version", "1")]

@@ -9,7 +9,7 @@ namespace Datalexion.Repository
 {
     public class SlateRepository : Repository<Slate>, ISlateRepository
     {
-        private readonly DbContext _dbContext;
+        private readonly ContextDB _dbContext;
 
         public SlateRepository(ContextDB dbContext, ILogService logService) : base(dbContext)
         {

@@ -1,17 +1,16 @@
-﻿using DatalexionBackend.Infrastructure.DbContext;
-using AutoMapper;
-using DatalexionBackend.Core.DTO;
+﻿using AutoMapper;
 using DatalexionBackend.Core.Domain.Entities;
 using DatalexionBackend.Core.Domain.RepositoryContracts;
+using DatalexionBackend.Core.DTO;
 using DatalexionBackend.Core.Helpers;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using DatalexionBackend.Infrastructure.DbContext;
+using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Datalexion.Services;
 
-namespace Datalexion.Controllers.V1
+namespace DatalexionBackend.UI.Controllers.V1
 {
     [ApiController]
     [HasHeader("x-version", "1")]

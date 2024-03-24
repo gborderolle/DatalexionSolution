@@ -1,9 +1,8 @@
-﻿using Datalexion.Utilities.HATEOAS;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using DatalexionBackend.Core.Helpers.HATEOAS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Datalexion.Controllers.V1
+namespace DatalexionBackend.UI.Controllers.V1
 {
     [ApiController]
     [Route("api/v1")]

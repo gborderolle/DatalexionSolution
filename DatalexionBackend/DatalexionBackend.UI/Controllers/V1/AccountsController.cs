@@ -1,26 +1,25 @@
 ﻿using AutoMapper;
+using DatalexionBackend.Core.Domain.Entities;
+using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Core.DTO;
 using DatalexionBackend.Core.Helpers;
+using DatalexionBackend.EmailService;
+using DatalexionBackend.Infrastructure.DbContext;
+using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
 using Wangkanai.Detection.Services;
-using System.Security.Cryptography;
-using System.ComponentModel.DataAnnotations;
-using DatalexionBackend.Core.Domain.RepositoryContracts;
-using DatalexionBackend.Core.Domain.Entities;
-using DatalexionBackend.Core.Helpers;
-using DatalexionBackend.EmailService;
-using DatalexionBackend.Infrastructure.DbContext;
 
-namespace Datalexion.Controllers.V1
+namespace DatalexionBackend.UI.Controllers.V1
 {
     [ApiController]
     [HasHeader("x-version", "1")] // Agregar header: "x-version": "1"

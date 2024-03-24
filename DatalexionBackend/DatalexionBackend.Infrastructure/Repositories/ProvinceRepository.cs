@@ -7,7 +7,7 @@ namespace DatalexionBackend.Infrastructure.Repositories
 {
     public class ProvinceRepository : Repository<Province>, IProvinceRepository
     {
-        private readonly DbContext _dbContext;
+        private readonly ContextDB _dbContext;
 
         public ProvinceRepository(ContextDB dbContext, ILogService logService) : base(dbContext)
         {

@@ -1,11 +1,11 @@
-﻿using DatalexionBackend.Infrastructure.DbContext;
+﻿using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Core.DTO;
-using DatalexionBackend.Core.Domain.RepositoryContracts;
+using DatalexionBackend.Core.Helpers;
+using DatalexionBackend.Infrastructure.DbContext;
+using DatalexionBackend.Infrastructure.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using Microsoft.AspNetCore.Http;
-using DatalexionBackend.Infrastructure.Services;
-using DatalexionBackend.Core.Helpers;
 
 namespace DatalexionBackend.Infrastructure.Repositories
 {
@@ -28,11 +28,11 @@ namespace DatalexionBackend.Infrastructure.Repositories
         }
 
         public async Task<T> Get
-            (
-            Expression<Func<T, bool>>? where = null,
-            IEnumerable<IncludePropertyConfiguration<T>> includes = null,
-            IEnumerable<ThenIncludePropertyConfiguration<T>> thenIncludes = null,
-            bool tracked = true)
+ (
+     Expression<Func<T, bool>>? filter = null,
+     IEnumerable<IncludePropertyConfiguration<T>> includes = null,
+     IEnumerable<ThenIncludePropertyConfiguration<T>> thenIncludes = null,
+     bool tracked = true)
         {
             IQueryable<T> query = dbSet;
             if (includes != null)
@@ -56,9 +56,9 @@ namespace DatalexionBackend.Infrastructure.Repositories
             {
                 query = query.AsNoTracking();
             }
-            if (where != null)
+            if (filter != null)
             {
-                query = query.Where(where);
+                query = query.Where(filter);
             }
             return await query.FirstOrDefaultAsync();
         }
@@ -133,16 +133,17 @@ namespace DatalexionBackend.Infrastructure.Repositories
         }
 
     }
+
+    public class IncludePropertyConfiguration<T>
+    {
+        public Expression<Func<T, object>> IncludeExpression { get; set; }
+        public Expression<Func<object, object>> ThenIncludeExpression { get; set; }
+    }
+
+    public class ThenIncludePropertyConfiguration<T>
+    {
+        public Expression<Func<T, object>> IncludeExpression { get; set; }
+        public Expression<Func<object, object>> ThenIncludeExpression { get; set; }
+    }
 }
 
-public class IncludePropertyConfiguration<T>
-{
-    public Expression<Func<T, object>> IncludeExpression { get; set; }
-    public Expression<Func<object, object>> ThenIncludeExpression { get; set; }
-}
-
-public class ThenIncludePropertyConfiguration<T>
-{
-    public Expression<Func<T, object>> IncludeExpression { get; set; }
-    public Expression<Func<object, object>> ThenIncludeExpression { get; set; }
-}

@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using DatalexionBackend.CoreBackend.Core.Domain.Validations;
 using Microsoft.AspNetCore.Http;
-using DatalexionBackend.CoreBackend.Core.Domain.Validations;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DatalexionBackend.Core;
+namespace DatalexionBackend.Core.DTO;
 
 public class CandidateCreateDTO
 {

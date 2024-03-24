@@ -9,7 +9,7 @@ namespace Datalexion.Repository
 {
     public class WingRepository : Repository<Wing>, IWingRepository
     {
-        private readonly DbContext _dbContext;
+        private readonly ContextDB _dbContext;
 
         public WingRepository(ContextDB dbContext, ILogService logService) : base(dbContext)
         {

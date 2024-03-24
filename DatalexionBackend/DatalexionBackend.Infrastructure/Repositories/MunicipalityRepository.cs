@@ -1,15 +1,15 @@
-﻿using DatalexionBackend.Infrastructure.DbContext;
-using DatalexionBackend.Core.Domain.Entities;
+﻿using DatalexionBackend.Core.Domain.Entities;
 using DatalexionBackend.Core.Domain.RepositoryContracts;
-using Microsoft.EntityFrameworkCore;
+using DatalexionBackend.Infrastructure.DbContext;
 using DatalexionBackend.Infrastructure.Services;
 using DatalexionBackend.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Datalexion.Repository
 {
     public class MunicipalityRepository : Repository<Municipality>, IMunicipalityRepository
     {
-        private readonly DbContext _dbContext;
+        private readonly ContextDB _dbContext;
 
         public MunicipalityRepository(ContextDB dbContext, ILogService logService) : base(dbContext)
         {

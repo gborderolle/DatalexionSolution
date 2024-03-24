@@ -9,7 +9,7 @@ namespace Datalexion.Repository
 {
     public class CircuitRepository : Repository<Circuit>, ICircuitRepository
     {
-        private readonly DbContext _dbContext;
+        private readonly ContextDB _dbContext;
 
         public CircuitRepository(ContextDB dbContext, ILogService logService) : base(dbContext)
         {

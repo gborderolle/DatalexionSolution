@@ -36,7 +36,7 @@ namespace DatalexionBackend.Core.Helpers
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC).ToLowerInvariant();
         }
 
-        internal static string GetEmailNotificationBody(string username, string? clientIP, string? clientIPCity, bool isMobile, string role)
+        public static string GetEmailNotificationBody(string username, string? clientIP, string? clientIPCity, bool isMobile, string role)
         {
             string device = isMobile ? "Móvil" : "PC";
             string body = $"<div><strong>API Web Service</strong></div>";

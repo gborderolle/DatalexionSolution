@@ -9,7 +9,7 @@ namespace Datalexion.Repository
 {
     public class DelegadoRepository : Repository<Delegado>, IDelegadoRepository
     {
-        private readonly DbContext _dbContext;
+        private readonly ContextDB _dbContext;
 
         public DelegadoRepository(ContextDB dbContext, ILogService logService) : base(dbContext)
         {

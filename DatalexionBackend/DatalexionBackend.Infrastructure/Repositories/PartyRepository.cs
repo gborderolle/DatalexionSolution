@@ -9,7 +9,7 @@ namespace Datalexion.Repository
 {
     public class PartyRepository : Repository<Party>, IPartyRepository
     {
-        private readonly DbContext _dbContext;
+        private readonly ContextDB _dbContext;
 
         public PartyRepository(ContextDB dbContext, ILogService logService) : base(dbContext)
         {
