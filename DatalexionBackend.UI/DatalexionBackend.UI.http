@@ -1,0 +1,6 @@
+@DatalexionBackend.UI_HostAddress = http://localhost:5268
+
+GET {{DatalexionBackend.UI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
