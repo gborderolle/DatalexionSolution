@@ -182,16 +182,17 @@ namespace DatalexionBackend.UI.Controllers.V1
                         }
                     };
                 // n..n
-                var thenIncludes = new List<ThenIncludePropertyConfiguration<Delegado>>
-                {
-                    // circuitos
-                    new ThenIncludePropertyConfiguration<Delegado>
-                    {
-                        IncludeExpression = b => b.ListCircuitDelegados,
-                        ThenIncludeExpression = ab => ((CircuitDelegado)ab).Delegado
-                    },
-                };
-                var delegadoList = await _delegadoRepository.GetAll(v => v.ClientId == clientId, includes: includes, thenIncludes: thenIncludes);
+                //var thenIncludes = new List<ThenIncludePropertyConfiguration<Delegado>>
+                //{
+                //    // circuitos
+                //    new ThenIncludePropertyConfiguration<Delegado>
+                //    {
+                //        IncludeExpression = b => b.ListCircuitDelegados,
+                //        ThenIncludeExpression = ab => ((CircuitDelegado)ab).Delegado
+                //    },
+                //};
+                //var delegadoList = await _delegadoRepository.GetAll(v => v.ClientId == clientId, includes: includes, thenIncludes: thenIncludes);
+                var delegadoList = await _delegadoRepository.GetAll(v => v.ClientId == clientId, includes: includes);
 
                 _response.Result = _mapper.Map<List<DelegadoDTO>>(delegadoList);
                 _response.StatusCode = HttpStatusCode.Created;

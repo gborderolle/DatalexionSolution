@@ -38,11 +38,12 @@ const FormStart = (props) => {
 
   const [selectedCircuit, setSelectedCircuit] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const userProvinceId = useSelector((state) => state.auth.userProvinceId);
   const reduxListMunicipalitiesFromDelegado = useSelector(
     (state) => state.auth.listMunicipalities
   );
-  const userMunicipalityId = 1; // Hardcodeado ToDo: obtener de la lista de Municipios del usuario
+  const userMunicipalityList = useSelector(
+    (state) => state.auth.listMunicipalities
+  );
   const userFullname = useSelector((state) => state.auth.fullname);
   const [selectedForBump, setSelectedForBump] = useState(null);
   const [circuitList, setCircuitList] = useState([]);
@@ -166,31 +167,32 @@ const FormStart = (props) => {
   useEffect(() => {
     let filteredList = reduxCircuitList;
 
+    // Extraer IDs de municipios del usuario si es necesario
+    const userMunicipalityIds = userMunicipalityList.map(
+      (municipality) => municipality.id
+    );
+
     // Filtrar por municipio si es necesario
-    if (userMunicipalityId) {
-      filteredList =
-        filteredList &&
-        filteredList.filter(
-          (circuit) => circuit.municipalityId == userMunicipalityId
-        );
+    if (userMunicipalityIds && userMunicipalityIds.length > 0) {
+      filteredList = filteredList.filter((circuit) =>
+        userMunicipalityIds.includes(circuit.municipalityId)
+      );
     }
 
     // Filtrar por circuitos no completados si el checkbox está marcado
     if (onlyOpen) {
-      filteredList =
-        filteredList &&
-        filteredList.filter(
-          (circuit) =>
-            !(
-              circuit.step1completed &&
-              circuit.step2completed &&
-              circuit.step3completed
-            )
-        );
+      filteredList = filteredList.filter(
+        (circuit) =>
+          !(
+            circuit.step1completed &&
+            circuit.step2completed &&
+            circuit.step3completed
+          )
+      );
     }
 
     setCircuitList(filteredList);
-  }, [reduxCircuitList, userMunicipalityId, onlyOpen]); // Asegúrate de incluir onlyOpen en el array de dependencias
+  }, [reduxCircuitList, userMunicipalityList, onlyOpen]); // Asegúrate de incluir onlyOpen en el array de dependencias
 
   //#endregion Hooks ***********************************
 

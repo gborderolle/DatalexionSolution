@@ -69,7 +69,7 @@ public static class ConfigureServicesExtensions
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; // para arreglar errores de loop de relaciones 1..n y viceversa
         });
 
-        services.AddAutoMapper(typeof(ConfigureServicesExtensions));
+        services.AddAutoMapper(typeof(AutoMapperProfiles));
 
         // Registro de servicios 
         // --------------
