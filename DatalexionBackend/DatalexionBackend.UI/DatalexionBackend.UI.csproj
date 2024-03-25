@@ -30,4 +30,8 @@
     <ProjectReference Include="..\DatalexionBackend.Infrastructure\DatalexionBackend.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Middlewares\" />
+  </ItemGroup>
+
 </Project>

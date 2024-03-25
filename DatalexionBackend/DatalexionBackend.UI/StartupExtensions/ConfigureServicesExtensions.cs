@@ -1,51 +1,64 @@
-﻿using DatalexionBackend.Core.ApiBehavior;
-using DatalexionBackend.Core.Domain.IdentityEntities;
+﻿using DatalexionBackend.Core.Domain.IdentityEntities;
 using DatalexionBackend.Core.Domain.RepositoryContracts;
-using DatalexionBackend.Core.Filters;
-using DatalexionBackend.Core.Helpers;
-using DatalexionBackend.Core.Middlewares;
-using DatalexionBackend.Core.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using DatalexionBackend.Infrastructure.Services;
+using DatalexionBackend.Infrastructure.Repositories;
 using DatalexionBackend.EmailService;
 using DatalexionBackend.Infrastructure.DbContext;
-using DatalexionBackend.Infrastructure.Repositories;
-using DatalexionBackend.Infrastructure.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
+using DatalexionBackend.Core.Services;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
-using System.Reflection;
 using System.Text;
+using DatalexionBackend.Core.Filters;
+using DatalexionBackend.Core.Helpers;
+using DatalexionBackend.Core.ApiBehavior;
 using System.Text.Json.Serialization;
-
-
-[assembly: ApiConventionType(typeof(DefaultApiConventions))] // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/27148912#notes
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace DatalexionBackend.UI.StartupExtensions;
-public class ConfigureServicesExtensions
+
+/// <summary>
+/// Extension method to configure services
+/// s: https://www.udemy.com/course/asp-net-core-true-ultimate-guide-real-project/learn/lecture/34524780#overview
+/// </summary>
+public static class ConfigureServicesExtensions
 {
-    public IConfiguration Configuration { get; }
-
-    public ConfigureServicesExtensions(IConfiguration configuration)
+    public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        // Limpia los mapeos de los tipos de los Claims (del login de usuario)
-        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/27047628#notes
-        Configuration = configuration;
-    }
+        // Configuración de Swagger
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Mi API",
+                Version = "v1",
+                Description = "Descripción de mi API",
+                TermsOfService = new Uri("https://example.com/terms"),
+                Contact = new OpenApiContact
+                {
+                    Name = "Soporte",
+                    Email = "support@example.com",
+                    Url = new Uri("https://example.com/support"),
+                },
+                License = new OpenApiLicense
+                {
+                    Name = "Uso bajo XYZ",
+                    Url = new Uri("https://example.com/license"),
+                }
+            });
 
-    /// <summary>
-    /// Configuración de los Services
-    /// </summary>
-    /// <param name="services"></param>
-    public void ConfigureServices(IServiceCollection services)
-    {
+            // Set the comments path for the Swagger JSON and UI.
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            c.IncludeXmlComments(xmlPath);
+        });
+
+        // Configuración de servicios
         services.AddControllers(options =>
-        //services.AddControllersWithViews(options =>
         {
             // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/13816116#notes
             options.Filters.Add(typeof(ExceptionFilter));
@@ -60,60 +73,6 @@ public class ConfigureServicesExtensions
         .AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; // para arreglar errores de loop de relaciones 1..n y viceversa
-        });
-
-        //services.AddControllersWithViews(); // testing!! --> borrar
-
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(c =>
-        {
-            c.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Title = "Datalexion 3.0",
-                Version = "v1",
-                Description = "Dashboard analítico para optimizar y procesar información en tiempo real. Datalexion es el aliado tecnológico ideal para la gestión electoral eficiente.",
-                Contact = new OpenApiContact
-                {
-                    Email = "gborderolle@gmail.com",
-                    Name = "Gonzalo Borderolle",
-                    Url = new Uri("https://linkedin.com/in/gborderolle")
-                }
-            });
-
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer",
-                BearerFormat = "JWT",
-                In = ParameterLocation.Header
-            });
-
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference=new OpenApiReference
-                            {
-                                Type=ReferenceType.SecurityScheme,
-                                Id="Bearer"
-                            }
-                        },
-                        new string[]{ }
-                    }
-            });
-
-            var fileXML = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var routeXML = Path.Combine(AppContext.BaseDirectory, fileXML);
-            c.IncludeXmlComments(routeXML);
-        });
-
-        // Configuración de la base de datos
-        services.AddDbContext<ContextDB>(options =>
-        {
-            options.UseSqlServer(Configuration.GetConnectionString("ConnectionString_Datalexion"))
-            .EnableSensitiveDataLogging();
         });
 
         services.AddAutoMapper(typeof(ConfigureServicesExtensions));
@@ -152,10 +111,30 @@ public class ConfigureServicesExtensions
         services.AddHttpContextAccessor();
 
         // Email Configuration
-        var emailConfig = Configuration.GetSection("NotificationEmail").Get<EmailConfiguration>();
+        var emailConfig = configuration.GetSection("NotificationEmail").Get<EmailConfiguration>();
         services.AddSingleton(emailConfig);
         services.AddScoped<IEmailSender, EmailSender>();
         services.AddDetection();
+
+        services.AddDbContext<ContextDB>(options =>
+        {
+            options.UseSqlServer(configuration.GetConnectionString("ConnectionString_Datalexion"))
+            .EnableSensitiveDataLogging();
+        });
+
+        services.AddIdentity<DatalexionUser, DatalexionRole>(options =>
+        {
+            options.Password.RequireDigit = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequiredUniqueChars = 0;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequiredLength = 6;
+        })
+            .AddEntityFrameworkStores<ContextDB>()
+            .AddDefaultTokenProviders()
+            .AddUserStore<UserStore<DatalexionUser, DatalexionRole, ContextDB, string>>()
+            .AddRoleStore<RoleStore<DatalexionRole, ContextDB, string>>();
 
         // --------------
 
@@ -169,22 +148,9 @@ public class ConfigureServicesExtensions
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(Configuration["JWT:key"])),
+                Encoding.UTF8.GetBytes(configuration["JWT:key"])),
             ClockSkew = TimeSpan.Zero
         });
-
-        // Identity Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/27047608#notes
-        services.AddIdentity<DatalexionUser, DatalexionRole>(options =>
-        {
-            options.Password.RequireDigit = false;
-            options.Password.RequireNonAlphanumeric = false;
-            options.Password.RequiredUniqueChars = 0;
-            options.Password.RequireUppercase = false;
-            options.Password.RequireLowercase = false;
-            options.Password.RequiredLength = 6;
-        })
-            .AddEntityFrameworkStores<ContextDB>()
-            .AddDefaultTokenProviders();
 
         // Autorización basada en Claims
         // Agregar los roles del sistema
@@ -201,7 +167,7 @@ public class ConfigureServicesExtensions
         // apirequest.io
         services.AddCors(options =>
         {
-            var frontendURL = Configuration.GetValue<string>("Frontend_URL");
+            var frontendURL = configuration.GetValue<string>("Frontend_URL");
             options.AddDefaultPolicy(builder =>
             {
                 //builder.WithOrigins(frontendURL).AllowAnyMethod().AllowAnyHeader();
@@ -214,41 +180,17 @@ public class ConfigureServicesExtensions
         services.AddTransient<GenerateLinks>();
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-        services.Configure<RequestLocalizationOptions>(options =>
-{
-    var supportedCultures = new[] { new CultureInfo("es-UY") };
-    options.DefaultRequestCulture = new RequestCulture("es-UY");
-    options.SupportedCultures = supportedCultures;
-    options.SupportedUICultures = supportedCultures;
-});
-
-    }
-
-    /// <summary>
-    /// Configuración del Middleware
-    /// Middlewares son los métodos "Use..()"
-    /// </summary>
-    /// <param name="app"></param>
-    /// <param name="env"></param>
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-        // Middleware customizado: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/26839760#notes
-        app.UseLogResponseHTTP();
-
-        app.UseSwagger();
-        app.UseSwaggerUI(c =>
+        services.ConfigureApplicationCookie(options =>
         {
-            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Datalexion 3.0");
+            options.LoginPath = "/Account/Login";
         });
 
-        app.UseRouting();  // orden n3
-        app.UseAuthentication();
-        app.UseAuthorization();
-        app.UseEndpoints(endpoints =>
+        services.AddHttpLogging(logging =>
         {
-            endpoints.MapControllers();
-            endpoints.MapHub<NotifyHub>("/notifyHub");
+            logging.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties
+                | Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponsePropertiesAndHeaders;
         });
-    }
 
+        return services;
+    }
 }

@@ -16,12 +16,12 @@ namespace DatalexionBackend.Infrastructure.Services
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<ContextDB>();
 
-                if (context.Database.GetPendingMigrations().Any())
-                {
-                    // La base de datos necesita migraciones, probablemente no se ha inicializado.
-                    // Esto puede ser un buen momento para ejecutar el seeding si solo quieres hacerlo una vez.
-                    await LoadDataFromExcel(context);
-                }
+                // if (context.Database.GetPendingMigrations().Any())
+                // {
+                //     // La base de datos necesita migraciones, probablemente no se ha inicializado.
+                //     // Esto puede ser un buen momento para ejecutar el seeding si solo quieres hacerlo una vez.
+                //     await LoadDataFromExcel(context);
+                // }
             }
         }
 
