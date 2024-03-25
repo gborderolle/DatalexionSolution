@@ -1,4 +1,5 @@
 using DatalexionBackend.Core.Helpers;
+using DatalexionBackend.Infrastructure.Services;
 using DatalexionBackend.UI.Middlewares;
 using DatalexionBackend.UI.StartupExtensions;
 using Serilog;
@@ -17,6 +18,9 @@ builder.Services.ConfigureServices(builder.Configuration);
 
 var app = builder.Build();
 
+var webHostEnvironment = app.Services.GetService<IWebHostEnvironment>();
+var wwwrootPath = webHostEnvironment?.WebRootPath ?? "";
+
 if (builder.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -25,6 +29,12 @@ else
 {
     app.UseExceptionHandler("/Error");
     app.UseExceptionHandlingMiddleware();
+}
+
+bool seedExcelDataOnStartup = builder.Configuration.GetValue<bool>("SeedExcelDataOnStartup");
+if (seedExcelDataOnStartup)
+{
+    await ExcelDataSeeder.SeedDataAsync(app.Services, wwwrootPath);
 }
 
 app.UseSwagger();
