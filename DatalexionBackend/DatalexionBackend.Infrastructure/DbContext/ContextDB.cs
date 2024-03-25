@@ -200,6 +200,14 @@ namespace DatalexionBackend.Infrastructure.DbContext
 
             #endregion Relaciones N - 1 (required) y vuelta 1 - N
 
+            // GPT Fixing
+
+            modelBuilder.Entity<Municipality>()
+             .HasOne(m => m.Province)
+             .WithMany(p => p.ListMunicipalities)
+             .HasForeignKey(m => m.ProvinceId)
+             .OnDelete(DeleteBehavior.Restrict); // Evita la eliminación en cascada
+
             #endregion modelbuilder
 
             // La llamada a SeedUsers se mantiene aquí para cualquier seeding que siempre debe ejecutarse
@@ -1031,6 +1039,5 @@ namespace DatalexionBackend.Infrastructure.DbContext
             #endregion Provinces
 
         }
-
     }
 }
