@@ -1,23 +1,22 @@
-﻿using DatalexionBackend.Core.Domain.IdentityEntities;
+﻿using DatalexionBackend.Core.ApiBehavior;
+using DatalexionBackend.Core.Domain.IdentityEntities;
 using DatalexionBackend.Core.Domain.RepositoryContracts;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using DatalexionBackend.Infrastructure.Services;
-using DatalexionBackend.Infrastructure.Repositories;
-using DatalexionBackend.EmailService;
-using DatalexionBackend.Infrastructure.DbContext;
-using DatalexionBackend.Core.Services;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using DatalexionBackend.Core.Filters;
 using DatalexionBackend.Core.Helpers;
-using DatalexionBackend.Core.ApiBehavior;
-using System.Text.Json.Serialization;
+using DatalexionBackend.Core.Services;
+using DatalexionBackend.EmailService;
+using DatalexionBackend.Infrastructure.DbContext;
+using DatalexionBackend.Infrastructure.Repositories;
+using DatalexionBackend.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace DatalexionBackend.UI.StartupExtensions;
 
@@ -34,27 +33,22 @@ public static class ConfigureServicesExtensions
         {
             c.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "Mi API",
+                Title = "Datalexion 3.0",
                 Version = "v1",
-                Description = "Descripción de mi API",
-                TermsOfService = new Uri("https://example.com/terms"),
+                Description = "Inteligencia Artificial analítica para optimizar y procesar la información electoral en tiempo real.",
+                TermsOfService = new Uri("https://datalexion.uy/terms"),
                 Contact = new OpenApiContact
                 {
                     Name = "Soporte",
-                    Email = "support@example.com",
-                    Url = new Uri("https://example.com/support"),
+                    Email = "hola@datalexion.uy",
+                    Url = new Uri("https://datalexion.uy/support"),
                 },
                 License = new OpenApiLicense
                 {
-                    Name = "Uso bajo XYZ",
-                    Url = new Uri("https://example.com/license"),
+                    Name = "Uso bajo licencia 2024.",
+                    Url = new Uri("https://datalexion.uy"),
                 }
             });
-
-            // Set the comments path for the Swagger JSON and UI.
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            c.IncludeXmlComments(xmlPath);
         });
 
         // Configuración de servicios
