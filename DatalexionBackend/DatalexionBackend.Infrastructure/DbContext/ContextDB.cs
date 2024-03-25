@@ -49,7 +49,8 @@ namespace DatalexionBackend.Infrastructure.DbContext
             modelBuilder.Entity<Circuit>()
                 .HasOne(c => c.Municipality)
                 .WithMany(m => m.ListCircuits)
-                .HasForeignKey(c => c.MunicipalityId); // Configura la clave foránea explícitamente
+                .HasForeignKey(c => c.MunicipalityId)
+                .OnDelete(DeleteBehavior.Restrict); // Eliminación en cascada
 
             // Candidate -> Photos
             modelBuilder.Entity<Candidate>()
@@ -203,10 +204,16 @@ namespace DatalexionBackend.Infrastructure.DbContext
             // GPT Fixing
 
             modelBuilder.Entity<Municipality>()
-             .HasOne(m => m.Province)
-             .WithMany(p => p.ListMunicipalities)
-             .HasForeignKey(m => m.ProvinceId)
-             .OnDelete(DeleteBehavior.Restrict); // Evita la eliminación en cascada
+               .HasOne(m => m.Province)
+               .WithMany(p => p.ListMunicipalities)
+               .HasForeignKey(m => m.ProvinceId)
+               .OnDelete(DeleteBehavior.Restrict); // Eliminación en cascada
+
+            modelBuilder.Entity<Participant>()
+                .HasOne(p => p.Slate)
+                .WithMany(s => s.ListParticipants)
+                .HasForeignKey(p => p.SlateId)
+                .OnDelete(DeleteBehavior.Restrict); // Eliminación en cascada
 
             #endregion modelbuilder
 
