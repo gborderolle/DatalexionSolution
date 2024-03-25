@@ -35,6 +35,8 @@ const MapsDashboardFilter = ({
   const [searchMunicipality, setSearchMunicipality] = useState("");
   const [searchCircuit, setSearchCircuit] = useState("");
 
+  const [processedProvinces, setProcessedProvinces] = useState([]);
+
   //#region Pagination   ***********************************
 
   const [currentPageCircuits, setCurrentPageCircuits] = useState(1);
@@ -136,6 +138,7 @@ const MapsDashboardFilter = ({
   }, [filteredCircuitList]);
 
   useEffect(() => {
+    // Esto se ejecuta solo cuando `filteredProvinceList` o `itemsPerPageProvinces` cambian
     setPageCountProvinces(
       Math.ceil(filteredProvinceList.length / itemsPerPageProvinces)
     );
@@ -147,14 +150,12 @@ const MapsDashboardFilter = ({
 
     // Ordenar primero por cantidad de votos y luego por nombre
     const sortedProvinces = provincesWithVotes.sort((a, b) => {
-      if (b.totalVotes - a.totalVotes === 0) {
-        // Si tienen la misma cantidad de votos
-        return a.name.localeCompare(b.name); // Orden alfabético
-      }
-      return b.totalVotes - a.totalVotes; // Orden por cantidad de votos
+      return b.totalVotes - a.totalVotes || a.name.localeCompare(b.name);
     });
-    setFilteredProvinceList(sortedProvinces);
-  }, [filteredProvinceList]);
+
+    // Actualizamos el estado con las provincias procesadas
+    setProcessedProvinces(sortedProvinces);
+  }, [filteredProvinceList, itemsPerPageProvinces]);
 
   useEffect(() => {
     setPageCountMunicipalities(
