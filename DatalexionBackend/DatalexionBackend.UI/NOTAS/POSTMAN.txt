@@ -1,0 +1,60 @@
+﻿Para todos:
+
+Header:
+x-version	1
+
+// ---------------------------------------------------------- *****************
+
+POSTMAN: Login de Admin (Dashboard)
+POST: http://localhost:7015/api/accounts/loginGeneral
+HTTP
+Authorization: No Auth
+
+Headers:
+x-version   1
+
+Params: no importa, no poner nada (aunque el método tenga Pagination)
+
+Body:
+{
+	"username":"useradmin",
+	"password":"useradmin1234"
+}
+
+--> Endpoint destino: 
+        [HttpPost("loginGeneral")]
+        public async Task<ActionResult<APIResponse>> loginGeneral([FromBody] UserCredential userCredential)
+        {}
+
+--> Resultado Bearer:
+Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImMyZWU2NDkzLTVhNzMtNDZmMy1hM2YyLTQ2ZDFkMTFkNzE3NiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJ1c2VyYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbkBkYXRhbGV4aW9uLmxhdCIsInJvbGUiOiJBZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzM4NjE4NzAyfQ.n2qv9jjrEzB-VSvgJ27bXTwGPhPOMJFFp5lsVevGg7M
+
+----
+
+// ---------------------------------------------------------- *****************
+
+
+POSTMAN: Circuitos
+GET: http://localhost:7015/api/circuits/GetCircuit
+HTTP
+Authorization: (Bearer Token)
+Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImMyZWU2NDkzLTVhNzMtNDZmMy1hM2YyLTQ2ZDFkMTFkNzE3NiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJ1c2VyYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbkBkYXRhbGV4aW9uLmxhdCIsInJvbGUiOiJBZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzM4NjE4NzAyfQ.n2qv9jjrEzB-VSvgJ27bXTwGPhPOMJFFp5lsVevGg7M
+
+Headers:
+x-version   1
+
+Params: no importa, no poner nada (aunque el método tenga Pagination)
+Body: no importa, no poner nada
+
+--> Endpoint destino: 
+        [HttpGet(Name = "GetCircuit")]
+        public async Task<ActionResult<APIResponse>> Get([FromQuery] PaginationDTO paginationDTO)
+        {}
+
+Este método está bueno para probar el N..N, en Tutorial_Peliculas funciona impecable.
+Actor -> List<ActorMovie> -> Movie
+Circuit -> List<CircuitSlate> -> Slate
+
+----
+
+// ---------------------------------------------------------- *****************

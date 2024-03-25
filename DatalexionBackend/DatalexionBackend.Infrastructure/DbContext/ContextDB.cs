@@ -166,6 +166,40 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 .HasForeignKey(cs => cs.PartyId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            #region Relaciones N - 1 (required) y vuelta 1 - N
+
+            // relación N - 1 (required) y 1 - N 
+            modelBuilder.Entity<Delegado>()
+                .HasOne<Client>(d => d.Client)
+                .WithMany(c => c.ListDelegados)
+                .HasForeignKey(d => d.ClientId);
+
+            // relación N - 1 (required) y 1 - N 
+            modelBuilder.Entity<Slate>()
+                .HasOne(s => s.Province)
+                .WithMany(p => p.ListSlates)
+                .HasForeignKey(s => s.ProvinceId);
+
+            // relación N - 1 (required) y 1 - N 
+            modelBuilder.Entity<Slate>()
+                .HasOne(s => s.Wing)
+                .WithMany(p => p.ListSlates)
+                .HasForeignKey(s => s.WingId);
+
+            // relación N - 1 (required) y 1 - N 
+            modelBuilder.Entity<Wing>()
+                .HasOne(s => s.Party)
+                .WithMany(p => p.ListWings)
+                .HasForeignKey(s => s.PartyId);
+
+            // relación N - 1 (required) y 1 - N 
+            modelBuilder.Entity<DatalexionUser>()
+                .HasOne(s => s.Client)
+                .WithMany(p => p.ListUsers)
+                .HasForeignKey(s => s.ClientId);
+
+            #endregion Relaciones N - 1 (required) y vuelta 1 - N
+
             #endregion modelbuilder
 
             // La llamada a SeedUsers se mantiene aquí para cualquier seeding que siempre debe ejecutarse
@@ -388,6 +422,8 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 };
             modelBuilder.Entity<Photo>().HasData(fotosCandidatos.ToArray());
 
+            #region Candidates
+
             // Candidatos 
 
             var candidate1 = new Candidate()
@@ -493,6 +529,10 @@ namespace DatalexionBackend.Infrastructure.DbContext
 
             modelBuilder.Entity<Candidate>()
                 .HasData(candidate1, candidate2, candidate3, candidate4, candidate5, candidate6, candidate7, candidate8, candidate9, candidate10, candidate11, candidate12, candidate13, candidate14, candidate15, candidate16);
+
+            #endregion Candidates
+
+            #region Slates
 
             // Listas
             // FA
@@ -648,6 +688,8 @@ namespace DatalexionBackend.Infrastructure.DbContext
             modelBuilder.Entity<Slate>()
                     .HasData(slate1, slate2, slate3, slate4, slate5, slate6, slate7, slate8, slate9, slate10, slate11, slate12, slate13, slate14, slate15);
 
+            #endregion Slates
+
             // Partidos fotos
 
             // Lógica de Fotos:
@@ -677,6 +719,8 @@ namespace DatalexionBackend.Infrastructure.DbContext
                     new Photo { Id = 116, URL = $"{_baseUrl}/uploads/partiesShort/photo116.png" },
                     };
             modelBuilder.Entity<Photo>().HasData(fotosPartidos.ToArray());
+
+            #region Parties
 
             // Partidos
 
@@ -740,6 +784,9 @@ namespace DatalexionBackend.Infrastructure.DbContext
             modelBuilder.Entity<Party>()
                                 .HasData(party1, party2, party3, party4, party5, party6);
 
+            #endregion Parties
+
+            #region Clients
 
             // Clientes partidos
             var clientFA = new Client()
@@ -774,7 +821,9 @@ namespace DatalexionBackend.Infrastructure.DbContext
 
             modelBuilder.Entity<Client>().HasData(clientFA, clientPN, clientPC);
 
-            // Delegados
+            #endregion Clients
+
+            #region Delegados
 
             var delegadoCI = "11111111";
             var delegadoEmail = "gonzalo.delegado@datalexion.lat";
@@ -831,6 +880,10 @@ namespace DatalexionBackend.Infrastructure.DbContext
             modelBuilder.Entity<Delegado>()
                 .HasData(delegadoPN1, delegadoPN2, delegadoFA, delegadoPC);
 
+            #endregion Delegados
+
+            #region Wings
+
             // Agrupaciones - Wings
 
             var wing1 = new Wing()
@@ -872,6 +925,9 @@ namespace DatalexionBackend.Infrastructure.DbContext
 
             modelBuilder.Entity<Wing>().HasData(wing1, wing2, wing3, wing4, wing5, wing6);
 
+            #endregion Wings
+
+            #region Provinces
 
             var province1 = new Province()
             {
@@ -972,6 +1028,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
             modelBuilder.Entity<Province>()
                             .HasData(province1, province2, province3, province4, province5, province6, province7, province8, province9, province10, province11, province12, province13, province14, province15, province16, province17, province18, province19);
 
+            #endregion Provinces
 
         }
 

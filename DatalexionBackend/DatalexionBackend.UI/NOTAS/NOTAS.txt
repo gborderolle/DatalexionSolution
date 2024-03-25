@@ -1,0 +1,31 @@
+﻿Diccionario:
+
+Party: partido político
+Wing: sector dentro del partido
+Province: departamento dentro del sector
+Slate: lista dentro del departamento
+
+----------------------------------
+
+Timing:
+
+*Backend estructura semi-completa:
+2023-09-11:
+
+Start 21.45 hs
+End 22.30 hs
+--> 45 mins.
+
+Incluyó:
+- Clonar proyecto: API_TEMPLATE
+- Corregir nombre y referencias
+- Crear modelos
+- Crear DTOs: DTO, create y patch (vacíos)
+- Crear repositorios e interfaces
+- Crear controllers y corregir endpoints
+
+--> Falta:
+- Hacer Frontend en React web
+- Agregar funcionalidades a controllers
+- Ajustar DTOs a partir de los requerimientos
+- Agregar validaciones especiales: carga de archivos, tamaños, formatos, etc.

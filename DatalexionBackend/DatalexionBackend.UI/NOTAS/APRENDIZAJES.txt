@@ -1,0 +1,136 @@
+﻿Temática: DTOs
+    /// UserDTO sirve de apoyo al IdentityUser
+    /// El UserID nunca va en los DTOs porque sería una vulnerabilidad del sistema
+    /// En el Context la tabla es .Users
+    // Para setear manualmente roles, por ej Admin => tabla AspNetUserClaims:   
+        Id	UserId	ClaimType	ClaimValue
+        4	c2ee6493-5a73-46f3-a3f2-46d1d11d7176	role	admin
+
+Así se toma el User logueado:
+    var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+    if (userId == null)
+    {
+        _logger.LogError($"Usuario no autorizado.");
+        _response.ErrorMessages = new List<string> { $"Usuario no autorizado." };
+        _response.IsSuccess = false;
+        _response.StatusCode = HttpStatusCode.Unauthorized;
+        return Unauthorized($"Usuario no autorizado.");
+    }
+
+    (o)
+
+    var emailClaim = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+    if (emailClaim != null)
+    {
+        var user = await _userManager.FindByEmailAsync(emailClaim);
+        if (user != null)
+        {
+            var userId = user.Id;
+            if (userId != null)
+            {
+            }
+        }
+    }
+
+Cuidado 1: User.Claims sólo funciona si el usuario está logueado!
+Cuidado 2: En la BD, si la tabla AspNetUserClaims está sucia, jode los Claims y no deja acceder al User logueado, hay que limpiarla.
+
+
+--------------------------------------
+
+
+"Propiedades sombra" con relación N..N
+	En el backend cuando se genera la migración, en la bd se generan key1Id y key2Id, pero además key1Id1 y key2Id1.
+	Esto es un problema porque al hacer un GET, el thenInclude no trae los datos.
+
+    **** Corrección (caso Datalexion):
+
+	   1) Clase ContextDB.cs:
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);		
+
+            // N..N
+            modelBuilder.Entity<CircuitSlate>()
+                .HasKey(v => new { v.CircuitId, v.SlateId });
+
+            modelBuilder.Entity<CircuitSlate>()
+                .HasOne(cs => cs.Circuit)
+                .WithMany(c => c.ListCircuitSlates)
+                .HasForeignKey(cs => cs.CircuitId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CircuitSlate>()
+                .HasOne(cs => cs.Slate)
+                .WithMany(s => s.ListCircuitSlates)
+                .HasForeignKey(cs => cs.SlateId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
+
+        2) Clases
+
+        Clase Circuit:
+        /// <summary>
+        /// N-N
+        /// </summary>
+        public List<CircuitSlateDTO> ListCircuitSlates { get; set; }
+
+        Clase Slate:
+        /// <summary>
+        /// N-N
+        /// </summary>
+        public List<CircuitSlateDTO> ListCircuitSlates { get; set; }
+
+        Clase CircuitSlate:
+        public class CircuitSlate
+        {
+            #region Internal
+
+            public int CircuitId { get; set; }
+            public Circuit Circuit { get; set; }
+
+            public int SlateId { get; set; }
+            public Slate Slate { get; set; }
+
+            // Uniques
+            public int? Votes { get; set; }
+
+            #endregion
+        }
+
+        Clase CircuitDTO:
+        /// <summary>
+        /// N-N
+        /// </summary>
+        public List<CircuitSlateDTO> ListCircuitSlates { get; set; }
+
+        3) Clase AutoMapperProfile:
+        // N..N
+        CreateMap<Circuit, CircuitDTO>()
+            .ForMember(dest => dest.ListCircuitDelegados, opt => opt.MapFrom(src => src.ListCircuitDelegados))
+            .ForMember(dest => dest.ListCircuitSlates, opt => opt.MapFrom(src => src.ListCircuitSlates))
+            .ReverseMap();
+
+        4) Controller CircuitsController:
+        [HttpGet("GetCircuit")]
+        public async Task<ActionResult<APIResponse>> Get([FromQuery] PaginationDTO paginationDTO)
+        {
+            // n..n
+            var thenIncludes = new List<ThenIncludePropertyConfiguration<Circuit>>
+            {
+                // delegados
+                new ThenIncludePropertyConfiguration<Circuit>
+                {
+                    IncludeExpression = b => b.ListCircuitDelegados,
+                    ThenIncludeExpression = ab => ((CircuitDelegado)ab).Delegado
+                },
+                new ThenIncludePropertyConfiguration<Circuit>
+                {
+                    IncludeExpression = b => b.ListCircuitSlates,
+                    ThenIncludeExpression = ab => ((CircuitSlate)ab).Slate
+                },
+            };
+            return await Get<Circuit, CircuitDTO>(paginationDTO: paginationDTO, thenIncludes: thenIncludes);
+        }
+
+--------------------------------------

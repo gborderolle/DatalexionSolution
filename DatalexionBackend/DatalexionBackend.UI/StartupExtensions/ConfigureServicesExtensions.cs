@@ -174,10 +174,10 @@ public static class ConfigureServicesExtensions
         services.AddTransient<GenerateLinks>();
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-        services.ConfigureApplicationCookie(options =>
-        {
-            options.LoginPath = "/Account/Login";
-        });
+        // services.ConfigureApplicationCookie(options =>
+        // {
+        //     options.LoginPath = "/Account/Login";
+        // });
 
         services.AddHttpLogging(logging =>
         {
