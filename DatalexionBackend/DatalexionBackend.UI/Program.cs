@@ -34,7 +34,7 @@ else
 bool SeedCircuitsAndMunicipalitiesFromExcelOnStartup = builder.Configuration.GetValue<bool>("SeedCircuitsAndMunicipalitiesFromExcelOnStartup");
 if (SeedCircuitsAndMunicipalitiesFromExcelOnStartup)
 {
-    await ExcelDataSeeder.SeedCircuitsAndMunicipalitiesAsync(app.Services, wwwrootPath);
+    await ExcelDataSeeder.LoadDataFromExcel(app.Services, wwwrootPath);
 }
 bool SeedVotesOnStartup = builder.Configuration.GetValue<bool>("SeedVotesOnStartup");
 if (SeedVotesOnStartup)
