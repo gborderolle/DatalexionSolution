@@ -1,11 +1,9 @@
-﻿using DatalexionBackend.Infrastructure.DbContext;
-using DatalexionBackend.Core.Domain.Entities;
+﻿using DatalexionBackend.Core.Domain.Entities;
 using DatalexionBackend.Core.Domain.RepositoryContracts;
-using Microsoft.EntityFrameworkCore;
+using DatalexionBackend.Infrastructure.DbContext;
 using DatalexionBackend.Infrastructure.Services;
-using DatalexionBackend.Infrastructure.Repositories;
 
-namespace Datalexion.Repository
+namespace DatalexionBackend.Infrastructure.Repositories
 {
     public class WingRepository : Repository<Wing>, IWingRepository
     {

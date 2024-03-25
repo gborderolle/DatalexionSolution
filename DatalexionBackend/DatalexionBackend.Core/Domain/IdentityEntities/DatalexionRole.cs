@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace DatalexionBackend.Core.Domain.Entities;
+namespace DatalexionBackend.Core.Domain.IdentityEntities;
 
 public class DatalexionRole : IdentityRole
 {

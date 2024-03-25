@@ -16,7 +16,7 @@ public class ParticipantCreateDTO
 
     public DateTime Update { get; set; } = DateTime.Now;
 
-    public string Comments { get; set; }
+    public string? Comments { get; set; }
 
     // Uniques
 

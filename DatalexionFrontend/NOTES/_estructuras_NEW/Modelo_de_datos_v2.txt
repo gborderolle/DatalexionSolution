@@ -6,7 +6,7 @@ Clase Circuit:
         public int Id { get; set; }
         public DateTime Creation { get; set; } = DateTime.Now;
         public DateTime Update { get; set; } = DateTime.Now;
-        public string Comments { get; set; }
+        public string? Comments { get; set; }
         public int Number { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
@@ -48,7 +48,7 @@ Clase Circuit:
         public int Id { get; set; }
         public DateTime Creation { get; set; } = DateTime.Now;
         public DateTime Update { get; set; } = DateTime.Now;
-        public string Comments { get; set; }
+        public string? Comments { get; set; }
         public string Name { get; set; }
         public string Color { get; set; }
         public int? Votes { get; set; }
@@ -67,7 +67,7 @@ Clase Party
         public int Id { get; set; }
         public DateTime Creation { get; set; } = DateTime.Now;
         public DateTime Update { get; set; } = DateTime.Now;
-        public string Comments { get; set; }
+        public string? Comments { get; set; }
         public string Name { get; set; }
         [StringLength(maximumLength: 6, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
         public string ShortName { get; set; }
@@ -85,7 +85,7 @@ Clase Wing
         public int Id { get; set; }
         public DateTime Creation { get; set; } = DateTime.Now;
         public DateTime Update { get; set; } = DateTime.Now;
-        public string Comments { get; set; }
+        public string? Comments { get; set; }
         public string Name { get; set; }
         public List<Slate> ListSlates { get; set; } = new();
         public Photo Photo { get; set; }
@@ -98,7 +98,7 @@ Clase Wing
         public int Id { get; set; }
         public DateTime Creation { get; set; } = DateTime.Now;
         public DateTime Update { get; set; } = DateTime.Now;
-        public string Comments { get; set; }
+        public string? Comments { get; set; }
         public string Name { get; set; }
         public string? Center { get; set; }
         public int? Zoom { get; set; }
@@ -111,7 +111,7 @@ Clase Wing
     public int Id { get; set; }
     public DateTime Creation { get; set; } = DateTime.Now;
     public DateTime Update { get; set; } = DateTime.Now;
-    public string Comments { get; set; }
+    public string? Comments { get; set; }
     public string Name { get; set; }
     public List<Circuit> ListCircuits { get; set; }
     public int ProvinceId { get; set; }

@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using DatalexionBackend.Core.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace DatalexionBackend.Core.Domain.Entities;
+namespace DatalexionBackend.Core.Domain.IdentityEntities;
 
 public class DatalexionUser : IdentityUser
 {

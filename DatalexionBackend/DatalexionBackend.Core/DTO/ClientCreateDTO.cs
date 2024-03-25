@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using DatalexionBackend.Core.Domain.Entities;
+using DatalexionBackend.Core.Domain.IdentityEntities;
 
 namespace DatalexionBackend.Core.DTO
 {
@@ -16,7 +16,7 @@ namespace DatalexionBackend.Core.DTO
 
         public DateTime Update { get; set; } = DateTime.Now;
 
-        public string Comments { get; set; }
+        public string? Comments { get; set; }
 
         // Uniques
 

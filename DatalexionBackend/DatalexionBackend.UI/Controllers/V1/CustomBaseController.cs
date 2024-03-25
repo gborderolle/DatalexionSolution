@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using System.Net;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
@@ -218,6 +219,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                     return NotFound(_response);
                 }
 
+
                 entity = _mapper.Map(createDTO, entity);
                 entity.Id = id;
 
@@ -240,8 +242,8 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         protected async Task<ActionResult<APIResponse>> Patch<TEntity, TDTO>(int id, JsonPatchDocument<TDTO> patchDto)
-            where TDTO : class
-            where TEntity : class
+              where TEntity : class, IId, new()
+              where TDTO : class
         {
             try
             {
@@ -254,7 +256,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                     return BadRequest(_response);
                 }
 
-                T entity = await _repository.Get(v => v.Id == id, tracked: false);
+                var entity = await _repository.Get(v => v.Id == id, tracked: true);
                 if (entity == null)
                 {
                     _logger.LogError($"Entidad no encontrada ID = {id}.");
@@ -263,22 +265,29 @@ namespace DatalexionBackend.UI.Controllers.V1
                     return NotFound(_response);
                 }
 
-                TDTO patchDTO = _mapper.Map<TDTO>(entity);
-                patchDto.ApplyTo(patchDTO, ModelState);
-                if (!TryValidateModel(patchDTO))
+                // Map the entity to DTO
+                TDTO dtoToPatch = _mapper.Map<TDTO>(entity);
+
+                // Aplicar el parche al DTO
+                patchDto.ApplyTo(dtoToPatch, error =>
                 {
-                    _logger.LogError($"Ocurrió un error en el servidor.");
-                    _response.ErrorMessages = new List<string> { $"Ocurrió un error en el servidor." };
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    ModelState.AddModelError(error.ErrorMessage, $"{error.Operation} failed on {error}: {error.ErrorMessage}");
+                });
+
+                // Validate the DTO after applying the patch.
+                if (!TryValidateModel(dtoToPatch))
+                {
+                    _logger.LogError($"Validation failed after applying the patch to the entity ID = {id}.");
                     return BadRequest(ModelState);
                 }
-                _mapper.Map(patchDTO, entity);
-                var updatedEntity = await _repository.Update(entity);
 
-                _response.Result = _mapper.Map<TDTO>(updatedEntity);
-                _response.StatusCode = HttpStatusCode.NoContent;
+                // Map the DTO back to the entity and save changes.
+                _mapper.Map(dtoToPatch, entity);
 
+                await _repository.Update(entity);
+
+                _response.Result = _mapper.Map<TDTO>(entity);
+                _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }
             catch (Exception ex)
@@ -287,8 +296,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
                 _response.ErrorMessages = new List<string> { ex.ToString() };
+                return StatusCode((int)HttpStatusCode.InternalServerError, _response);
             }
-            return Ok(_response);
         }
 
     }

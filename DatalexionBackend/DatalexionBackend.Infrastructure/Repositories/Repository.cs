@@ -27,91 +27,6 @@ namespace DatalexionBackend.Infrastructure.Repositories
             await Save();
         }
 
-        public async Task<T> Get
- (
-     Expression<Func<T, bool>>? filter = null,
-     IEnumerable<IncludePropertyConfiguration<T>> includes = null,
-     IEnumerable<ThenIncludePropertyConfiguration<T>> thenIncludes = null,
-     bool tracked = true)
-        {
-            IQueryable<T> query = dbSet;
-            if (includes != null)
-            {
-                foreach (var includeConfig in includes)
-                {
-                    query = query
-                        .Include(includeConfig.IncludeExpression);
-                }
-            }
-            if (thenIncludes != null)
-            {
-                foreach (var thenIncludeConfig in thenIncludes)
-                {
-                    query = query
-                        .Include(thenIncludeConfig.IncludeExpression)
-                        .ThenInclude(thenIncludeConfig.ThenIncludeExpression);
-                }
-            }
-            if (!tracked)
-            {
-                query = query.AsNoTracking();
-            }
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-            return await query.FirstOrDefaultAsync();
-        }
-
-        public async Task<List<T>> GetAll
-        (
-            Expression<Func<T, bool>>? where = null,
-            Expression<Func<T, object>>? orderBy = null,
-            IEnumerable<IncludePropertyConfiguration<T>> includes = null,
-            IEnumerable<ThenIncludePropertyConfiguration<T>> thenIncludes = null,
-            PaginationDTO paginationDTO = null,
-            HttpContext httpContext = null,
-            bool tracked = false,
-            bool ascendingOrder = true
-        )
-        {
-            IQueryable<T> query = dbSet;
-            if (includes != null)
-            {
-                foreach (var includeConfig in includes)
-                {
-                    query = query
-                        .Include(includeConfig.IncludeExpression);
-                }
-            }
-            if (thenIncludes != null)
-            {
-                foreach (var thenIncludeConfig in thenIncludes)
-                {
-                    query = query
-                        .Include(thenIncludeConfig.IncludeExpression)
-                        .ThenInclude(thenIncludeConfig.ThenIncludeExpression);
-                }
-            }
-            if (orderBy != null)
-            {
-                query = ascendingOrder ? query.OrderBy(orderBy) : query.OrderByDescending(orderBy);
-            }
-            if (where != null)
-            {
-                query = query.Where(where);
-            }
-            if (httpContext != null && paginationDTO != null)
-            {
-                await httpContext.InsertParamPaginationHeader(query);
-                query = query.DoPagination(paginationDTO);
-            }
-            if (!tracked)
-            {
-                query = query.AsNoTracking();
-            }
-            return await query.ToListAsync();
-        }
 
         public async Task<T> Update(T entity)
         {
@@ -132,18 +47,107 @@ namespace DatalexionBackend.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-    }
+        public async Task<List<T>> GetAll(
+            Expression<Func<T, bool>>? where = null,
+            Expression<Func<T, object>>? orderBy = null,
+            IEnumerable<IncludePropertyConfiguration<T>> includes = null,
+            IEnumerable<ThenIncludePropertyConfiguration<T>> thenIncludes = null,
+            PaginationDTO paginationDTO = null,
+            HttpContext httpContext = null,
+            bool tracked = false,
+            bool ascendingOrder = true)
+        {
+            IQueryable<T> query = dbSet;
 
-    public class IncludePropertyConfiguration<T>
-    {
-        public Expression<Func<T, object>> IncludeExpression { get; set; }
-        public Expression<Func<object, object>> ThenIncludeExpression { get; set; }
-    }
+            if (includes != null)
+            {
+                foreach (var includeConfig in includes)
+                {
+                    query = query.Include(includeConfig.IncludeExpression);
+                }
+            }
 
-    public class ThenIncludePropertyConfiguration<T>
-    {
-        public Expression<Func<T, object>> IncludeExpression { get; set; }
-        public Expression<Func<object, object>> ThenIncludeExpression { get; set; }
+            if (thenIncludes != null)
+            {
+                foreach (var thenIncludeConfig in thenIncludes)
+                {
+                    if (thenIncludeConfig.IncludeExpression != null)
+                    {
+                        var queryWithInclude = query.Include(thenIncludeConfig.IncludeExpression);
+                        if (thenIncludeConfig.ThenIncludeExpression != null)
+                        {
+                            query = queryWithInclude.ThenInclude(thenIncludeConfig.ThenIncludeExpression);
+                        }
+                    }
+                }
+            }
+
+            if (where != null)
+            {
+                query = query.Where(where);
+            }
+
+            if (orderBy != null)
+            {
+                query = ascendingOrder ? query.OrderBy(orderBy) : query.OrderByDescending(orderBy);
+            }
+
+            if (!tracked)
+            {
+                query = query.AsNoTracking();
+            }
+
+            if (httpContext != null && paginationDTO != null)
+            {
+                await httpContext.InsertParamPaginationHeader(query);
+                query = query.DoPagination(paginationDTO);
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<T> Get(
+            Expression<Func<T, bool>>? filter = null,
+            IEnumerable<IncludePropertyConfiguration<T>> includes = null,
+            IEnumerable<ThenIncludePropertyConfiguration<T>> thenIncludes = null,
+            bool tracked = true)
+        {
+            IQueryable<T> query = dbSet;
+
+            if (includes != null)
+            {
+                foreach (var includeConfig in includes)
+                {
+                    query = query.Include(includeConfig.IncludeExpression);
+                }
+            }
+
+            if (thenIncludes != null)
+            {
+                foreach (var thenIncludeConfig in thenIncludes)
+                {
+                    if (thenIncludeConfig.IncludeExpression != null)
+                    {
+                        var queryWithInclude = query.Include(thenIncludeConfig.IncludeExpression);
+                        if (thenIncludeConfig.ThenIncludeExpression != null)
+                        {
+                            query = queryWithInclude.ThenInclude(thenIncludeConfig.ThenIncludeExpression);
+                        }
+                    }
+                }
+            }
+
+            if (!tracked)
+            {
+                query = query.AsNoTracking();
+            }
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            return await query.FirstOrDefaultAsync();
+        }
     }
 }
-

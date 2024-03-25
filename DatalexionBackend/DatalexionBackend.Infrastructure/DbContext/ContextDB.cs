@@ -1,4 +1,5 @@
 ﻿using DatalexionBackend.Core.Domain.Entities;
+using DatalexionBackend.Core.Domain.IdentityEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -785,8 +786,6 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Name = "Gonzalo",
                 Email = delegadoEmail,
                 Phone = "099415831",
-
-                //
                 ClientId = clientPN.Id
             };
 
@@ -800,8 +799,6 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Name = "Diego",
                 Email = delegadoEmail,
                 Phone = "099589896",
-
-                //
                 ClientId = clientPN.Id
             };
 
@@ -815,8 +812,6 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Name = "Pablo",
                 Email = delegadoEmail,
                 Phone = "099415831",
-
-                //
                 ClientId = clientFA.Id
             };
 
@@ -830,8 +825,6 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Name = "Gabriel",
                 Email = delegadoEmail,
                 Phone = "099415831",
-
-                //
                 ClientId = clientPC.Id
             };
 

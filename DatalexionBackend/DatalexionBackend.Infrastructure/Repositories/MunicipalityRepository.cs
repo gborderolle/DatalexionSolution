@@ -2,10 +2,8 @@
 using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Infrastructure.DbContext;
 using DatalexionBackend.Infrastructure.Services;
-using DatalexionBackend.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
 
-namespace Datalexion.Repository
+namespace DatalexionBackend.Infrastructure.Repositories
 {
     public class MunicipalityRepository : Repository<Municipality>, IMunicipalityRepository
     {

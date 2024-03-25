@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DatalexionBackend.Core.Domain.Entities;
+using DatalexionBackend.Core.Domain.IdentityEntities;
 using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Core.DTO;
 using DatalexionBackend.Core.Helpers;
