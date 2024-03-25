@@ -31,10 +31,15 @@ else
     app.UseExceptionHandlingMiddleware();
 }
 
-bool seedExcelDataOnStartup = builder.Configuration.GetValue<bool>("SeedExcelDataOnStartup");
-if (seedExcelDataOnStartup)
+bool SeedCircuitsAndMunicipalitiesFromExcelOnStartup = builder.Configuration.GetValue<bool>("SeedCircuitsAndMunicipalitiesFromExcelOnStartup");
+if (SeedCircuitsAndMunicipalitiesFromExcelOnStartup)
 {
-    await ExcelDataSeeder.SeedDataAsync(app.Services, wwwrootPath);
+    await ExcelDataSeeder.SeedCircuitsAndMunicipalitiesAsync(app.Services, wwwrootPath);
+}
+bool SeedVotesOnStartup = builder.Configuration.GetValue<bool>("SeedVotesOnStartup");
+if (SeedVotesOnStartup)
+{
+    ExcelDataSeeder.SeedVotes(app.Services);
 }
 
 app.UseSwagger();

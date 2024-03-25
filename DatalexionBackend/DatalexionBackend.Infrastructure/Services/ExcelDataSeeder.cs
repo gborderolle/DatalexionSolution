@@ -9,7 +9,7 @@ namespace DatalexionBackend.Infrastructure.Services
 {
     public static class ExcelDataSeeder
     {
-        public static async Task SeedDataAsync(IServiceProvider serviceProvider, string wwwrootPath)
+        public static async Task SeedCircuitsAndMunicipalitiesAsync(IServiceProvider serviceProvider, string wwwrootPath)
         {
             using (var scope = serviceProvider.CreateScope())
             {
@@ -21,6 +21,91 @@ namespace DatalexionBackend.Infrastructure.Services
                     // La base de datos necesita migraciones, probablemente no se ha inicializado.
                     // Esto puede ser un buen momento para ejecutar el seeding si solo quieres hacerlo una vez.
                     await LoadDataFromExcel(context, wwwrootPath);
+                }
+            }
+        }
+
+        public static void SeedVotes(IServiceProvider serviceProvider)
+        {
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                Random random = new();
+                using (var context = services.GetRequiredService<ContextDB>())
+                {
+                    var client = context.Client.FirstOrDefault();
+                    if (client == null)
+                    {
+                        return;
+                    }
+
+                    var firstThreeCircuits = context.Circuit
+                        .Include(c => c.ListCircuitSlates)
+                        .Include(c => c.ListCircuitParties)
+                        .OrderBy(c => c.Number)
+                        .Take(3)
+                        .ToList();
+
+                    var wingsOfClientParty = context.Wing
+                        .Where(wing => wing.PartyId == client.PartyId)
+                        .Select(wing => wing.Id)
+                        .ToList();
+
+                    if (firstThreeCircuits.Any())
+                    {
+                        foreach (var circuit in firstThreeCircuits)
+                        {
+                            int slateTotalVotes = 0;
+
+                            // Añade votos a las slates del circuito
+                            foreach (var slate in circuit.ListCircuitSlates)
+                            {
+                                int randomVotes = random.Next(1, 30); // Genera un número aleatorio entre 1 y 100
+                                int vote = (slate.Votes ?? 0) + randomVotes;
+                                slate.Votes = vote;
+                                // slateTotalVotes += vote;
+
+                                var slate1 = context.Slate.FirstOrDefault(mySlate => mySlate.Id == slate.SlateId);
+                                if (slate1 != null)
+                                {
+                                    if (wingsOfClientParty.Contains(slate1.WingId))
+                                    {
+                                        slateTotalVotes += vote; // Suma solo si pertenece al partido del cliente
+                                    }
+                                }
+                            }
+
+                            // Añade votos a los partidos del circuito
+                            foreach (var party in circuit.ListCircuitParties)
+                            {
+                                if (party.PartyId == client.PartyId)
+                                {
+                                    party.Votes = slateTotalVotes;
+                                    continue;
+                                }
+                                int randomVotes = random.Next(1, 150); // Genera un número aleatorio entre 1 y 100
+                                int vote = (party.Votes ?? 0) + randomVotes;
+                                party.Votes = vote;
+                            }
+
+                            // Añadir votos extras si es necesario
+                            circuit.BlankVotes += random.Next(1, 20); // Genera un número aleatorio entre 1 y 50
+                            circuit.NullVotes += random.Next(1, 20);
+                            circuit.ObservedVotes += random.Next(1, 20);
+
+                            circuit.Step1completed = true;
+                            circuit.Step2completed = true;
+                            circuit.Step3completed = true;
+                        }
+
+                        context.SaveChanges();
+                        Console.WriteLine("Votos actualizados correctamente.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No hay circuitos para actualizar.");
+                    }
                 }
             }
         }
@@ -96,7 +181,7 @@ namespace DatalexionBackend.Infrastructure.Services
                 // Creando el Dictionary de MunicipalityIds
                 var municipalityIds = municipalitiesToAdd.ToDictionary(m => m.Name, m => m.Id);
 
-                // Agregando circuitos y asociando CircuitSlates y a CircuitParties
+                // Agregando circuitos y asociando ListCircuitSlates y a ListCircuitParties
                 foreach (var row in rows.Skip(1))
                 {
                     int circuitNumber = int.TryParse(row.Cell(numberIndex).Value.ToString().Trim(), out int result) ? result : 0;
@@ -215,7 +300,6 @@ namespace DatalexionBackend.Infrastructure.Services
             }
             return null; // No se encontraron resultados
         }
-
 
     }
 }
