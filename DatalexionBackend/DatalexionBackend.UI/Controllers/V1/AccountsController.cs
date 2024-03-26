@@ -210,7 +210,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         [HttpPost("register")] //api/accounts/register
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public async Task<ActionResult<APIResponse>> Register(RegisterModel model)
+        public async Task<ActionResult<APIResponse>> Register(DatalexionUserCreateDTO model)
         {
             try
             {
@@ -277,7 +277,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         [HttpPut("UpdateUser/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public async Task<ActionResult<APIResponse>> UpdateUser(string id, [FromBody] UpdateUserModel model)
+        public async Task<ActionResult<APIResponse>> UpdateUser(string id, [FromBody] DatalexionUserPatchDTO model)
         {
             try
             {
@@ -328,7 +328,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPost("loginDelegados")]
-        public async Task<ActionResult<APIResponse>> loginDelegados([FromBody] DelegadoCredential delegadoCredential)
+        public async Task<ActionResult<APIResponse>> loginDelegados([FromBody] DelegadoLoginDTO delegadoCredential)
         {
             try
             {
@@ -422,7 +422,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         [HttpPost("CreateUserRole")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public async Task<ActionResult<APIResponse>> CreateUserRole([FromBody] CreateRoleModel model)
+        public async Task<ActionResult<APIResponse>> CreateUserRole([FromBody] DatalexionRoleCreateDTO model)
         {
             try
             {
@@ -467,7 +467,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         [HttpPut("UpdateUserRole/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public async Task<ActionResult<APIResponse>> UpdateUserRole(string id, [FromBody] UpdateUserRoleModel model)
+        public async Task<ActionResult<APIResponse>> UpdateUserRole(string id, [FromBody] DatalexionRoleUpdateDTO model)
         {
             try
             {
@@ -770,42 +770,6 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         #endregion Email
-
-        public class RegisterModel
-        {
-            public string Username { get; set; }
-            public string Name { get; set; }
-            public string Email { get; set; }
-            public string Password { get; set; }
-            public string UserRoleId { get; set; }
-            public string UserRoleName { get; set; }
-            public int ClientId { get; set; }
-        }
-
-        public class UpdateUserModel
-        {
-            public string Username { get; set; }
-            public string Name { get; set; }
-            public string Email { get; set; }
-            public string UserRoleId { get; set; }
-            public string UserRoleName { get; set; }
-        }
-
-        public class CreateRoleModel
-        {
-            public string Name { get; set; }
-        }
-
-        public class UpdateUserRoleModel
-        {
-            public string Name { get; set; }
-        }
-
-        public class DelegadoCredential
-        {
-            [Required]
-            public string CI { get; set; }
-        }
 
         #endregion
 
