@@ -3,6 +3,7 @@ using DatalexionBackend.Core.Domain.Entities;
 using DatalexionBackend.Core.Domain.IdentityEntities;
 using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Core.DTO;
+using DatalexionBackend.Core.Enums;
 using DatalexionBackend.Core.Helpers;
 using DatalexionBackend.EmailService;
 using DatalexionBackend.Infrastructure.DbContext;
@@ -96,7 +97,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return Ok(_response);
         }
@@ -115,7 +116,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return Ok(_response);
         }
@@ -136,7 +137,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return Ok(_response);
         }
@@ -161,13 +162,13 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return Ok(_response);
         }
 
         [HttpPost("makeAdmin")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> MakeAdmin([FromBody] string usuarioId)
         {
             try
@@ -182,13 +183,13 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return Ok(_response);
         }
 
         [HttpPost("removeAdmin")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> RemoveAdmin([FromBody] string usuarioId)
         {
             try
@@ -203,13 +204,13 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return Ok(_response);
         }
 
         [HttpPost("register")] //api/accounts/register
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Register(DatalexionUserCreateDTO model)
         {
             try
@@ -270,13 +271,13 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return Ok(_response);
         }
 
         [HttpPut("UpdateUser/{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> UpdateUser(string id, [FromBody] DatalexionUserPatchDTO model)
         {
             try
@@ -322,7 +323,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return Ok(_response);
         }
@@ -373,7 +374,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return Ok(_response);
         }
@@ -414,14 +415,14 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return Ok(_response);
         }
 
 
         [HttpPost("CreateUserRole")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> CreateUserRole([FromBody] DatalexionRoleCreateDTO model)
         {
             try
@@ -459,14 +460,14 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
                 return StatusCode(500, _response);
             }
             return Ok(_response);
         }
 
         [HttpPut("UpdateUserRole/{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> UpdateUserRole(string id, [FromBody] DatalexionRoleUpdateDTO model)
         {
             try
@@ -497,7 +498,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return Ok(_response);
         }
@@ -532,7 +533,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return BadRequest(_response);
         }
@@ -567,7 +568,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return BadRequest(_response);
         }

@@ -1,5 +1,6 @@
 ﻿using DatalexionBackend.Core.Domain.Entities;
 using DatalexionBackend.Core.Domain.IdentityEntities;
+using DatalexionBackend.Core.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -239,8 +240,8 @@ namespace DatalexionBackend.Infrastructure.DbContext
             var rolAdmin = new DatalexionRole
             {
                 Id = rolAdminId,
-                Name = "Admin",
-                NormalizedName = "ADMIN",
+                Name = UserTypeOptions.Admin.ToString(),
+                NormalizedName = UserTypeOptions.Admin.ToString().Normalize().ToUpper(),
                 Creation = DateTime.Now,
                 Update = DateTime.Now
             };
@@ -248,8 +249,8 @@ namespace DatalexionBackend.Infrastructure.DbContext
             var rolUser = new DatalexionRole
             {
                 Id = rolAnalystId,
-                Name = "Analyst",
-                NormalizedName = "ANALYST",
+                Name = UserTypeOptions.Analyst.ToString(),
+                NormalizedName = UserTypeOptions.Analyst.ToString().Normalize().ToUpper(),
                 Creation = DateTime.Now,
                 Update = DateTime.Now
             };
@@ -338,7 +339,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                     Id = 1,
                     ClaimType = "role",
                     UserId = userAdminId,
-                    ClaimValue = "Admin"
+                    ClaimValue = UserTypeOptions.Admin.ToString(),
                 });
 
             modelBuilder.Entity<IdentityUserClaim<string>>()
@@ -347,7 +348,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                     Id = 2,
                     ClaimType = "role",
                     UserId = userAnalystId,
-                    ClaimValue = "Analyst"
+                    ClaimValue = UserTypeOptions.Analyst.ToString()
                 });
 
             modelBuilder.Entity<IdentityUserClaim<string>>()
@@ -356,7 +357,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                     Id = 3,
                     ClaimType = "role",
                     UserId = userfaId,
-                    ClaimValue = "Admin"
+                    ClaimValue = UserTypeOptions.Admin.ToString()
                 });
 
             modelBuilder.Entity<IdentityUserClaim<string>>()
@@ -365,7 +366,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                     Id = 4,
                     ClaimType = "role",
                     UserId = userpnId,
-                    ClaimValue = "Admin"
+                    ClaimValue = UserTypeOptions.Admin.ToString()
                 });
 
             modelBuilder.Entity<IdentityUserClaim<string>>()
@@ -374,7 +375,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                     Id = 5,
                     ClaimType = "role",
                     UserId = userpcId,
-                    ClaimValue = "Admin"
+                    ClaimValue = UserTypeOptions.Admin.ToString()
                 });
 
             // Asignar roles a usuarios

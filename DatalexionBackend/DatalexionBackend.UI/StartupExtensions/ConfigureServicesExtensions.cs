@@ -1,6 +1,7 @@
 ﻿using DatalexionBackend.Core.ApiBehavior;
 using DatalexionBackend.Core.Domain.IdentityEntities;
 using DatalexionBackend.Core.Domain.RepositoryContracts;
+using DatalexionBackend.Core.Enums;
 using DatalexionBackend.Core.Filters;
 using DatalexionBackend.Core.Helpers;
 using DatalexionBackend.Core.Services;
@@ -151,8 +152,8 @@ public static class ConfigureServicesExtensions
         // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/27047710#notes
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("IsAdmin", policy => policy.RequireRole("Admin"));
-            options.AddPolicy("IsAnalyst", policy => policy.RequireRole("Analyst"));
+            options.AddPolicy("IsAdmin", policy => policy.RequireRole(UserTypeOptions.Admin.ToString()));
+            options.AddPolicy("IsAnalyst", policy => policy.RequireRole(UserTypeOptions.Analyst.ToString()));
         });
 
         // Configuración CORS: para permitir recibir peticiones http desde un origen específico

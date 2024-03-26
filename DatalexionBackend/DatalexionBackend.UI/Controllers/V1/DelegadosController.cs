@@ -145,7 +145,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return BadRequest(_response);
         }
@@ -205,7 +205,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return BadRequest(_response);
         }
@@ -274,7 +274,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError(ex.ToString());
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = new List<string> { ex.ToString() };
+                _response.ErrorMessages = [ex.ToString()];
             }
             return _response;
         }
