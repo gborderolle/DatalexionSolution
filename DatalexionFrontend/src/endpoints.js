@@ -21,6 +21,8 @@ export const urlUserRoleCreate = `${apiURL}/accounts/CreateUserRole`;
 export const urlUserRoleUpdate = `${apiURL}/accounts/UpdateUserRole`;
 export const urlAccountBiometricChallenge = `${apiURL}/accounts/auth/challenge`;
 export const urlAccountBiometricValidate = `${apiURL}/accounts/auth/validateBiometricAuth`;
+export const urlIsCIAlreadyRegistered = `${apiURL}/delegados/IsCIAlreadyRegistered`;
+export const urlIsUsernameAlreadyRegistered = `${apiURL}/accounts/IsUsernameAlreadyRegistered`;
 
 // Función para obtener ID autoincremental
 export const getAutoIncrementedId = async (firebaseUrl) => {

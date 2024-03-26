@@ -1,7 +1,9 @@
-﻿using DatalexionBackend.Core.Domain.IdentityEntities;
+﻿using System.Linq.Expressions;
+using DatalexionBackend.Core.Domain.IdentityEntities;
 using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Infrastructure.DbContext;
 using DatalexionBackend.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace DatalexionBackend.Infrastructure.Repositories
 {
@@ -25,6 +27,11 @@ namespace DatalexionBackend.Infrastructure.Repositories
         public IQueryable<DatalexionUser> GetAllQueryable()
         {
             return dbSet.AsQueryable();
+        }
+
+        public async Task<bool> Exists(Expression<Func<DatalexionUser, bool>> predicate)
+        {
+            return await _dbContext.DatalexionUser.AnyAsync(predicate);
         }
 
     }

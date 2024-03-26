@@ -214,7 +214,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         {
             try
             {
-                var client = await _contextDB.Client.FirstOrDefaultAsync(c => c.Id == 1);
+                var client = await _contextDB.Client.FirstOrDefaultAsync(c => c.Id == model.ClientId);
                 if (client == null)
                 {
                     _response.IsSuccess = false;
@@ -572,6 +572,13 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
+        [HttpGet("IsUsernameAlreadyRegistered")]
+        public async Task<IActionResult> IsUsernameAlreadyRegistered(string username)
+        {
+            var exists = await _datalexionUserRepository.Exists(d => d.UserName == username);
+            return Ok(!exists);
+        }
+
         #endregion Endpoints específicos
 
         #region Private methods
@@ -588,11 +595,11 @@ namespace DatalexionBackend.UI.Controllers.V1
             var userRoles = await _userManager.GetRolesAsync(user);
 
             var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.NameIdentifier, user.Id),
-        new Claim(ClaimTypes.Name, user.UserName),
-        new Claim(ClaimTypes.Email, user.Email)
-    };
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
 
             // Añadir los claims que ya existen en la base de datos
             claims.AddRange(userClaims);
@@ -772,6 +779,7 @@ namespace DatalexionBackend.UI.Controllers.V1
             public string Password { get; set; }
             public string UserRoleId { get; set; }
             public string UserRoleName { get; set; }
+            public int ClientId { get; set; }
         }
 
         public class UpdateUserModel

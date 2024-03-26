@@ -35,21 +35,24 @@ import useAPI from "../../../hooks/use-API";
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
 import { fetchDelegadoListByClient } from "../../../store/generalData-actions";
-import { urlDelegado } from "../../../endpoints";
+import { urlDelegado, urlIsCIAlreadyRegistered } from "../../../endpoints";
 import { MunicipalityGetProvince } from "src/utils/auxiliarFunctions";
 
 const ciReducer = (state, action) => {
-  if (action.type == "USER_INPUT") {
-    // Expresión regular que valida un número de exactamente 7 dígitos seguido por un guión y un último dígito
+  if (action.type === "USER_INPUT") {
     const regex = /^[0-9]{7}-[0-9]$/;
-    return { value: action.val, isValid: regex.test(action.val) };
+    const isValid = regex.test(action.val);
+    return { ...state, value: action.val, isValid };
   }
-  if (action.type == "INPUT_BLUR") {
-    // Misma expresión regular para cuando el input pierde el foco
+  if (action.type === "INPUT_BLUR") {
     const regex = /^[0-9]{7}-[0-9]$/;
-    return { value: state.value, isValid: regex.test(state.value) };
+    const isValid = regex.test(state.value);
+    return { ...state, isValid };
   }
-  return { value: "", isValid: false };
+  if (action.type === "SET_ERROR") {
+    return { ...state, errorMessage: action.errorMessage };
+  }
+  return { value: "", isValid: false, errorMessage: "" };
 };
 
 const phoneReducer = (state, action) => {
@@ -93,6 +96,40 @@ const DelegadoTable = (props) => {
     value: "",
     isValid: false,
   });
+
+  // Define la función para llamar al endpoint de validación
+  const validateCI = async (ci) => {
+    if (ci && ci.length > 0) {
+      const requestOptions = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "x-version": "1",
+        },
+      };
+
+      try {
+        const response = await fetch(
+          `${urlIsCIAlreadyRegistered}?ci=${ci}`,
+          requestOptions
+        );
+        if (!response.ok) {
+          throw new Error("Error al validar la CI");
+        }
+        const isAvailable = await response.json();
+        dispatchCI({
+          type: "SET_ERROR",
+          errorMessage: isAvailable ? "" : "La CI ya está registrada",
+        });
+      } catch (error) {
+        console.error("Error durante la validación:", error);
+        dispatchCI({
+          type: "SET_ERROR",
+          errorMessage: "Error al validar la CI",
+        });
+      }
+    }
+  };
 
   // redux
   const dispatch = useDispatch();
@@ -186,6 +223,21 @@ const DelegadoTable = (props) => {
     return sortableList;
   }, [delegadoList, sortConfig]);
 
+  // Efecto para validar la CI cuando el input pierde el foco
+  useEffect(() => {
+    if (!ciState.isValid) {
+      validateCI(ciState.value.replace(/-/g, ""));
+    }
+  }, [ciState.isValid]); // Dependiendo de cómo gestionas el evento onBlur, puedes necesitar ajustar esta dependencia
+
+  // Modifica tu método validateCIHandler para gestionar onBlur
+  const validateCIHandler = () => {
+    dispatchCI({ type: "INPUT_BLUR" });
+    if (ciState.isValid) {
+      validateCI(ciState.value.replace(/-/g, ""));
+    }
+  };
+
   //#endregion Hooks ***********************************
 
   //#region Functions ***********************************
@@ -210,10 +262,6 @@ const DelegadoTable = (props) => {
 
     // Despachando el evento con el valor formateado
     dispatchCI({ type: "USER_INPUT", val: inputValue });
-  };
-
-  const validateCIHandler = () => {
-    dispatchCI({ type: "INPUT_BLUR" });
   };
 
   const phoneChangeHandler = (event) => {
@@ -356,7 +404,7 @@ const DelegadoTable = (props) => {
       Email: email,
       MunicipalityIds: municipalitiesToSend,
       ClientId: Number(clientId),
-      ListCircuitDelegados: []
+      ListCircuitDelegados: [],
     };
 
     try {
@@ -542,11 +590,11 @@ const DelegadoTable = (props) => {
                     onChange={ciChangeHandler}
                     value={ciState.value}
                     valid={ciState.isValid}
-                    invalid={!ciState.isValid && ciState.value !== ""}
+                    invalid={!ciState.isValid || ciState.errorMessage !== ""}
                     feedback={
-                      ciState.isValid
+                      ciState.isValid && !ciState.errorMessage
                         ? "El formato es correcto"
-                        : "El formato es incorrecto"
+                        : ciState.errorMessage || "El formato es incorrecto"
                     }
                     required
                   />

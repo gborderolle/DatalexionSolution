@@ -43,6 +43,7 @@ import {
   urlAccount,
   urlAccountRegister,
   urlAccountUpdateUser,
+  urlIsUsernameAlreadyRegistered,
 } from "../../../endpoints";
 
 const UserTable = (props) => {
@@ -63,8 +64,12 @@ const UserTable = (props) => {
   const [userRoles, setUserRoles] = useState({});
   const [combinedUserList, setCombinedUserList] = useState([]);
 
+  const [usernameError, setUsernameError] = useState("");
+
   // redux
   const dispatch = useDispatch();
+
+  const clientId = useSelector((state) => state.auth.clientId);
 
   // Redux
   const userList = useSelector((state) => state.generalData.userList);
@@ -243,6 +248,37 @@ const UserTable = (props) => {
     setInputHasErrorUserRole(false);
   };
 
+  const validateUsername = async (username) => {
+    if (username && username.trim() !== "") {
+      const requestOptions = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "x-version": "1",
+        },
+      };
+
+      try {
+        const response = await fetch(
+          `${urlIsUsernameAlreadyRegistered}?username=${username}`,
+          requestOptions
+        );
+
+        if (!response.ok) {
+          throw new Error("Error al validar el nombre de usuario");
+        }
+
+        const isAvailable = await response.json();
+        setUsernameError(
+          isAvailable ? "" : "El nombre de usuario ya está registrado"
+        );
+      } catch (error) {
+        console.error("Error durante la validación:", error);
+        setUsernameError("Error al validar el nombre de usuario");
+      }
+    }
+  };
+
   //#endregion Functions ***********************************
 
   //#region Events ***********************************
@@ -256,10 +292,7 @@ const UserTable = (props) => {
       return;
     }
 
-    setIsValidForm(
-      inputIsValid1 && inputIsValid2 && inputIsValid3
-      // inputIsValid1 && inputIsValid2 && inputIsValid3 && inputIsValid4
-    );
+    setIsValidForm(inputIsValid1 && inputIsValid2 && inputIsValid3);
 
     if (!isValidForm) {
       return;
@@ -272,6 +305,7 @@ const UserTable = (props) => {
       Email: email,
       UserRoleId: ddlSelectedUserRole.id,
       UserRoleName: ddlSelectedUserRole.name,
+      ClientId: Number(clientId),
     };
 
     try {
@@ -303,6 +337,11 @@ const UserTable = (props) => {
 
   const handleSelectDdlUserRole = (item) => {
     setDdlSelectedUserRole(item);
+  };
+
+  const usernameBlurHandler = () => {
+    inputBlurHandler2(); // Llama al manejador de onBlur existente si lo tienes
+    validateUsername(username);
   };
 
   //#endregion Events ***********************************
@@ -439,12 +478,12 @@ const UserTable = (props) => {
                     type="text"
                     className="cardItem"
                     onChange={inputChangeHandler2}
-                    onBlur={inputBlurHandler2}
+                    onBlur={usernameBlurHandler}
                     value={username}
                   />
-                  {inputHasError2 && (
+                  {usernameError && (
                     <CAlert color="danger" className="w-100">
-                      Entrada inválida
+                      {usernameError}
                     </CAlert>
                   )}
                 </CInputGroup>

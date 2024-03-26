@@ -1,4 +1,5 @@
-﻿using DatalexionBackend.Core.Domain.IdentityEntities;
+﻿using System.Linq.Expressions;
+using DatalexionBackend.Core.Domain.IdentityEntities;
 
 namespace DatalexionBackend.Core.Domain.RepositoryContracts
 {
@@ -6,5 +7,6 @@ namespace DatalexionBackend.Core.Domain.RepositoryContracts
     {
         Task<DatalexionUser> Update(DatalexionUser entity);
         IQueryable<DatalexionUser> GetAllQueryable();
+        Task<bool> Exists(Expression<Func<DatalexionUser, bool>> predicate);
     }
 }

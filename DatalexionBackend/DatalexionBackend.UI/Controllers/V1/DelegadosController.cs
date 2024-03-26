@@ -279,6 +279,13 @@ namespace DatalexionBackend.UI.Controllers.V1
             return _response;
         }
 
+        [HttpGet("IsCIAlreadyRegistered")]
+        public async Task<IActionResult> IsCIAlreadyRegistered(string ci)
+        {
+            var exists = await _delegadoRepository.Exists(d => d.CI == ci);
+            return Ok(!exists);
+        }
+
         #endregion
 
         #region Private methods
