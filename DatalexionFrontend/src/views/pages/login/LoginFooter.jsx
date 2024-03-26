@@ -13,7 +13,7 @@ const Footer = ({ isMobileDevice = false }) => {
       }}
     >
       Datalexion © {new Date().getFullYear()} Todos los derechos reservados. -
-      v.2.0 - Elecciones Generales
+      v.3.0 - Elecciones Generales
     </div>
   );
 };
