@@ -16,7 +16,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     [HasHeader("x-version", "1")]
     [Route("api/provinces")]
     // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
-    public class ProvincesController : CustomBaseController<Province> // Notice <Province> here
+    public class ProvincesController : CustomBaseController<Province>
     {
         private readonly IProvinceRepository _provinceRepository; // Servicio que contiene la lógica principal de negocio para Provinces.
         private readonly ContextDB _dbContext;

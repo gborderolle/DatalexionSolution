@@ -15,7 +15,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     [HasHeader("x-version", "1")]
     [Route("api/candidates")]
     // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
-    public class CandidatesController : CustomBaseController<Candidate> // Notice <Candidate> here
+    public class CandidatesController : CustomBaseController<Candidate>
     {
         private readonly ICandidateRepository _candidateRepository;
         private readonly IClientRepository _clientRepository;

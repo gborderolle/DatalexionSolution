@@ -1,8 +1,7 @@
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
 
 import { authActions } from "./auth-slice";
-import { urlAccount } from "../endpoints";
+import { urlLoginGeneral, urlLoginDelegados } from "../endpoints";
 import showToastMessage from "../components/messages/ShowSuccess";
 
 // Redux imports
@@ -11,7 +10,7 @@ import { fetchClientByUser } from "../store/generalData-actions";
 export const loginDelegadosHandler = (ci, navigate) => async (dispatch) => {
   try {
     const response = await axios.post(
-      `${urlAccount}/loginDelegados`,
+      `${urlLoginDelegados}`,
       { ci },
       { headers: { "x-version": "1" } }
     );
@@ -73,7 +72,7 @@ export const loginAdminHandler =
   (username, password, navigate, setErrorMessage) => async (dispatch) => {
     try {
       const response = await axios.post(
-        `${urlAccount}/loginGeneral`,
+        `${urlLoginGeneral}`,
         { username, password },
         { headers: { "x-version": "1" } }
       );

@@ -16,7 +16,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     [HasHeader("x-version", "1")]
     [Route("api/wings")]
     // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
-    public class WingsController : CustomBaseController<Wing> // Notice <Wing> here
+    public class WingsController : CustomBaseController<Wing>
     {
         private readonly IWingRepository _wingRepository; // Servicio que contiene la lógica principal de negocio para Wings.
         private readonly IClientRepository _clientRepository;

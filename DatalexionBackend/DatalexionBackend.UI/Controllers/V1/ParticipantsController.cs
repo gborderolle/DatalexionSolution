@@ -16,7 +16,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     [HasHeader("x-version", "1")]
     [Route("api/participants")]
     // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
-    public class ParticipantsController : CustomBaseController<Participant> // Notice <Participant> here
+    public class ParticipantsController : CustomBaseController<Participant>
     {
         private readonly IParticipantRepository _participantRepository;
         private readonly ContextDB _dbContext;

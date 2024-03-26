@@ -17,7 +17,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     [HasHeader("x-version", "1")]
     [Route("api/parties")]
     // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
-    public class PartiesController : CustomBaseController<Party> // Notice <Party> here
+    public class PartiesController : CustomBaseController<Party>
     {
         private readonly IPartyRepository _partyRepository;
         private readonly IClientRepository _clientRepository;

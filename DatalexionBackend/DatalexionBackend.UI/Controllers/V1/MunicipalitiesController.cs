@@ -16,7 +16,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     [HasHeader("x-version", "1")]
     [Route("api/municipalities")]
     // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
-    public class MunicipalitiesController : CustomBaseController<Municipality> // Notice <Municipality> here
+    public class MunicipalitiesController : CustomBaseController<Municipality>
     {
         private readonly IMunicipalityRepository _municipalityRepository;
         private readonly ContextDB _dbContext;

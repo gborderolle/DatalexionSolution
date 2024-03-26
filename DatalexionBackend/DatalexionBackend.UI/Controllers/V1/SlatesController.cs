@@ -16,7 +16,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     [HasHeader("x-version", "1")]
     [Route("api/slates")]
     // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
-    public class SlatesController : CustomBaseController<Slate> // Notice <Slate> here
+    public class SlatesController : CustomBaseController<Slate>
     {
         private readonly ISlateRepository _slateRepository;
         private readonly IClientRepository _clientRepository;

@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
@@ -26,6 +25,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     [ApiController]
     [HasHeader("x-version", "1")] // Agregar header: "x-version": "1"
     [Route("api/accounts")]
+    [Authorize(Roles = nameof(UserTypeOptions.Admin))]
     public class AccountsController : ControllerBase
     {
         private readonly IConfiguration _configuration;
@@ -81,6 +81,11 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         #region Endpoints genéricos
 
+        /// <summary>
+        /// Obtiene la lista de usuarios paginada.
+        /// </summary>
+        /// <param name="paginationDTO">Parámetros de paginación.</param>
+        /// <returns>Respuesta API con la lista de usuarios.</returns>
         [HttpGet("GetUsers")]
         public async Task<ActionResult<APIResponse>> GetUsers([FromQuery] PaginationDTO paginationDTO)
         {
@@ -102,6 +107,10 @@ namespace DatalexionBackend.UI.Controllers.V1
             return Ok(_response);
         }
 
+        /// <summary>
+        /// Obtiene la lista de roles disponibles en el sistema.
+        /// </summary>
+        /// <returns>Respuesta API con la lista de roles.</returns>
         [HttpGet("GetRoles")]
         public async Task<ActionResult<APIResponse>> GetRoles()
         {
@@ -121,6 +130,11 @@ namespace DatalexionBackend.UI.Controllers.V1
             return Ok(_response);
         }
 
+        /// <summary>
+        /// Obtiene los registros de log paginados.
+        /// </summary>
+        /// <param name="paginationDTO">Parámetros de paginación.</param>
+        /// <returns>Respuesta API con los registros de log.</returns>
         [HttpGet("GetLogs")]
         public async Task<ActionResult<APIResponse>> GetLogs([FromQuery] PaginationDTO paginationDTO)
         {
@@ -142,6 +156,11 @@ namespace DatalexionBackend.UI.Controllers.V1
             return Ok(_response);
         }
 
+        /// <summary>
+        /// Obtiene los roles del usuario por ID.
+        /// </summary>
+        /// <param name="id">Identificador del usuario.</param>
+        /// <returns>Respuesta API con los roles del usuario.</returns>
         [HttpGet("GetUserRole/{id}")]
         public async Task<ActionResult<APIResponse>> GetUserRole(string id)
         {
@@ -167,6 +186,11 @@ namespace DatalexionBackend.UI.Controllers.V1
             return Ok(_response);
         }
 
+        /// <summary>
+        /// Asigna el rol de administrador a un usuario.
+        /// </summary>
+        /// <param name="usuarioId">Identificador del usuario.</param>
+        /// <returns>Respuesta API indicando el resultado de la operación.</returns>
         [HttpPost("makeAdmin")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> MakeAdmin([FromBody] string usuarioId)
@@ -188,6 +212,11 @@ namespace DatalexionBackend.UI.Controllers.V1
             return Ok(_response);
         }
 
+        /// <summary>
+        /// Remueve el rol de administrador de un usuario.
+        /// </summary>
+        /// <param name="usuarioId">Identificador del usuario.</param>
+        /// <returns>Respuesta API indicando el resultado de la operación.</returns>
         [HttpPost("removeAdmin")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> RemoveAdmin([FromBody] string usuarioId)
@@ -209,6 +238,11 @@ namespace DatalexionBackend.UI.Controllers.V1
             return Ok(_response);
         }
 
+        /// <summary>
+        /// Crea un nuevo usuario en el sistema.
+        /// </summary>
+        /// <param name="datalexionUserCreateDTO">Datos para la creación del usuario.</param>
+        /// <returns>Respuesta API indicando el resultado de la operación.</returns>
         [HttpPost("CreateUser")] //api/accounts/register
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> CreateUser(DatalexionUserCreateDTO datalexionUserCreateDTO)
@@ -276,6 +310,12 @@ namespace DatalexionBackend.UI.Controllers.V1
             return Ok(_response);
         }
 
+        /// <summary>
+        /// Actualiza los datos de un usuario existente.
+        /// </summary>
+        /// <param name="id">Identificador del usuario a actualizar.</param>
+        /// <param name="datalexionUserPatchDTO">Datos para la actualización del usuario.</param>
+        /// <returns>Respuesta API indicando el resultado de la operación.</returns>
         [HttpPut("UpdateUser/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> UpdateUser(string id, [FromBody] DatalexionUserPatchDTO datalexionUserPatchDTO)
@@ -328,8 +368,14 @@ namespace DatalexionBackend.UI.Controllers.V1
             return Ok(_response);
         }
 
-        [HttpPost("loginDelegados")]
-        public async Task<ActionResult<APIResponse>> loginDelegados([FromBody] DelegadoLoginDTO delegadoLoginDTO)
+        /// <summary>
+        /// Realiza el proceso de login para delegados.
+        /// </summary>
+        /// <param name="delegadoLoginDTO">Credenciales de login del delegado.</param>
+        /// <returns>Respuesta API con el token de autenticación y datos del delegado.</returns>
+        [HttpPost("LoginDelegados")]
+        [AllowAnonymous]
+        public async Task<ActionResult<APIResponse>> LoginDelegados([FromBody] DelegadoLoginDTO delegadoLoginDTO)
         {
             try
             {
@@ -379,8 +425,14 @@ namespace DatalexionBackend.UI.Controllers.V1
             return Ok(_response);
         }
 
-        [HttpPost("loginGeneral")]
-        public async Task<ActionResult<APIResponse>> loginGeneral([FromBody] DatalexionUserLoginDTO datalexionUserLoginDTO)
+        /// <summary>
+        /// Realiza el proceso de login general.
+        /// </summary>
+        /// <param name="datalexionUserLoginDTO">Credenciales de login del usuario.</param>
+        /// <returns>Respuesta API con el token de autenticación y datos del usuario.</returns>
+        [HttpPost("LoginGeneral")]
+        [AllowAnonymous]
+        public async Task<ActionResult<APIResponse>> LoginGeneral([FromBody] DatalexionUserLoginDTO datalexionUserLoginDTO)
         {
             try
             {
@@ -420,6 +472,11 @@ namespace DatalexionBackend.UI.Controllers.V1
             return Ok(_response);
         }
 
+        /// <summary>
+        /// Crea un nuevo rol en el sistema.
+        /// </summary>
+        /// <param name="datalexionRoleCreateDTO">Datos para la creación del rol.</param>
+        /// <returns>Respuesta API indicando el resultado de la operación.</returns>
         [HttpPost("CreateUserRole")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> CreateUserRole([FromBody] DatalexionRoleCreateDTO datalexionRoleCreateDTO)
@@ -465,6 +522,12 @@ namespace DatalexionBackend.UI.Controllers.V1
             return Ok(_response);
         }
 
+        /// <summary>
+        /// Actualiza un rol existente.
+        /// </summary>
+        /// <param name="id">Identificador del rol a actualizar.</param>
+        /// <param name="datalexionRoleUpdateDTO">Datos para la actualización del rol.</param>
+        /// <returns>Respuesta API indicando el resultado de la operación.</returns>
         [HttpPut("UpdateUserRole/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> UpdateUserRole(string id, [FromBody] DatalexionRoleUpdateDTO datalexionRoleUpdateDTO)
@@ -506,6 +569,11 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         #region Endpoints específicos
 
+        /// <summary>
+        /// Obtiene la lista de usuarios asociados a un cliente específico.
+        /// </summary>
+        /// <param name="clientId">Identificador del cliente.</param>
+        /// <returns>Respuesta API con la lista de usuarios asociados al cliente.</returns>
         [HttpGet("GetUsersByClient")]
         public async Task<ActionResult<APIResponse>> GetUsersByClient([FromQuery] int clientId)
         {
@@ -537,6 +605,11 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
+        /// <summary>
+        /// Obtiene los registros de log asociados a un cliente específico.
+        /// </summary>
+        /// <param name="clientId">Identificador del cliente.</param>
+        /// <returns>Respuesta API con los registros de log del cliente.</returns>
         [HttpGet("GetLogsByClient")]
         public async Task<ActionResult<APIResponse>> GetLogsByClient([FromQuery] int clientId)
         {
@@ -572,6 +645,11 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
+        /// <summary>
+        /// Verifica si el nombre de usuario ya está registrado en el sistema.
+        /// </summary>
+        /// <param name="username">Nombre de usuario a verificar.</param>
+        /// <returns>Booleano indicando si el nombre de usuario está disponible.</returns>
         [HttpGet("IsUsernameAlreadyRegistered")]
         public async Task<IActionResult> IsUsernameAlreadyRegistered(string username)
         {

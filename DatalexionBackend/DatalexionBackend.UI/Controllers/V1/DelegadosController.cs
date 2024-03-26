@@ -16,7 +16,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     [HasHeader("x-version", "1")]
     [Route("api/delegados")]
     // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
-    public class DelegadosController : CustomBaseController<Delegado> // Notice <Delegate> here
+    public class DelegadosController : CustomBaseController<Delegado>
     {
         private readonly IDelegadoRepository _delegadoRepository;
         private readonly IClientRepository _clientRepository;

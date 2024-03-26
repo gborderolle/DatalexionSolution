@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -50,6 +51,10 @@ public static class ConfigureServicesExtensions
                     Url = new Uri("https://datalexion.uy"),
                 }
             });
+            // Include XML comments
+            var xmlFile = "api.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            c.IncludeXmlComments(xmlPath);
         });
 
         // Configuración de servicios

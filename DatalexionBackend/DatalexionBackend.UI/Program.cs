@@ -48,6 +48,7 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Datalexion 3.0");
 });
 
+app.UseHsts();
 app.UseHttpsRedirection(); //n1
 app.UseSerilogRequestLogging();
 app.UseHttpLogging();
