@@ -48,14 +48,16 @@ namespace DatalexionBackend.Core.DTO
         /// <summary>
         /// 1-N
         /// </summary>
-        public List<MunicipalityDTO> ListMunicipalities { get; set; }
+        // public List<MunicipalityDTO> ListMunicipalities { get; set; }
+
+        [ModelBinder(BinderType = typeof(TypeBinder<List<int>>))]
+        public List<int> MunicipalityIds { get; set; } // Lista simplificada solo con IDs
 
         // -- Vueltas --
 
         [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
         public int ClientId { get; set; }
-        public Client Client { get; set; }
-
+        public Client? Client { get; set; }
 
         #endregion
 

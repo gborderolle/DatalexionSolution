@@ -116,7 +116,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 var updatedProvince = await _provinceRepository.Update(province);
 
-                _logger.LogInformation(string.Format(Messages.Party.ActionLog, id, province.Name), id);
+                _logger.LogInformation(string.Format(Messages.Party.ActionLog, id, province.Name, id));
                 await _logService.LogAction("Province", "Update", string.Format(Messages.Province.ActionLog, id, province.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<ProvinceDTO>(updatedProvince);
@@ -164,17 +164,6 @@ namespace DatalexionBackend.UI.Controllers.V1
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     ModelState.AddModelError("NameAlreadyExists", $"El nombre {provinceCreateDto.Name} ya existe en el sistema.");
-                    return BadRequest(ModelState);
-                }
-
-                var client = _dbContext.Client.FirstOrDefault();
-                if (client == null)
-                {
-                    _logger.LogError($"El cliente no existe en el sistema");
-                    _response.ErrorMessages = new List<string> { $"El cliente no existe en el sistema." };
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.BadRequest;
-                    ModelState.AddModelError("NameAlreadyExists", $"El cliente no existe en el sistema.");
                     return BadRequest(ModelState);
                 }
 

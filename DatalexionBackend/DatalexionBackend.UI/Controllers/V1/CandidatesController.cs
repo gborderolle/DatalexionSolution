@@ -120,7 +120,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 var updatedCandidate = await _candidateRepository.Update(candidate);
 
-                _logger.LogInformation(string.Format(Messages.Candidate.ActionLog, id, candidate.Name), id);
+                _logger.LogInformation(string.Format(Messages.Candidate.ActionLog, id, candidate.Name));
                 await _logService.LogAction("Candidate", "Update", string.Format(Messages.Candidate.ActionLog, id, candidate.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<CandidateDTO>(updatedCandidate);

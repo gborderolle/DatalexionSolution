@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useReducer } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   CSpinner,
   CRow,
@@ -36,35 +36,9 @@ import useAPI from "../../../hooks/use-API";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchDelegadoListByClient } from "../../../store/generalData-actions";
 import { urlDelegado } from "../../../endpoints";
-import { MunicipalityGetProvince } from "src/utils/auxiliarFunctions";
-
-const ciReducer = (state, action) => {
-  if (action.type == "USER_INPUT") {
-    // Expresión regular que valida un número de exactamente 7 dígitos seguido por un guión y un último dígito
-    const regex = /^[0-9]{7}-[0-9]$/;
-    return { value: action.val, isValid: regex.test(action.val) };
-  }
-  if (action.type == "INPUT_BLUR") {
-    // Misma expresión regular para cuando el input pierde el foco
-    const regex = /^[0-9]{7}-[0-9]$/;
-    return { value: state.value, isValid: regex.test(state.value) };
-  }
-  return { value: "", isValid: false };
-};
-
-const phoneReducer = (state, action) => {
-  if (action.type == "USER_INPUT") {
-    // Expresión regular que valida un número de exactamente 7 dígitos seguido por un guión y un último dígito
-    const regex = /^[0-9]{9}$/;
-    return { value: action.val, isValid: regex.test(action.val) };
-  }
-  if (action.type == "INPUT_BLUR") {
-    // Misma expresión regular para cuando el input pierde el foco
-    const regex = /^[0-9]{9}$/;
-    return { value: state.value, isValid: regex.test(state.value) };
-  }
-  return { value: "", isValid: false };
-};
+import {
+  MunicipalityGetProvince,
+} from "src/utils/auxiliarFunctions";
 
 const DelegadoTable = (props) => {
   //#region Consts ***********************************
@@ -84,20 +58,8 @@ const DelegadoTable = (props) => {
   const [filteredMunicipalities, setFilteredMunicipalities] = useState([]);
   const [selectedMunicipalities, setSelectedMunicipalities] = useState([]);
 
-  const [ciState, dispatchCI] = useReducer(ciReducer, {
-    value: "",
-    isValid: false,
-  });
-
-  const [phoneState, dispatchPhone] = useReducer(phoneReducer, {
-    value: "",
-    isValid: false,
-  });
-
   // redux
   const dispatch = useDispatch();
-
-  const clientId = useSelector((state) => state.auth.clientId);
 
   // Redux
   const delegadoList = useSelector((state) => state.generalData.delegadoList);
@@ -135,6 +97,30 @@ const DelegadoTable = (props) => {
     inputBlurHandler: inputBlurHandler1,
     reset: inputReset1,
   } = useInput((value) => value.trim() !== "");
+
+  // Ejemplo de validación para CI con una longitud específica y solo números
+  const isValidCI = (value) =>
+    value?.trim() !== "" && /^[0-9]{8,10}$/.test(value?.trim());
+  const {
+    value: CI,
+    isValid: inputIsValid2,
+    hasError: inputHasError2,
+    valueChangeHandler: inputChangeHandler2,
+    inputBlurHandler: inputBlurHandler2,
+    reset: inputReset2,
+  } = useInput(isValidCI);
+
+  // Ejemplo de validación para phone con una longitud específica y solo números
+  const isValidPhone = (value) =>
+    value?.trim() !== "" && /^[0-9]{9,15}$/.test(value?.trim());
+  const {
+    value: phone,
+    isValid: inputIsValid3,
+    hasError: inputHasError3,
+    valueChangeHandler: inputChangeHandler3,
+    inputBlurHandler: inputBlurHandler3,
+    reset: inputReset3,
+  } = useInput(isValidPhone);
 
   const isValidEmail = (value) => {
     // Permite un string vacío o un email válido
@@ -190,50 +176,6 @@ const DelegadoTable = (props) => {
 
   //#region Functions ***********************************
 
-  const ciChangeHandler = (event) => {
-    // Extrayendo el valor del input
-    let inputValue = event.target.value;
-
-    // Removiendo caracteres no numéricos
-    inputValue = inputValue.replace(/\D/g, "");
-
-    // Limitando la longitud a 8 dígitos
-    inputValue = inputValue.substring(0, 8);
-
-    // Agregando el guión antes del último dígito
-    if (inputValue.length == 8) {
-      inputValue = `${inputValue.substring(0, 7)}-${inputValue.substring(
-        7,
-        8
-      )}`;
-    }
-
-    // Despachando el evento con el valor formateado
-    dispatchCI({ type: "USER_INPUT", val: inputValue });
-  };
-
-  const validateCIHandler = () => {
-    dispatchCI({ type: "INPUT_BLUR" });
-  };
-
-  const phoneChangeHandler = (event) => {
-    // Extrayendo el valor del input
-    let inputValue = event.target.value;
-
-    // Removiendo caracteres no numéricos
-    inputValue = inputValue.replace(/\D/g, "");
-
-    // Limitando la longitud a 8 dígitos
-    inputValue = inputValue.substring(0, 9);
-
-    // Despachando el evento con el valor formateado
-    dispatchPhone({ type: "USER_INPUT", val: inputValue });
-  };
-
-  const validatePhoneHandler = () => {
-    dispatchPhone({ type: "INPUT_BLUR" });
-  };
-
   const requestSort = (key) => {
     let direction = "ascending";
     if (sortConfig.key === key && sortConfig.direction === "ascending") {
@@ -247,6 +189,8 @@ const DelegadoTable = (props) => {
       // Caso para editar un delegado existente
       setCurrentUser(delegado);
       inputReset1(delegado.name);
+      inputReset2(delegado.ci);
+      inputReset3(delegado.phone);
       inputReset4(delegado.email);
       // Suponiendo que delegado.municipalityIds es un arreglo de los IDs de los municipios asignados
       setSelectedMunicipalities(delegado.listMunicipalities || []);
@@ -268,6 +212,8 @@ const DelegadoTable = (props) => {
       // Caso para agregar un nuevo delegado
       setCurrentUser(null);
       inputReset1();
+      inputReset2();
+      inputReset3();
       inputReset4();
       setSelectedMunicipalities([]);
       setDdlSelectedProvince(null);
@@ -339,24 +285,21 @@ const DelegadoTable = (props) => {
   const formSubmitHandler = async (event) => {
     event.preventDefault();
 
-    setIsValidForm(inputIsValid1 && inputIsValid4);
+    setIsValidForm(
+      inputIsValid1 && inputIsValid2 && inputIsValid3 && inputIsValid4
+    );
 
     if (!isValidForm) {
       return;
     }
 
-    const ciValue = ciState.value.replace(/-/g, "");
-
-    const municipalitiesToSend = selectedMunicipalities; // Aquí asumimos que selectedMunicipalities ya contiene los ID de los municipios
-
     const dataToUpload = {
       Name: name,
-      CI: ciValue,
-      Phone: phoneState.value,
+      CI: CI,
+      Phone: phone,
       Email: email,
-      MunicipalityIds: municipalitiesToSend,
-      ClientId: Number(clientId),
-      ListCircuitDelegados: []
+      MunicipalityId: ddlSelectedMunicipality?.id,
+      ProvinceId: ddlSelectedProvince?.id,
     };
 
     try {
@@ -374,6 +317,8 @@ const DelegadoTable = (props) => {
       if (response) {
         dispatch(fetchDelegadoListByClient());
         inputReset1();
+        inputReset2();
+        inputResetMunicipality();
         inputResetProvince();
 
         setTimeout(() => {
@@ -537,56 +482,35 @@ const DelegadoTable = (props) => {
                     {props.CI}
                   </CInputGroupText>
                   <CFormInput
-                    placeholder="1234567-8"
-                    onBlur={validateCIHandler}
-                    onChange={ciChangeHandler}
-                    value={ciState.value}
-                    valid={ciState.isValid}
-                    invalid={!ciState.isValid && ciState.value !== ""}
-                    feedback={
-                      ciState.isValid
-                        ? "El formato es correcto"
-                        : "El formato es incorrecto"
-                    }
-                    required
+                    type="number"
+                    className="cardItem"
+                    onChange={inputChangeHandler2}
+                    onBlur={inputBlurHandler2}
+                    value={CI}
                   />
-                  {/* {inputHasError2 && (
+                  {inputHasError2 && (
                     <CAlert color="danger" className="w-100">
                       Entrada inválida
                     </CAlert>
-                  )} */}
+                  )}
                 </CInputGroup>
                 <br />
                 <CInputGroup>
                   <CInputGroupText className="cardItem custom-input-group-text">
                     {props.phone}
                   </CInputGroupText>
-                  {/* <CFormInput
+                  <CFormInput
                     type="number"
                     className="cardItem"
                     onChange={inputChangeHandler3}
                     onBlur={inputBlurHandler3}
                     value={phone}
-                  /> */}
-                  <CFormInput
-                    placeholder="099000000"
-                    onBlur={validatePhoneHandler}
-                    onChange={phoneChangeHandler}
-                    value={phoneState.value}
-                    valid={phoneState.isValid}
-                    invalid={!phoneState.isValid && phoneState.value !== ""}
-                    feedback={
-                      phoneState.isValid
-                        ? "El formato es correcto"
-                        : "El formato es incorrecto"
-                    }
-                    required
                   />
-                  {/* {inputHasError3 && (
+                  {inputHasError3 && (
                     <CAlert color="danger" className="w-100">
                       Entrada inválida
                     </CAlert>
-                  )} */}
+                  )}
                 </CInputGroup>
                 <br />
                 <CInputGroup>

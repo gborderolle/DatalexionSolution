@@ -30,6 +30,7 @@ public static class Messages
         public const string Updated = "Delegado actualizado correctamente Id: {0}.";
         public const string Deleted = "Delegado eliminado con éxito.";
         public const string ActionLog = "Delegado Id: {0}, Nombre: {1}";
+        public const string CIAlreadyExists = "La CI ya está registrada: {0}.";
     }
     public static class DatalexionUser
     {

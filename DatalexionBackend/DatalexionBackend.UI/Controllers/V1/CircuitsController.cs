@@ -170,26 +170,6 @@ namespace DatalexionBackend.UI.Controllers.V1
                     return NotFound(_response);
                 }
 
-                var client = await _dbContext.Client.FirstOrDefaultAsync();
-                if (client == null)
-                {
-                    _logger.LogError($"No se encontró el cliente.");
-                    _response.ErrorMessages = new List<string> { $"No se encontró el cliente." };
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.NotFound;
-                    return NotFound(_response);
-                }
-
-                var party = await _dbContext.Party.FindAsync(client?.PartyId);
-                if (party == null)
-                {
-                    _logger.LogError($"No se encontró el partido con ID {id}.");
-                    _response.ErrorMessages = new List<string> { $"No se encontró el partido con ID {id}." };
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.NotFound;
-                    return NotFound(_response);
-                }
-
                 // Paso 1) Actualizar CircuitSlates
                 if (circuitCreateDTO.ListCircuitSlates != null && circuitCreateDTO.ListCircuitSlates.Any())
                 {
@@ -317,7 +297,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 var updateCircuit = await _circuitRepository.Update(circuit);
 
-                _logger.LogInformation(string.Format(Messages.Circuit.ActionLog, id, circuit.Name), id);
+                _logger.LogInformation(string.Format(Messages.Circuit.ActionLog, id, circuit.Name));
                 await _logService.LogAction("Circuit", "Update", string.Format(Messages.Circuit.ActionLog, id, circuit.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<ProvinceDTO>(updateCircuit);
@@ -413,17 +393,6 @@ namespace DatalexionBackend.UI.Controllers.V1
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     ModelState.AddModelError("NameAlreadyExists", $"El nombre {circuitCreateDto.Name} ya existe en el sistema.");
-                    return BadRequest(ModelState);
-                }
-
-                var client = _dbContext.Client.FirstOrDefault();
-                if (client == null)
-                {
-                    _logger.LogError($"El cliente no existe en el sistema");
-                    _response.ErrorMessages = new List<string> { $"El cliente no existe en el sistema." };
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.BadRequest;
-                    ModelState.AddModelError("NameAlreadyExists", $"El cliente no existe en el sistema.");
                     return BadRequest(ModelState);
                 }
 

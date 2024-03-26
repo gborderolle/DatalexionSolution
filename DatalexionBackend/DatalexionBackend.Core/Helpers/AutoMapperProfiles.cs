@@ -110,8 +110,20 @@ namespace DatalexionBackend.Core.Helpers
 
             CreateMap<Delegado, DelegadoCreateDTO>()
                 .ForMember(dest => dest.ListCircuitDelegados, opt => opt.MapFrom(src => src.ListCircuitDelegados))
-                .ForMember(dest => dest.ListMunicipalities, opt => opt.MapFrom(src => src.ListMunicipalities))
+                // .ForMember(dest => dest.ListMunicipalities, opt => opt.MapFrom(src => src.ListMunicipalities))
                 .ReverseMap();
+
+            // CreateMap<DelegadoCreateDTO, Delegado>()
+            //     .ForMember(dest => dest.ListCircuitDelegados, opt => opt.MapFrom(src => src.ListCircuitDelegados))
+            //     .ForMember(dest => dest.ListMunicipalities, opt => opt.MapFrom(src => src.MunicipalityIds))
+            //     .AfterMap((src, dest, context) =>
+            //     {
+            //         if (src.MunicipalityIds != null && src.MunicipalityIds.Any())
+            //         {
+            //             var municipalityEntities = src.MunicipalityIds.Select(id => new Municipality { Id = id }).ToList();
+            //             dest.ListMunicipalities = municipalityEntities;
+            //         }
+            //     });
 
             #endregion Delegado
 

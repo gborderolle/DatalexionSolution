@@ -103,8 +103,8 @@ const AdminMenu = () => {
           title="Delegados"
           inputFullname="Nombre completo"
           inputCI="Cédula (sin guión, 8 dígitos)"
-          inputMunicipality="Municipio"
           inputPhone="Celular (9 dígitos)"
+          inputMunicipality="Municipio"
           firebaseUrlName={urlDelegado}
           firebaseUrlClean={urlDelegado}
           firebaseUrlFinal={urlDelegado}

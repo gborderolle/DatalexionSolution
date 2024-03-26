@@ -240,7 +240,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 var updatedSlate = await _slateRepository.Update(slate);
 
-                _logger.LogInformation(string.Format(Messages.Slate.ActionLog, id, slate.Name), id);
+                _logger.LogInformation(string.Format(Messages.Slate.ActionLog, id, slate.Name, id));
                 await _logService.LogAction("Slate", "Update", string.Format(Messages.Slate.ActionLog, id, slate.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<SlateDTO>(updatedSlate);

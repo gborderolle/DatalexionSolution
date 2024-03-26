@@ -20,10 +20,11 @@ namespace DatalexionBackend.UI.Controllers.V1
     {
         private readonly IDelegadoRepository _delegadoRepository;
         private readonly IClientRepository _clientRepository;
+        private readonly IMunicipalityRepository _municipalityRepository;
         private readonly ContextDB _dbContext;
         private readonly ILogService _logService;
 
-        public DelegadosController(ILogger<DelegadosController> logger, IMapper mapper, IDelegadoRepository delegateRepository, ContextDB dbContext, ILogService logService, IClientRepository clientRepository)
+        public DelegadosController(ILogger<DelegadosController> logger, IMapper mapper, IDelegadoRepository delegateRepository, ContextDB dbContext, ILogService logService, IClientRepository clientRepository, IMunicipalityRepository municipalityRepository)
         : base(mapper, logger, delegateRepository)
         {
             _response = new();
@@ -31,6 +32,7 @@ namespace DatalexionBackend.UI.Controllers.V1
             _dbContext = dbContext;
             _logService = logService;
             _clientRepository = clientRepository;
+            _municipalityRepository = municipalityRepository;
         }
 
         #region Endpoints genéricos
@@ -130,7 +132,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 var updatedDelegado = await _delegadoRepository.Update(delegado);
 
-                _logger.LogInformation(string.Format(Messages.Delegados.ActionLog, id, delegado.Name), id);
+                _logger.LogInformation(string.Format(Messages.Delegados.ActionLog, id, delegado.Name, id));
                 await _logService.LogAction("Delegado", "Update", string.Format(Messages.Delegados.ActionLog, id, delegado.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<DelegadoDTO>(updatedDelegado);
@@ -231,7 +233,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                     return BadRequest(ModelState);
                 }
 
-                var client = _dbContext.Client.FirstOrDefault();
+                var client = _dbContext.Client.Where(c => c.Id == delegateCreateDto.ClientId).FirstOrDefault();
                 if (client == null)
                 {
                     _logger.LogError(Messages.Client.NotFoundGeneric);
@@ -249,13 +251,15 @@ namespace DatalexionBackend.UI.Controllers.V1
                 delegado.Creation = DateTime.Now;
                 delegado.Update = DateTime.Now;
 
-                delegado.ListMunicipalities = _mapper.Map<List<Municipality>>(delegateCreateDto.ListMunicipalities);
+                //
+                delegado.ListMunicipalities = _dbContext.Municipality.Where(m => delegateCreateDto.MunicipalityIds.Contains(m.Id)).ToList();
                 delegado.Client = client;
                 delegado.ClientId = client.Id;
+                //  
 
                 await _delegadoRepository.Create(delegado);
 
-                _logger.LogInformation(string.Format(Messages.Delegados.Created), delegado.Id);
+                _logger.LogInformation(string.Format(Messages.Delegados.Created, delegado.Id));
                 await _logService.LogAction("Delegado", "Create", string.Format(Messages.Delegados.ActionLog, delegado.Id, delegado.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<DelegadoDTO>(delegado);

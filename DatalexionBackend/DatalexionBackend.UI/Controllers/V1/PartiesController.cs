@@ -163,7 +163,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 var updatedParty = await _partyRepository.Update(party);
 
-                _logger.LogInformation(string.Format(Messages.Party.ActionLog, id, party.Name), id);
+                _logger.LogInformation(string.Format(Messages.Party.ActionLog, id, party.Name, id));
                 await _logService.LogAction("Party", "Update", string.Format(Messages.Party.ActionLog, id, party.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<PartyDTO>(updatedParty);

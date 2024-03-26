@@ -154,7 +154,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 var updatedWing = await _wingRepository.Update(wing);
 
-                _logger.LogInformation(string.Format(Messages.Wing.ActionLog, id, wing.Name), id);
+                _logger.LogInformation(string.Format(Messages.Wing.ActionLog, id, wing.Name, id));
                 await _logService.LogAction("Wing", "Update", string.Format(Messages.Wing.ActionLog, id, wing.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<WingDTO>(updatedWing);

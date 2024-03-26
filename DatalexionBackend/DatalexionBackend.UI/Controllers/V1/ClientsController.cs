@@ -170,7 +170,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 var updatedClient = await _clientRepository.Update(client);
 
-                _logger.LogInformation(string.Format(Messages.Client.ActionLog, id, client.Name), id);
+                _logger.LogInformation(string.Format(Messages.Client.ActionLog, id, client.Name));
                 await _logService.LogAction("Client", "Update", string.Format(Messages.Client.ActionLog, id, client.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<ClientDTO>(updatedClient);
