@@ -25,7 +25,17 @@ Incluyó:
 - Crear controllers y corregir endpoints
 
 --> Falta:
-- Hacer Frontend en React web
-- Agregar funcionalidades a controllers
-- Ajustar DTOs a partir de los requerimientos
-- Agregar validaciones especiales: carga de archivos, tamaños, formatos, etc.
+
+VENDER !!
+
+----------------------------------
+
+--> Errores:
+
+Error en Visual Studio Code al crear un archivo nuevo en la solución.
+vs code error running command csdevkit.assNewFile
+
+Fix:
+dotnet new --install Vio.Dotnet.Templates
+
+----------------------------------

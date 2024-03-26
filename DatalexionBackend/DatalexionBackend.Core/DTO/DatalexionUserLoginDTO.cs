@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DatalexionBackend.Core.Helpers
+namespace DatalexionBackend.Core.DTO
 {
-    public class UserCredential
+    public class DatalexionUserLoginDTO
     {
         [Required]
         public string Username { get; set; }
