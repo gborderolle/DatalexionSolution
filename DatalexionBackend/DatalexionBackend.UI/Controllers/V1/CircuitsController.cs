@@ -7,7 +7,6 @@ using DatalexionBackend.Infrastructure.Services;
 using DatalexionBackend.Core.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -41,6 +40,11 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         #region Endpoints genéricos
 
+        /// <summary>
+        /// Obtiene una lista paginada de circuitos con detalles de municipio, partes y fotos incluidos.
+        /// </summary>
+        /// <param name="paginationDTO">Parámetros de paginación.</param>
+        /// <returns>Una lista paginada de circuitos.</returns>
         [HttpGet("GetCircuit")]
         public async Task<ActionResult<APIResponse>> Get([FromQuery] PaginationDTO paginationDTO)
         {
@@ -83,6 +87,10 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await Get<Circuit, CircuitDTO>(paginationDTO: paginationDTO, thenIncludes: thenIncludes);
         }
 
+        /// <summary>
+        /// Obtiene todos los circuitos sin aplicar paginación, incluyendo sus detalles básicos.
+        /// </summary>
+        /// <returns>Todos los circuitos.</returns>
         [HttpGet("all")]
         [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> All()
@@ -93,6 +101,11 @@ namespace DatalexionBackend.UI.Controllers.V1
             return _response;
         }
 
+        /// <summary>
+        /// Obtiene un circuito específico por su ID, incluyendo detalles de municipio, partes y fotos.
+        /// </summary>
+        /// <param name="id">ID del circuito.</param>
+        /// <returns>Un circuito específico.</returns>
         [HttpGet("{id:int}")] // url completa: https://localhost:7003/api/Circuits/1
         public async Task<ActionResult<APIResponse>> Get([FromRoute] int id)
         {
@@ -135,12 +148,23 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await GetById<Circuit, CircuitDTO>(id, thenIncludes: thenIncludes);
         }
 
+        /// <summary>
+        /// Elimina un circuito específico por su ID.
+        /// </summary>
+        /// <param name="id">ID del circuito a eliminar.</param>
+        /// <returns>Resultado de la operación de eliminación.</returns>
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Circuit>(id);
         }
 
+        /// <summary>
+        /// Actualiza los datos de un circuito existente, incluyendo las partes y votos asociados.
+        /// </summary>
+        /// <param name="id">ID del circuito a actualizar.</param>
+        /// <param name="circuitCreateDTO">Datos actualizados del circuito.</param>
+        /// <returns>El circuito actualizado.</returns>
         [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] CircuitCreateDTO circuitCreateDTO)
         {
@@ -266,6 +290,12 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
+        /// <summary>
+        /// Actualiza un circuito existente, aplicando los cambios especificados en el DTO de creación.
+        /// </summary>
+        /// <param name="id">ID del circuito a actualizar.</param>
+        /// <param name="circuitCreateDTO">DTO de creación con los datos para actualizar el circuito.</param>
+        /// <returns>Respuesta indicando el resultado de la operación de actualización.</returns>
         [HttpPut("{id:int}/update")]
         public async Task<ActionResult<APIResponse>> UpdateCircuit(int id, [FromBody] CircuitCreateDTO circuitCreateDTO)
         {
@@ -315,6 +345,13 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
+        /// <summary>
+        /// Aplica actualizaciones parciales a un circuito existente, específicamente dirigido a los votos y la carga de fotos.
+        /// </summary>
+        /// <param name="id">ID del circuito a actualizar.</param>
+        /// <param name="circuitPatchDTO">DTO para aplicar actualizaciones parciales.</param>
+        /// <param name="photos">Lista de fotos nuevas a cargar.</param>
+        /// <returns>Respuesta indicando el resultado de la operación de actualización parcial.</returns>
         [HttpPatch("{id:int}")]
         [Consumes("multipart/form-data")] // Indicar que el método aceptará multipart/form-data
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromForm] CircuitPatchDTO circuitPatchDTO, [FromForm] List<IFormFile> photos)
@@ -373,6 +410,11 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         #region Endpoints específicos
 
+        /// <summary>
+        /// Crea un nuevo circuito en el sistema.
+        /// </summary>
+        /// <param name="circuitCreateDto">Datos del nuevo circuito.</param>
+        /// <returns>El circuito creado.</returns>
         [HttpPost(Name = "CreateCircuit")]
         public async Task<ActionResult<APIResponse>> Post([FromBody] CircuitCreateDTO circuitCreateDto)
         {

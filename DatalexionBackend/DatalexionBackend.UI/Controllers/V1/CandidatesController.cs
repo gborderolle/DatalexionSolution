@@ -40,6 +40,11 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         #region Endpoints genéricos
 
+        /// <summary>
+        /// Obtiene la lista de candidatos paginada, incluyendo sus fotos.
+        /// </summary>
+        /// <param name="paginationDTO">Datos de paginación.</param>
+        /// <returns>Lista paginada de candidatos.</returns>
         [HttpGet("GetCandidate")]
         public async Task<ActionResult<APIResponse>> Get([FromQuery] PaginationDTO paginationDTO)
         {
@@ -53,6 +58,10 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await Get<Candidate, CandidateDTO>(paginationDTO: paginationDTO, includes: includes);
         }
 
+        /// <summary>
+        /// Obtiene todos los candidatos sin aplicar paginación.
+        /// </summary>
+        /// <returns>Todos los candidatos.</returns>
         [HttpGet("all")]
         [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> All()
@@ -63,6 +72,11 @@ namespace DatalexionBackend.UI.Controllers.V1
             return _response;
         }
 
+        /// <summary>
+        /// Obtiene un candidato específico por su ID, incluyendo su foto.
+        /// </summary>
+        /// <param name="id">ID del candidato.</param>
+        /// <returns>Un candidato específico.</returns>
         [HttpGet("{id:int}")] // url completa: https://localhost:7003/api/Candidates/1
         public async Task<ActionResult<APIResponse>> Get([FromRoute] int id)
         {
@@ -76,12 +90,24 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await GetById<Candidate, CandidateDTO>(id, includes: includes);
         }
 
+        /// <summary>
+        /// Elimina un candidato específico basado en su ID.
+        /// </summary>
+        /// <param name="id">ID del candidato a eliminar.</param>
+        /// <returns>Resultado de la operación de eliminación.</returns>
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Candidate>(id);
         }
 
+        /// <summary>
+        /// Actualiza los datos de un candidato existente, incluyendo la posibilidad de actualizar su foto.
+        /// </summary>
+        /// <param name="id">ID del candidato a actualizar.</param>
+        /// <param name="candidateCreateDTO">Datos actualizados del candidato.</param>
+        /// <param name="file">Archivo de foto nueva del candidato.</param>
+        /// <returns>El candidato actualizado.</returns>
         [HttpPut("{id:int}")]
         [Consumes("multipart/form-data")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromForm] CandidateCreateDTO candidateCreateDTO, IFormFile file)
@@ -138,6 +164,12 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
+        /// <summary>
+        /// Aplica cambios parciales a un candidato existente.
+        /// </summary>
+        /// <param name="id">ID del candidato a modificar.</param>
+        /// <param name="patchDto">Documento JSON con los cambios a aplicar.</param>
+        /// <returns>El candidato con los cambios aplicados.</returns>
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<CandidatePatchDTO> patchDto)
         {
@@ -148,6 +180,11 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         #region Endpoints específicos
 
+        /// <summary>
+        /// Obtiene candidatos asociados a un cliente específico, considerando las relaciones entre clientes, alas, listas y candidatos.
+        /// </summary>
+        /// <param name="clientId">ID del cliente.</param>
+        /// <returns>Lista de candidatos asociados al cliente especificado.</returns>
         [HttpGet("GetCandidatesByClient")]
         public async Task<ActionResult<APIResponse>> GetCandidatesByClient([FromQuery] int clientId)
         {
@@ -223,6 +260,11 @@ namespace DatalexionBackend.UI.Controllers.V1
             }
         }
 
+        /// <summary>
+        /// Crea un nuevo candidato en el sistema.
+        /// </summary>
+        /// <param name="candidateCreateDto">Datos del nuevo candidato.</param>
+        /// <returns>El candidato creado.</returns>
         [HttpPost(Name = "CreateCandidate")]
         public async Task<ActionResult<APIResponse>> Post([FromBody] CandidateCreateDTO candidateCreateDto)
         {

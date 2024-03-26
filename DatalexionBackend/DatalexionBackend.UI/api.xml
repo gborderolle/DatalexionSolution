@@ -110,6 +110,64 @@
             <param name="username">Nombre de usuario a verificar.</param>
             <returns>Booleano indicando si el nombre de usuario está disponible.</returns>
         </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CandidatesController.Get(DatalexionBackend.Core.DTO.PaginationDTO)">
+            <summary>
+            Obtiene la lista de candidatos paginada, incluyendo sus fotos.
+            </summary>
+            <param name="paginationDTO">Datos de paginación.</param>
+            <returns>Lista paginada de candidatos.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CandidatesController.All">
+            <summary>
+            Obtiene todos los candidatos sin aplicar paginación.
+            </summary>
+            <returns>Todos los candidatos.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CandidatesController.Get(System.Int32)">
+            <summary>
+            Obtiene un candidato específico por su ID, incluyendo su foto.
+            </summary>
+            <param name="id">ID del candidato.</param>
+            <returns>Un candidato específico.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CandidatesController.Delete(System.Int32)">
+            <summary>
+            Elimina un candidato específico basado en su ID.
+            </summary>
+            <param name="id">ID del candidato a eliminar.</param>
+            <returns>Resultado de la operación de eliminación.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CandidatesController.Put(System.Int32,DatalexionBackend.Core.DTO.CandidateCreateDTO,Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Actualiza los datos de un candidato existente, incluyendo la posibilidad de actualizar su foto.
+            </summary>
+            <param name="id">ID del candidato a actualizar.</param>
+            <param name="candidateCreateDTO">Datos actualizados del candidato.</param>
+            <param name="file">Archivo de foto nueva del candidato.</param>
+            <returns>El candidato actualizado.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CandidatesController.Patch(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{DatalexionBackend.Core.DTO.CandidatePatchDTO})">
+            <summary>
+            Aplica cambios parciales a un candidato existente.
+            </summary>
+            <param name="id">ID del candidato a modificar.</param>
+            <param name="patchDto">Documento JSON con los cambios a aplicar.</param>
+            <returns>El candidato con los cambios aplicados.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CandidatesController.GetCandidatesByClient(System.Int32)">
+            <summary>
+            Obtiene candidatos asociados a un cliente específico, considerando las relaciones entre clientes, alas, listas y candidatos.
+            </summary>
+            <param name="clientId">ID del cliente.</param>
+            <returns>Lista de candidatos asociados al cliente especificado.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CandidatesController.Post(DatalexionBackend.Core.DTO.CandidateCreateDTO)">
+            <summary>
+            Crea un nuevo candidato en el sistema.
+            </summary>
+            <param name="candidateCreateDto">Datos del nuevo candidato.</param>
+            <returns>El candidato creado.</returns>
+        </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.CandidatesController.HandlePhotoUpload(Microsoft.AspNetCore.Http.IFormFile,DatalexionBackend.Core.Domain.Entities.Candidate)">
             <summary>
             Sube una foto sola.
@@ -117,6 +175,65 @@
             <param name="photoFile"></param>
             <param name="candidate"></param>
             <returns></returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.Get(DatalexionBackend.Core.DTO.PaginationDTO)">
+            <summary>
+            Obtiene una lista paginada de circuitos con detalles de municipio, partes y fotos incluidos.
+            </summary>
+            <param name="paginationDTO">Parámetros de paginación.</param>
+            <returns>Una lista paginada de circuitos.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.All">
+            <summary>
+            Obtiene todos los circuitos sin aplicar paginación, incluyendo sus detalles básicos.
+            </summary>
+            <returns>Todos los circuitos.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.Get(System.Int32)">
+            <summary>
+            Obtiene un circuito específico por su ID, incluyendo detalles de municipio, partes y fotos.
+            </summary>
+            <param name="id">ID del circuito.</param>
+            <returns>Un circuito específico.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.Delete(System.Int32)">
+            <summary>
+            Elimina un circuito específico por su ID.
+            </summary>
+            <param name="id">ID del circuito a eliminar.</param>
+            <returns>Resultado de la operación de eliminación.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.Put(System.Int32,DatalexionBackend.Core.DTO.CircuitCreateDTO)">
+            <summary>
+            Actualiza los datos de un circuito existente, incluyendo las partes y votos asociados.
+            </summary>
+            <param name="id">ID del circuito a actualizar.</param>
+            <param name="circuitCreateDTO">Datos actualizados del circuito.</param>
+            <returns>El circuito actualizado.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.UpdateCircuit(System.Int32,DatalexionBackend.Core.DTO.CircuitCreateDTO)">
+            <summary>
+            Actualiza un circuito existente, aplicando los cambios especificados en el DTO de creación.
+            </summary>
+            <param name="id">ID del circuito a actualizar.</param>
+            <param name="circuitCreateDTO">DTO de creación con los datos para actualizar el circuito.</param>
+            <returns>Respuesta indicando el resultado de la operación de actualización.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.Patch(System.Int32,DatalexionBackend.Core.DTO.CircuitPatchDTO,System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile})">
+            <summary>
+            Aplica actualizaciones parciales a un circuito existente, específicamente dirigido a los votos y la carga de fotos.
+            </summary>
+            <param name="id">ID del circuito a actualizar.</param>
+            <param name="circuitPatchDTO">DTO para aplicar actualizaciones parciales.</param>
+            <param name="photos">Lista de fotos nuevas a cargar.</param>
+            <returns>Respuesta indicando el resultado de la operación de actualización parcial.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.Post(DatalexionBackend.Core.DTO.CircuitCreateDTO)">
+            <summary>
+            Crea un nuevo circuito en el sistema.
+            </summary>
+            <param name="circuitCreateDto">Datos del nuevo circuito.</param>
+            <returns>El circuito creado.</returns>
         </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.HandlePhotoUpload(System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile},DatalexionBackend.Core.Domain.Entities.Circuit)">
             <summary>
