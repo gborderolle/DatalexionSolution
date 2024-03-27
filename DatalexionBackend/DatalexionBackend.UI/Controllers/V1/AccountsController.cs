@@ -23,7 +23,7 @@ using Wangkanai.Detection.Services;
 namespace DatalexionBackend.UI.Controllers.V1
 {
     [ApiController]
-    [HasHeader("x-version", "1")] // Agregar header: "x-version": "1"
+    [HasHeader("x-version", "1")]
     [Route("api/accounts")]
     [Authorize(Roles = nameof(UserTypeOptions.Admin))]
     public class AccountsController : ControllerBase

@@ -25,4 +25,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DatalexionBackend.Core\DatalexionBackend.Core.csproj" />
+    <ProjectReference Include="..\DatalexionBackend.UI\DatalexionBackend.UI.csproj" />
+  </ItemGroup>
+
 </Project>
