@@ -13,6 +13,8 @@ import {
   CCardBody,
 } from "@coreui/react";
 
+import { USER_ROLE_ADMIN, USER_ROLE_ANALYST } from "../../../userRoles";
+
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
 import { authActions } from "../../../store/auth-slice";
@@ -30,8 +32,6 @@ const MenuAdmin = () => {
   const navigate = useNavigate();
   const userRole = useSelector((state) => state.auth.userRole);
   useEffect(() => {
-    const USER_ROLE_ADMIN = "Admin";
-    const USER_ROLE_ANALYST = "Analyst";
     if (userRole != USER_ROLE_ADMIN && userRole != USER_ROLE_ANALYST) {
       dispatch(authActions.logout());
       navigate("/login-general");

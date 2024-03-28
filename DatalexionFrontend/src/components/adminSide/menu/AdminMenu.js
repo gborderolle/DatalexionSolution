@@ -6,10 +6,11 @@ import GroupInputDelegado from "./group/GroupInputDelegado";
 import GroupInputAnalyst from "./group/GroupInputAnalyst";
 import GroupInputAdmin from "./group/GroupInputAdmin";
 
+import { USER_ROLE_ADMIN, USER_ROLE_ANALYST } from "../../../userRoles";
+
 import {
   urlDelegado,
   urlAccount,
-  getAutoIncrementedId,
 } from "../../../endpoints";
 
 // redux imports
@@ -26,8 +27,6 @@ const AdminMenu = () => {
   const navigate = useNavigate();
   const userRole = useSelector((state) => state.auth.userRole);
   useEffect(() => {
-    const USER_ROLE_ADMIN = "Admin";
-    const USER_ROLE_ANALYST = "Analyst";
     if (userRole != USER_ROLE_ADMIN && userRole != USER_ROLE_ANALYST) {
       dispatch(authActions.logout());
       navigate("/login-general");
@@ -46,9 +45,8 @@ const AdminMenu = () => {
     provinceId,
     municipalityId
   ) => {
-    const id = await getAutoIncrementedId(urlDelegado);
     return {
-      delegadoId: id,
+      delegadoId: 1,
       delegadoName,
       delegadoCI,
       delegadoPhone,
@@ -64,9 +62,8 @@ const AdminMenu = () => {
     userPassword,
     userProvinceId
   ) => {
-    const id = await getAutoIncrementedId(urlAccount);
     return {
-      userId: id,
+      userId: 1,
       userFullname,
       username,
       userPassword,
@@ -82,9 +79,8 @@ const AdminMenu = () => {
     userPassword,
     userProvinceId
   ) => {
-    const id = await getAutoIncrementedId(urlAccount);
     return {
-      userId: id,
+      userId: 1,
       userFullname,
       username,
       userPassword,

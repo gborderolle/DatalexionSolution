@@ -13,6 +13,8 @@ import {
 } from "@coreui/react";
 import { motion } from "framer-motion";
 
+import { USER_ROLE_ADMIN, USER_ROLE_ANALYST } from "../../../userRoles";
+
 import { CChartPie } from "@coreui/react-chartjs";
 
 // redux imports
@@ -49,8 +51,6 @@ const PoliticalColParties = ({
   const navigate = useNavigate();
   const userRole = useSelector((state) => state.auth.userRole);
   useEffect(() => {
-    const USER_ROLE_ADMIN = "Admin";
-    const USER_ROLE_ANALYST = "Analyst";
     if (userRole != USER_ROLE_ADMIN && userRole != USER_ROLE_ANALYST) {
       dispatch(authActions.logout());
       navigate("/login-general");

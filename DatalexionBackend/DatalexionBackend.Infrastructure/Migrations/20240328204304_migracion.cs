@@ -518,8 +518,8 @@ namespace DatalexionBackend.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Creation", "Discriminator", "Name", "NormalizedName", "Update" },
                 values: new object[,]
                 {
-                    { "bef4cbd4-1f2b-472f-a1e2-e1a901f6808c", null, new DateTime(2024, 3, 25, 20, 20, 12, 183, DateTimeKind.Local).AddTicks(9651), "DatalexionRole", "Admin", "ADMIN", new DateTime(2024, 3, 25, 20, 20, 12, 183, DateTimeKind.Local).AddTicks(9654) },
-                    { "bef4cbd4-1f2b-472f-a3f2-e1a901f6811c", null, new DateTime(2024, 3, 25, 20, 20, 12, 183, DateTimeKind.Local).AddTicks(9683), "DatalexionRole", "Analyst", "ANALYST", new DateTime(2024, 3, 25, 20, 20, 12, 183, DateTimeKind.Local).AddTicks(9684) }
+                    { "bef4cbd4-1f2b-472f-a1e2-e1a901f6808c", null, new DateTime(2024, 3, 28, 17, 43, 3, 161, DateTimeKind.Local).AddTicks(1402), "DatalexionRole", "Admin", "ADMIN", new DateTime(2024, 3, 28, 17, 43, 3, 161, DateTimeKind.Local).AddTicks(1403) },
+                    { "bef4cbd4-1f2b-472f-a3f2-e1a901f6811c", null, new DateTime(2024, 3, 28, 17, 43, 3, 161, DateTimeKind.Local).AddTicks(1417), "DatalexionRole", "Analyst", "ANALYST", new DateTime(2024, 3, 28, 17, 43, 3, 161, DateTimeKind.Local).AddTicks(1418) }
                 });
 
             migrationBuilder.InsertData(
@@ -527,34 +527,34 @@ namespace DatalexionBackend.Infrastructure.Migrations
                 columns: new[] { "Id", "CandidateId", "CandidateId1", "CircuitId", "Creation", "PartyLongId", "PartyShortId", "SlateId", "SlateId1", "URL", "Update", "WingId", "WingId1" },
                 values: new object[,]
                 {
-                    { 1, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4652), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo1.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4659), null, null },
-                    { 2, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4671), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo1.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4672), null, null },
-                    { 3, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4674), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo3.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4675), null, null },
-                    { 4, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4677), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo4.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4678), null, null },
-                    { 5, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4680), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo5.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4681), null, null },
-                    { 6, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4685), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo6.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4701), null, null },
-                    { 7, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4710), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo7.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4711), null, null },
-                    { 8, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4830), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo8.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4831), null, null },
-                    { 9, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4834), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo9.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4834), null, null },
-                    { 10, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4840), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo10.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4841), null, null },
-                    { 11, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4843), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo11.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4844), null, null },
-                    { 12, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4846), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo12.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4847), null, null },
-                    { 13, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4849), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo13.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4850), null, null },
-                    { 14, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4852), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo14.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4853), null, null },
-                    { 15, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4855), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo15.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4856), null, null },
-                    { 16, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4858), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo16.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4859), null, null },
-                    { 101, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5348), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesLong/photo101.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5349), null, null },
-                    { 102, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5353), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesLong/photo102.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5354), null, null },
-                    { 103, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5357), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesLong/photo103.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5357), null, null },
-                    { 104, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5359), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesLong/photo104.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5360), null, null },
-                    { 105, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5363), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesLong/photo105.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5363), null, null },
-                    { 106, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5367), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesLong/photo106.jpg", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5367), null, null },
-                    { 111, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5370), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesShort/photo111.png", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5370), null, null },
-                    { 112, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5372), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesShort/photo112.png", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5373), null, null },
-                    { 113, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5376), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesShort/photo113.png", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5376), null, null },
-                    { 114, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5379), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesShort/photo114.png", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5379), null, null },
-                    { 115, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5382), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesShort/photo115.png", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5382), null, null },
-                    { 116, null, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5384), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesShort/photo116.png", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5385), null, null }
+                    { 1, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2648), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo1.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2664), null, null },
+                    { 2, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2684), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo1.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2684), null, null },
+                    { 3, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2686), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo3.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2687), null, null },
+                    { 4, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2693), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo4.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2693), null, null },
+                    { 5, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2695), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo5.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2696), null, null },
+                    { 6, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2716), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo6.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2716), null, null },
+                    { 7, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2723), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo7.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2723), null, null },
+                    { 8, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2727), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo8.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2727), null, null },
+                    { 9, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2730), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo9.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2730), null, null },
+                    { 10, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2734), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo10.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(2734), null, null },
+                    { 11, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3173), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo11.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3176), null, null },
+                    { 12, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3177), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo12.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3178), null, null },
+                    { 13, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3179), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo13.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3179), null, null },
+                    { 14, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3181), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo14.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3181), null, null },
+                    { 15, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3182), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo15.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3183), null, null },
+                    { 16, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3184), null, null, null, null, "https://cienciasdesofa.lat/uploads/candidates/photo16.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3184), null, null },
+                    { 101, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4008), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesLong/photo101.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4008), null, null },
+                    { 102, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4011), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesLong/photo102.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4012), null, null },
+                    { 103, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4013), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesLong/photo103.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4013), null, null },
+                    { 104, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4019), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesLong/photo104.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4021), null, null },
+                    { 105, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4022), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesLong/photo105.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4022), null, null },
+                    { 106, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4024), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesLong/photo106.jpg", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4024), null, null },
+                    { 111, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4026), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesShort/photo111.png", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4026), null, null },
+                    { 112, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4027), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesShort/photo112.png", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4028), null, null },
+                    { 113, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4029), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesShort/photo113.png", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4030), null, null },
+                    { 114, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4087), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesShort/photo114.png", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4088), null, null },
+                    { 115, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4089), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesShort/photo115.png", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4089), null, null },
+                    { 116, null, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4090), null, null, null, null, "https://cienciasdesofa.lat/uploads/partiesShort/photo116.png", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4092), null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -562,25 +562,25 @@ namespace DatalexionBackend.Infrastructure.Migrations
                 columns: new[] { "Id", "Center", "Comments", "Creation", "Name", "Update", "Zoom" },
                 values: new object[,]
                 {
-                    { 1, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5829), "Montevideo", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5830), null },
-                    { 2, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5834), "Canelones", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5834), null },
-                    { 3, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5836), "Maldonado", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5837), null },
-                    { 4, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5838), "Rocha", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5839), null },
-                    { 5, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5840), "Colonia", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5841), null },
-                    { 6, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5842), "Artigas", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5843), null },
-                    { 7, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5844), "Salto", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5845), null },
-                    { 8, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5847), "Paysandú", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5847), null },
-                    { 9, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5849), "Tacuarembó", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5849), null },
-                    { 10, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5851), "Rivera", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5851), null },
-                    { 11, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5853), "San José", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5854), null },
-                    { 12, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5855), "Durazno", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5855), null },
-                    { 13, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5857), "Treinta y Tres", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5858), null },
-                    { 14, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5859), "Cerro Largo", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5860), null },
-                    { 15, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5861), "Rivera", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5862), null },
-                    { 16, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5863), "Flores", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5864), null },
-                    { 17, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5866), "Florida", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5866), null },
-                    { 18, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5868), "Lavalleja", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5868), null },
-                    { 19, null, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5869), "Soriano", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5870), null }
+                    { 1, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4356), "Montevideo", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4356), null },
+                    { 2, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4357), "Canelones", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4358), null },
+                    { 3, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4358), "Maldonado", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4359), null },
+                    { 4, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4359), "Rocha", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4360), null },
+                    { 5, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4360), "Colonia", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4361), null },
+                    { 6, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4361), "Artigas", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4362), null },
+                    { 7, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4362), "Salto", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4362), null },
+                    { 8, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4363), "Paysandú", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4363), null },
+                    { 9, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4364), "Tacuarembó", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4365), null },
+                    { 10, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4366), "Rivera", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4366), null },
+                    { 11, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4367), "San José", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4367), null },
+                    { 12, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4368), "Durazno", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4368), null },
+                    { 13, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4369), "Treinta y Tres", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4369), null },
+                    { 14, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4370), "Cerro Largo", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4370), null },
+                    { 15, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4371), "Rivera", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4371), null },
+                    { 16, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4371), "Flores", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4372), null },
+                    { 17, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4372), "Florida", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4373), null },
+                    { 18, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4373), "Lavalleja", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4374), null },
+                    { 19, null, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4374), "Soriano", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4375), null }
                 });
 
             migrationBuilder.InsertData(
@@ -588,22 +588,22 @@ namespace DatalexionBackend.Infrastructure.Migrations
                 columns: new[] { "Id", "Comments", "Creation", "Name", "PhotoId", "Update" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4927), "Álvaro Delgado", 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4928) },
-                    { 2, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4931), "Laura Raffo", 2, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4932) },
-                    { 3, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4934), "Jorge Gandini", 3, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4935) },
-                    { 4, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4936), "Juan Sartori", 4, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4937) },
-                    { 5, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4939), "Yamandú Orsi", 5, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4940) },
-                    { 6, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4941), "Carolina Cosse", 6, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4942) },
-                    { 7, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4944), "Mario Bergara", 7, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4945) },
-                    { 8, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4946), "Pablo Mieres", 8, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4947) },
-                    { 9, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4949), "Edgardo Novick", 9, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4950) },
-                    { 10, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4951), "Andrés Lima", 10, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4952) },
-                    { 11, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4954), "Gabriel Gurméndez", 11, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4954) },
-                    { 12, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4956), "Robert Silva", 12, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4957) },
-                    { 13, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4958), "Andrés Ojeda", 13, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4959) },
-                    { 14, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4961), "Gustavo Zubía", 14, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4961) },
-                    { 15, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4963), "Guzmán Acosta y Lara", 15, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4964) },
-                    { 16, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4965), "Tabaré Viera", 16, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(4966) }
+                    { 1, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3310), "Álvaro Delgado", 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3311) },
+                    { 2, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3351), "Laura Raffo", 2, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3352) },
+                    { 3, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3353), "Jorge Gandini", 3, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3353) },
+                    { 4, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3354), "Juan Sartori", 4, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3354) },
+                    { 5, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3356), "Yamandú Orsi", 5, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3357) },
+                    { 6, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3358), "Carolina Cosse", 6, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3358) },
+                    { 7, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3359), "Mario Bergara", 7, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3359) },
+                    { 8, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3360), "Pablo Mieres", 8, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3360) },
+                    { 9, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3361), "Edgardo Novick", 9, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3361) },
+                    { 10, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3362), "Andrés Lima", 10, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3362) },
+                    { 11, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3363), "Gabriel Gurméndez", 11, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3363) },
+                    { 12, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3364), "Robert Silva", 12, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3364) },
+                    { 13, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3365), "Andrés Ojeda", 13, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3366) },
+                    { 14, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3366), "Gustavo Zubía", 14, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3367) },
+                    { 15, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3367), "Guzmán Acosta y Lara", 15, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3368) },
+                    { 16, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3369), "Tabaré Viera", 16, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3369) }
                 });
 
             migrationBuilder.InsertData(
@@ -611,12 +611,12 @@ namespace DatalexionBackend.Infrastructure.Migrations
                 columns: new[] { "Id", "Color", "Comments", "Creation", "Name", "PhotoLongId", "PhotoShortId", "ShortName", "Update", "Votes" },
                 values: new object[,]
                 {
-                    { 1, "#3153dd", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5437), "Frente Amplio", 101, 111, "FA", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5438), null },
-                    { 2, "#3153dd", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5446), "Partido Nacional", 102, 112, "PN", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5447), null },
-                    { 3, "#d62929", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5450), "Partido Colorado", 103, 113, "PC", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5451), null },
-                    { 4, "#b929d6", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5455), "Partido Independiente", 104, 114, "PI", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5456), null },
-                    { 5, "#f9bb28", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5458), "Cabildo Abierto", 105, 115, "CA", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5459), null },
-                    { 6, "#009001", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5462), "PERI", 106, 116, "PERI", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5463), null }
+                    { 1, "#3153dd", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4121), "Frente Amplio", 101, 111, "FA", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4122), null },
+                    { 2, "#3153dd", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4130), "Partido Nacional", 102, 112, "PN", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4131), null },
+                    { 3, "#d62929", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4133), "Partido Colorado", 103, 113, "PC", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4134), null },
+                    { 4, "#b929d6", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4135), "Partido Independiente", 104, 114, "PI", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4136), null },
+                    { 5, "#f9bb28", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4138), "Cabildo Abierto", 105, 115, "CA", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4138), null },
+                    { 6, "#009001", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4139), "PERI", 106, 116, "PERI", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4139), null }
                 });
 
             migrationBuilder.InsertData(
@@ -624,9 +624,9 @@ namespace DatalexionBackend.Infrastructure.Migrations
                 columns: new[] { "Id", "Comments", "Creation", "Name", "PartyId", "Update" },
                 values: new object[,]
                 {
-                    { 1, "Frente Amplio", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5530), "Frente Amplio", 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5531) },
-                    { 2, "Partido Nacional", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5537), "Partido Nacional", 2, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5538) },
-                    { 3, "Partido Colorado", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5542), "Partido Colorado", 3, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5543) }
+                    { 1, "Frente Amplio", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4190), "Frente Amplio", 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4192) },
+                    { 2, "Partido Nacional", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4196), "Partido Nacional", 2, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4196) },
+                    { 3, "Partido Colorado", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4198), "Partido Colorado", 3, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4198) }
                 });
 
             migrationBuilder.InsertData(
@@ -634,12 +634,12 @@ namespace DatalexionBackend.Infrastructure.Migrations
                 columns: new[] { "Id", "Comments", "Creation", "Name", "PartyId", "PhotoId", "Update" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5674), "FA", 1, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5675) },
-                    { 2, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5680), "PN", 2, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5681) },
-                    { 3, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5683), "PC", 3, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5683) },
-                    { 4, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5685), "PI", 4, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5686) },
-                    { 5, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5688), "CA", 5, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5689) },
-                    { 6, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5691), "PERI", 6, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5693) }
+                    { 1, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4291), "FA", 1, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4291) },
+                    { 2, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4297), "PN", 2, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4297) },
+                    { 3, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4298), "PC", 3, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4298) },
+                    { 4, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4299), "PI", 4, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4299) },
+                    { 5, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4300), "CA", 5, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4300) },
+                    { 6, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4302), "PERI", 6, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4302) }
                 });
 
             migrationBuilder.InsertData(
@@ -647,11 +647,12 @@ namespace DatalexionBackend.Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ClientId", "ConcurrencyStamp", "Creation", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "Update", "UserName" },
                 values: new object[,]
                 {
-                    { "2a765d8b-9204-4e0f-b4ce-453f6e1bb592", 0, 1, "3a95d352-5f61-4e75-b454-3d70ad6a0366", new DateTime(2024, 3, 25, 20, 20, 12, 494, DateTimeKind.Local).AddTicks(8328), "DatalexionUser", "adminfa@datalexion.lat", false, false, null, "Admin FA", "ADMINFA@DATALEXION.LAT", "ADMINFA", "AQAAAAIAAYagAAAAED1JUAj4ZHzXJDp9172AgnQtjrGaAPJt+OFt5MJ9sO96AnC5eLLMEXuOstgPvydrnA==", null, false, "e24b63a9-d67c-4c85-bacf-ac78308a17ba", false, new DateTime(2024, 3, 25, 20, 20, 12, 494, DateTimeKind.Local).AddTicks(8340), "adminfa" },
-                    { "6c762a89-a7b6-4ee3-96d0-105b219dcaa6", 0, 3, "92c4119e-1553-4ad5-b6c3-4468d87dd8a2", new DateTime(2024, 3, 25, 20, 20, 13, 222, DateTimeKind.Local).AddTicks(7619), "DatalexionUser", "adminpc@datalexion.lat", false, false, null, "Admin PC", "ADMINPC@DATALEXION.LAT", "ADMINPC", "AQAAAAIAAYagAAAAEApSV5L5lYL4itFiWuWJ1ys1Vyvq6Oq/NDMU9Tu0rw+6HKQsxPsIcK+pYiPi0CZ9ZQ==", null, false, "b0a3845e-61c9-441a-9b94-dec1cb2b80c8", false, new DateTime(2024, 3, 25, 20, 20, 13, 222, DateTimeKind.Local).AddTicks(7634), "adminpc" },
-                    { "8498a3ff-ca69-4b93-9a37-49a73c8dec77", 0, 2, "5e8d8405-5b83-4307-b67e-de6850510c96", new DateTime(2024, 3, 25, 20, 20, 12, 921, DateTimeKind.Local).AddTicks(2215), "DatalexionUser", "adminpn@datalexion.lat", false, false, null, "Admin PN", "ADMINPN@DATALEXION.LAT", "ADMINPN", "AQAAAAIAAYagAAAAEJi+dQih4QLKBYDLKpawCK+hk0LD3jvGPWcSQ4ch7DX7si1oDEFmEt0777I66Nqh/Q==", null, false, "6d6d91d9-21c7-42d4-bb11-a077c72de717", false, new DateTime(2024, 3, 25, 20, 20, 12, 921, DateTimeKind.Local).AddTicks(2222), "adminpn" },
-                    { "c2ee6493-5a73-46f3-a3f2-46d1d11d7176", 0, 2, "c46ec809-3818-4587-982d-cbc5af3f66ae", new DateTime(2024, 3, 25, 20, 20, 12, 183, DateTimeKind.Local).AddTicks(9707), "DatalexionUser", "admin@datalexion.lat", false, false, null, "Usuario administrador", "ADMIN@DATALEXION.LAT", "USERADMIN", "AQAAAAIAAYagAAAAECbLln9FOZHcDxMk2PqwokMKivGIX8zTA01KhLKUa0I5j3DgdFRhBZVQo4WadzLb9Q==", null, false, "e113f56a-85fc-4349-9998-417a5ae8def6", false, new DateTime(2024, 3, 25, 20, 20, 12, 183, DateTimeKind.Local).AddTicks(9709), "useradmin" },
-                    { "e0765c93-676c-4199-b7ee-d7877c471821", 0, 2, "f976962d-8c0c-4f0a-9052-6a29d78029a2", new DateTime(2024, 3, 25, 20, 20, 13, 533, DateTimeKind.Local).AddTicks(5769), "DatalexionUser", "normal@datalexion.lat", false, false, null, "Usuario analista", "NORMAL@DATALEXION.LAT", "USERANALISTA", "AQAAAAIAAYagAAAAEHF/Fa6YiABXAGxs+GHdwR+sxtMxa/MjL5CxuuAn+0TTadTpz30gX0k054nfw0LwNg==", null, false, "3b58a2ac-8dfc-4c3d-aba2-adbaee01ca31", false, new DateTime(2024, 3, 25, 20, 20, 13, 533, DateTimeKind.Local).AddTicks(5779), "useranalista" }
+                    { "2a765d8b-9204-4e0f-b4ce-453f6e1bb592", 0, 1, "b52143f4-dcab-41b9-9ae8-ec874bae2889", new DateTime(2024, 3, 28, 17, 43, 3, 161, DateTimeKind.Local).AddTicks(1673), "DatalexionUser", "adminfa@datalexion.lat", false, false, null, "Admin FA", "ADMINFA@DATALEXION.LAT", "ADMINFA", "AQAAAAIAAYagAAAAEOSHysGdRtEaJJ7rxOlHR8tY3Ae8timK/7kZgVvSKvFPtgeeBFyP7eycW2y4IiKpng==", null, false, "5674bae7-9d5d-420a-a903-c26b9fe67aff", false, new DateTime(2024, 3, 28, 17, 43, 3, 161, DateTimeKind.Local).AddTicks(1674), "adminfa" },
+                    { "6c762a89-a7b6-4ee3-96d0-105b219dcaa6", 0, 3, "5425ae10-440d-4406-8bcc-5ac96b28bb40", new DateTime(2024, 3, 28, 17, 43, 3, 367, DateTimeKind.Local).AddTicks(8369), "DatalexionUser", "adminpc@datalexion.lat", false, false, null, "Admin PC", "ADMINPC@DATALEXION.LAT", "ADMINPC", "AQAAAAIAAYagAAAAEP6kh6rQnBBeP7OUl7c30+u1XmZ8XUYNrdmevGU13ZaBjdMxsRia12+PmxoHwl/Odg==", null, false, "12b33634-79ce-4cd9-99f6-0c8a7dd81d5a", false, new DateTime(2024, 3, 28, 17, 43, 3, 367, DateTimeKind.Local).AddTicks(8377), "adminpc" },
+                    { "8498a3ff-ca69-4b93-9a37-49a73c8dec77", 0, 2, "89677d93-87c2-43b4-ba35-18e3086c2b87", new DateTime(2024, 3, 28, 17, 43, 3, 261, DateTimeKind.Local).AddTicks(8084), "DatalexionUser", "adminpn@datalexion.lat", false, false, null, "Admin PN", "ADMINPN@DATALEXION.LAT", "ADMINPN", "AQAAAAIAAYagAAAAEPiv3WIn7G+y74E8ZK4wMcTCMhV6TPFS094YvyIFsUPjicxYxAeqt+WfBRDM+LwZdQ==", null, false, "4d38e36c-c474-40d8-b5a1-7a9b9bddd37e", false, new DateTime(2024, 3, 28, 17, 43, 3, 261, DateTimeKind.Local).AddTicks(8090), "adminpn" },
+                    { "b5172b14-f9e4-48f6-9634-2241c87f1719", 0, 3, "643bb06a-7279-4f60-abb0-ef35145d1974", new DateTime(2024, 3, 28, 17, 43, 3, 636, DateTimeKind.Local).AddTicks(6864), "DatalexionUser", "normal@datalexion.lat", false, false, null, "Analista PC", "NORMAL@DATALEXION.LAT", "ANALYSTPC", "AQAAAAIAAYagAAAAECvM/R/hrZq8ZPxiEJd4B/kE25JJu86DjTNq0BgfySI3TzG1zRK6MSFEuBYWKjH9Eg==", null, false, "7687bfc4-aadd-4aba-a77b-65a9d6fb7b74", false, new DateTime(2024, 3, 28, 17, 43, 3, 636, DateTimeKind.Local).AddTicks(6872), "analystpc" },
+                    { "ddc18aa2-c5c7-40c9-9db3-246d2a05a06c", 0, 2, "07ea9ed0-8578-4085-80f1-4acc0841d524", new DateTime(2024, 3, 28, 17, 43, 3, 544, DateTimeKind.Local).AddTicks(4097), "DatalexionUser", "normal@datalexion.lat", false, false, null, "Analista PN", "NORMAL@DATALEXION.LAT", "ANALYSTPN", "AQAAAAIAAYagAAAAEPv4q3HkQdGMr2WwesvakJs98TMJLqlntsU7F7aQwDtSC01C+zqbsHqyxrNUrvrsEw==", null, false, "7898ed17-e63e-4331-9bb2-7b045de38a73", false, new DateTime(2024, 3, 28, 17, 43, 3, 544, DateTimeKind.Local).AddTicks(4110), "analystpn" },
+                    { "e15e9299-d3b5-42fc-b101-44da6ad799de", 0, 1, "c40e3e13-cb05-450c-b552-821422a94376", new DateTime(2024, 3, 28, 17, 43, 3, 458, DateTimeKind.Local).AddTicks(7472), "DatalexionUser", "normal@datalexion.lat", false, false, null, "Analista FA", "NORMAL@DATALEXION.LAT", "ANALYSTFA", "AQAAAAIAAYagAAAAEIOjiuikAdA+KwGtEFTgMhDt/FZMQx53uUEJhoAy5eOyGlCz9wk1J9/fFOUZcVY7oA==", null, false, "beef589a-aae1-439c-8e72-eb4fe3ab7e2d", false, new DateTime(2024, 3, 28, 17, 43, 3, 458, DateTimeKind.Local).AddTicks(7482), "analystfa" }
                 });
 
             migrationBuilder.InsertData(
@@ -659,10 +660,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                 columns: new[] { "Id", "CI", "ClientId", "Comments", "Creation", "Email", "Name", "Phone", "Update" },
                 values: new object[,]
                 {
-                    { 1, "11111111", 2, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5593), "gonzalo.delegado@datalexion.lat", "Gonzalo", "099415831", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5593) },
-                    { 2, "12345678", 2, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5600), "diego.delegado@datalexion.lat", "Diego", "099589896", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5600) },
-                    { 3, "22222222", 1, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5604), "pablo.delegado@datalexion.lat", "Pablo", "099415831", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5604) },
-                    { 4, "33333333", 3, null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5606), "gabriel.delegado@datalexion.lat", "Gabriel", "099415831", new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5607) }
+                    { 1, "11111111", 2, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4237), "gonzalo.delegado@datalexion.lat", "Gonzalo", "099415831", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4237) },
+                    { 2, "12345678", 2, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4240), "diego.delegado@datalexion.lat", "Diego", "099589896", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4241) },
+                    { 3, "22222222", 1, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4242), "pablo.delegado@datalexion.lat", "Pablo", "099415831", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4243) },
+                    { 4, "33333333", 3, null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4244), "gabriel.delegado@datalexion.lat", "Gabriel", "099415831", new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(4244) }
                 });
 
             migrationBuilder.InsertData(
@@ -670,21 +671,21 @@ namespace DatalexionBackend.Infrastructure.Migrations
                 columns: new[] { "Id", "CandidateId", "Color", "Comments", "Creation", "Name", "PhotoId", "ProvinceId", "Update", "Votes", "WingId" },
                 values: new object[,]
                 {
-                    { 1, 6, "#3153dd", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5043), "5005", null, 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5044), null, 1 },
-                    { 2, 5, "#3153dd", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5051), "711", null, 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5052), null, 1 },
-                    { 3, 6, "#d62929", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5055), "90", null, 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5056), null, 1 },
-                    { 4, 5, "#b929d6", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5058), "609", null, 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5059), null, 1 },
-                    { 5, 1, "#bec11a", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5062), "71", null, 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5062), null, 2 },
-                    { 6, 1, "#3153dd", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5065), "404", null, 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5066), null, 2 },
-                    { 7, 2, "#ff0000", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5068), "40", null, 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5069), null, 2 },
-                    { 8, 2, "#00ff00", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5074), "250", null, 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5075), null, 2 },
-                    { 9, 2, "#0000ff", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5077), "880", null, 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5078), null, 2 },
-                    { 10, 11, "#ff00ff", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5085), "15", null, 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5086), null, 3 },
-                    { 11, 12, "#987654", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5088), "85", null, 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5089), null, 3 },
-                    { 12, 12, "#abcdef", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5091), "1", null, 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5091), null, 3 },
-                    { 13, 12, "#fedcba", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5096), "2000", null, 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5096), null, 3 },
-                    { 14, 11, "#012345", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5099), "1515", null, 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5099), null, 3 },
-                    { 15, 11, "#012345", null, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5104), "600", null, 1, new DateTime(2024, 3, 25, 20, 20, 13, 912, DateTimeKind.Local).AddTicks(5105), null, 3 }
+                    { 1, 6, "#3153dd", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3428), "5005", null, 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3428), null, 1 },
+                    { 2, 5, "#3153dd", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3434), "711", null, 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3434), null, 1 },
+                    { 3, 6, "#d62929", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3436), "90", null, 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3436), null, 1 },
+                    { 4, 5, "#b929d6", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3438), "609", null, 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3438), null, 1 },
+                    { 5, 1, "#bec11a", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3439), "71", null, 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3439), null, 2 },
+                    { 6, 1, "#3153dd", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3442), "404", null, 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3442), null, 2 },
+                    { 7, 2, "#ff0000", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3444), "40", null, 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3444), null, 2 },
+                    { 8, 2, "#00ff00", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3445), "250", null, 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3445), null, 2 },
+                    { 9, 2, "#0000ff", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3447), "880", null, 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3447), null, 2 },
+                    { 10, 11, "#ff00ff", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3453), "15", null, 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3453), null, 3 },
+                    { 11, 12, "#987654", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3454), "85", null, 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3455), null, 3 },
+                    { 12, 12, "#abcdef", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3456), "1", null, 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3456), null, 3 },
+                    { 13, 12, "#fedcba", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3930), "2000", null, 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3931), null, 3 },
+                    { 14, 11, "#012345", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3933), "1515", null, 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3933), null, 3 },
+                    { 15, 11, "#012345", null, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3934), "600", null, 1, new DateTime(2024, 3, 28, 17, 43, 3, 741, DateTimeKind.Local).AddTicks(3935), null, 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -692,11 +693,12 @@ namespace DatalexionBackend.Infrastructure.Migrations
                 columns: new[] { "Id", "ClaimType", "ClaimValue", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "role", "Admin", "c2ee6493-5a73-46f3-a3f2-46d1d11d7176" },
-                    { 2, "role", "Analyst", "e0765c93-676c-4199-b7ee-d7877c471821" },
-                    { 3, "role", "Admin", "2a765d8b-9204-4e0f-b4ce-453f6e1bb592" },
-                    { 4, "role", "Admin", "8498a3ff-ca69-4b93-9a37-49a73c8dec77" },
-                    { 5, "role", "Admin", "6c762a89-a7b6-4ee3-96d0-105b219dcaa6" }
+                    { 1, "role", "Admin", "2a765d8b-9204-4e0f-b4ce-453f6e1bb592" },
+                    { 2, "role", "Admin", "8498a3ff-ca69-4b93-9a37-49a73c8dec77" },
+                    { 3, "role", "Admin", "6c762a89-a7b6-4ee3-96d0-105b219dcaa6" },
+                    { 4, "role", "Analyst", "e15e9299-d3b5-42fc-b101-44da6ad799de" },
+                    { 5, "role", "Analyst", "ddc18aa2-c5c7-40c9-9db3-246d2a05a06c" },
+                    { 6, "role", "Analyst", "b5172b14-f9e4-48f6-9634-2241c87f1719" }
                 });
 
             migrationBuilder.InsertData(
@@ -707,8 +709,9 @@ namespace DatalexionBackend.Infrastructure.Migrations
                     { "bef4cbd4-1f2b-472f-a1e2-e1a901f6808c", "2a765d8b-9204-4e0f-b4ce-453f6e1bb592" },
                     { "bef4cbd4-1f2b-472f-a1e2-e1a901f6808c", "6c762a89-a7b6-4ee3-96d0-105b219dcaa6" },
                     { "bef4cbd4-1f2b-472f-a1e2-e1a901f6808c", "8498a3ff-ca69-4b93-9a37-49a73c8dec77" },
-                    { "bef4cbd4-1f2b-472f-a1e2-e1a901f6808c", "c2ee6493-5a73-46f3-a3f2-46d1d11d7176" },
-                    { "bef4cbd4-1f2b-472f-a3f2-e1a901f6811c", "e0765c93-676c-4199-b7ee-d7877c471821" }
+                    { "bef4cbd4-1f2b-472f-a3f2-e1a901f6811c", "b5172b14-f9e4-48f6-9634-2241c87f1719" },
+                    { "bef4cbd4-1f2b-472f-a3f2-e1a901f6811c", "ddc18aa2-c5c7-40c9-9db3-246d2a05a06c" },
+                    { "bef4cbd4-1f2b-472f-a3f2-e1a901f6811c", "e15e9299-d3b5-42fc-b101-44da6ad799de" }
                 });
 
             migrationBuilder.CreateIndex(

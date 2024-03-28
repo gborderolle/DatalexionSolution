@@ -25,12 +25,3 @@ export const urlAccountBiometricChallenge = `${apiURL}/accounts/auth/challenge`;
 export const urlAccountBiometricValidate = `${apiURL}/accounts/auth/validateBiometricAuth`;
 export const urlIsCIAlreadyRegistered = `${apiURL}/delegados/IsCIAlreadyRegistered`;
 export const urlIsUsernameAlreadyRegistered = `${apiURL}/accounts/IsUsernameAlreadyRegistered`;
-
-// Función para obtener ID autoincremental
-export const getAutoIncrementedId = async (firebaseUrl) => {
-  try {
-  } catch (error) {
-    console.error(`Error al obtener el ID autoincremental: ${error}`);
-    return null; // O lanzar un error personalizado
-  }
-};

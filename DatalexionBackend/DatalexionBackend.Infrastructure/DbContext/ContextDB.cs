@@ -228,14 +228,25 @@ namespace DatalexionBackend.Infrastructure.DbContext
             // Generar GUID: https://guidgenerator.com/online-guid-generator.aspx
             // ---------------- Usuarios ---------------------------------------------
             var userAdminId = "c2ee6493-5a73-46f3-a3f2-46d1d11d7176";
-            var rolAdminId = "bef4cbd4-1f2b-472f-a1e2-e1a901f6808c";
 
-            var userAnalystId = "e0765c93-676c-4199-b7ee-d7877c471821";
+            var rolAdminId = "bef4cbd4-1f2b-472f-a1e2-e1a901f6808c";
             var rolAnalystId = "bef4cbd4-1f2b-472f-a3f2-e1a901f6811c";
 
-            var userfaId = "2a765d8b-9204-4e0f-b4ce-453f6e1bb592";
-            var userpnId = "8498a3ff-ca69-4b93-9a37-49a73c8dec77";
-            var userpcId = "6c762a89-a7b6-4ee3-96d0-105b219dcaa6";
+            const int CLIENTID_FA = 1;
+            const int CLIENTID_PN = 2;
+            const int CLIENTID_PC = 3;
+            const int CLIENTID_CA = 4;
+
+            //
+            // Usuarios FA
+            // adminfa
+            // analystfa
+
+            // Usuarios PN
+            // adminpn
+            // analystpn
+
+            #region Creación de roles - datos estáticos
 
             var rolAdmin = new DatalexionRole
             {
@@ -246,7 +257,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Update = DateTime.Now
             };
 
-            var rolUser = new DatalexionRole
+            var rolAnalyst = new DatalexionRole
             {
                 Id = rolAnalystId,
                 Name = UserTypeOptions.Analyst.ToString(),
@@ -255,127 +266,46 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Update = DateTime.Now
             };
 
+            modelBuilder.Entity<DatalexionRole>()
+                .HasData(rolAdmin, rolAnalyst);
+
+            #endregion
+
+            #region Creación de usuarios
+
             var passwordHasher = new PasswordHasher<DatalexionUser>();
 
-            var username1 = "useradmin";
-            var email1 = "admin@datalexion.lat";
-            var userAdmin = new DatalexionUser()
-            {
-                Id = userAdminId,
-                UserName = username1,
-                NormalizedUserName = username1.ToUpper(),
-                Email = email1,
-                NormalizedEmail = email1.ToUpper(),
-                PasswordHash = passwordHasher.HashPassword(null, "useradmin1234"),
-                Name = "Usuario administrador",
-                ClientId = 2,
-            };
+            // Admins (3)
 
-            var adminfa1 = "adminfa";
+            // ------- Admin FA
+
+            var adminfaId = "2a765d8b-9204-4e0f-b4ce-453f6e1bb592";
+            var username = "adminfa";
             var emailfa = "adminfa@datalexion.lat";
             var adminfa = new DatalexionUser()
             {
-                Id = userfaId,
-                UserName = adminfa1,
-                NormalizedUserName = adminfa1.ToUpper(),
+                Id = adminfaId,
+                UserName = username,
+                NormalizedUserName = username.ToUpper(),
                 Email = emailfa,
                 NormalizedEmail = emailfa.ToUpper(),
-                PasswordHash = passwordHasher.HashPassword(null, "adminfa1234"),
+                PasswordHash = passwordHasher.HashPassword(null, username + "1234"),
                 Name = "Admin FA",
-                ClientId = 1,
+                ClientId = CLIENTID_FA,
             };
 
-            var adminpn1 = "adminpn";
-            var emailpn = "adminpn@datalexion.lat";
-            var adminpn = new DatalexionUser()
-            {
-                Id = userpnId,
-                UserName = adminpn1,
-                NormalizedUserName = adminpn1.ToUpper(),
-                Email = emailpn,
-                NormalizedEmail = emailpn.ToUpper(),
-                PasswordHash = passwordHasher.HashPassword(null, "adminpn1234"),
-                Name = "Admin PN",
-                ClientId = 2,
-            };
-
-            var adminpc1 = "adminpc";
-            var emailpc = "adminpc@datalexion.lat";
-            var adminpc = new DatalexionUser()
-            {
-                Id = userpcId,
-                UserName = adminpc1,
-                NormalizedUserName = adminpc1.ToUpper(),
-                Email = emailpc,
-                NormalizedEmail = emailpc.ToUpper(),
-                PasswordHash = passwordHasher.HashPassword(null, "adminpc1234"),
-                Name = "Admin PC",
-                ClientId = 3,
-            };
-
-            var username2 = "useranalista";
-            var email2 = "normal@datalexion.lat";
-            var userUser = new DatalexionUser()
-            {
-                Id = userAnalystId,
-                UserName = username2,
-                NormalizedUserName = username2.ToUpper(),
-                Email = email2,
-                NormalizedEmail = email2.ToUpper(),
-                PasswordHash = passwordHasher.HashPassword(null, "usernormal1234"),
-                Name = "Usuario analista",
-                ClientId = 2,
-            };
-
+            // Guardar en BD
             modelBuilder.Entity<DatalexionUser>()
-                .HasData(userAdmin, userUser, adminfa, adminpn, adminpc);
+                .HasData(adminfa);
 
-            modelBuilder.Entity<DatalexionRole>()
-                .HasData(rolAdmin, rolUser);
-
+            // Asignar rol y guardar en BD
             modelBuilder.Entity<IdentityUserClaim<string>>()
                 .HasData(new IdentityUserClaim<string>()
                 {
                     Id = 1,
                     ClaimType = "role",
-                    UserId = userAdminId,
+                    UserId = adminfaId,
                     ClaimValue = UserTypeOptions.Admin.ToString(),
-                });
-
-            modelBuilder.Entity<IdentityUserClaim<string>>()
-                .HasData(new IdentityUserClaim<string>()
-                {
-                    Id = 2,
-                    ClaimType = "role",
-                    UserId = userAnalystId,
-                    ClaimValue = UserTypeOptions.Analyst.ToString()
-                });
-
-            modelBuilder.Entity<IdentityUserClaim<string>>()
-                .HasData(new IdentityUserClaim<string>()
-                {
-                    Id = 3,
-                    ClaimType = "role",
-                    UserId = userfaId,
-                    ClaimValue = UserTypeOptions.Admin.ToString()
-                });
-
-            modelBuilder.Entity<IdentityUserClaim<string>>()
-                .HasData(new IdentityUserClaim<string>()
-                {
-                    Id = 4,
-                    ClaimType = "role",
-                    UserId = userpnId,
-                    ClaimValue = UserTypeOptions.Admin.ToString()
-                });
-
-            modelBuilder.Entity<IdentityUserClaim<string>>()
-                .HasData(new IdentityUserClaim<string>()
-                {
-                    Id = 5,
-                    ClaimType = "role",
-                    UserId = userpcId,
-                    ClaimValue = UserTypeOptions.Admin.ToString()
                 });
 
             // Asignar roles a usuarios
@@ -383,29 +313,250 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 new IdentityUserRole<string>
                 {
                     RoleId = rolAdminId,
-                    UserId = userAdminId
-                },
+                    UserId = adminfaId
+                });
+
+            // ------- Admin PN
+
+            var adminpnId = "8498a3ff-ca69-4b93-9a37-49a73c8dec77";
+            username = "adminpn";
+            var emailpn = "adminpn@datalexion.lat";
+            var adminpn = new DatalexionUser()
+            {
+                Id = adminpnId,
+                UserName = username,
+                NormalizedUserName = username.ToUpper(),
+                Email = emailpn,
+                NormalizedEmail = emailpn.ToUpper(),
+                PasswordHash = passwordHasher.HashPassword(null, username + "1234"),
+                Name = "Admin PN",
+                ClientId = CLIENTID_PN,
+            };
+
+            // Guardar en BD
+            modelBuilder.Entity<DatalexionUser>()
+                .HasData(adminpn);
+
+            // Asignar rol y guardar en BD
+            modelBuilder.Entity<IdentityUserClaim<string>>()
+                .HasData(new IdentityUserClaim<string>()
+                {
+                    Id = 2,
+                    ClaimType = "role",
+                    UserId = adminpnId,
+                    ClaimValue = UserTypeOptions.Admin.ToString(),
+                });
+
+            // Asignar roles a usuarios
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>
+                {
+                    RoleId = rolAdminId,
+                    UserId = adminpnId
+                });
+
+            // ------- Admin PC
+
+            var adminpcId = "6c762a89-a7b6-4ee3-96d0-105b219dcaa6";
+            username = "adminpc";
+            var emailpc = "adminpc@datalexion.lat";
+            var adminpc = new DatalexionUser()
+            {
+                Id = adminpcId,
+                UserName = username,
+                NormalizedUserName = username.ToUpper(),
+                Email = emailpc,
+                NormalizedEmail = emailpc.ToUpper(),
+                PasswordHash = passwordHasher.HashPassword(null, username + "1234"),
+                Name = "Admin PC",
+                ClientId = CLIENTID_PC,
+            };
+
+            // Guardar en BD
+            modelBuilder.Entity<DatalexionUser>()
+                .HasData(adminpc);
+
+            // Asignar rol y guardar en BD
+            modelBuilder.Entity<IdentityUserClaim<string>>()
+                .HasData(new IdentityUserClaim<string>()
+                {
+                    Id = 3,
+                    ClaimType = "role",
+                    UserId = adminpcId,
+                    ClaimValue = UserTypeOptions.Admin.ToString(),
+                });
+
+            // Asignar roles a usuarios
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>
+                {
+                    RoleId = rolAdminId,
+                    UserId = adminpcId
+                });
+
+            // Analistas (2)
+
+            // ------- Analista FA
+
+            var analystfaId = "e15e9299-d3b5-42fc-b101-44da6ad799de";
+            username = "analystfa";
+            var email = "normal@datalexion.lat";
+            var userUser = new DatalexionUser()
+            {
+                Id = analystfaId,
+                UserName = username,
+                NormalizedUserName = username.ToUpper(),
+                Email = email,
+                NormalizedEmail = email.ToUpper(),
+                PasswordHash = passwordHasher.HashPassword(null, username + "1234"),
+                Name = "Analista FA",
+                ClientId = CLIENTID_FA,
+            };
+            // Guardar en BD
+            modelBuilder.Entity<DatalexionUser>()
+                .HasData(userUser);
+
+            // Asignar rol y guardar en BD
+            modelBuilder.Entity<IdentityUserClaim<string>>()
+                .HasData(new IdentityUserClaim<string>()
+                {
+                    Id = 4,
+                    ClaimType = "role",
+                    UserId = analystfaId,
+                    ClaimValue = UserTypeOptions.Analyst.ToString(),
+                });
+
+            // Asignar roles a usuarios
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
                 new IdentityUserRole<string>
                 {
                     RoleId = rolAnalystId,
-                    UserId = userAnalystId
-                },
+                    UserId = analystfaId
+                });
+
+            // ------- Analista PN
+
+            var analystpnId = "ddc18aa2-c5c7-40c9-9db3-246d2a05a06c";
+            username = "analystpn";
+            email = "normal@datalexion.lat";
+            userUser = new DatalexionUser()
+            {
+                Id = analystpnId,
+                UserName = username,
+                NormalizedUserName = username.ToUpper(),
+                Email = email,
+                NormalizedEmail = email.ToUpper(),
+                PasswordHash = passwordHasher.HashPassword(null, username + "1234"),
+                Name = "Analista PN",
+                ClientId = CLIENTID_PN,
+            };
+            // Guardar en BD
+            modelBuilder.Entity<DatalexionUser>()
+                .HasData(userUser);
+
+            // Asignar rol y guardar en BD
+            modelBuilder.Entity<IdentityUserClaim<string>>()
+                .HasData(new IdentityUserClaim<string>()
+                {
+                    Id = 5,
+                    ClaimType = "role",
+                    UserId = analystpnId,
+                    ClaimValue = UserTypeOptions.Analyst.ToString(),
+                });
+
+            // Asignar roles a usuarios
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
                 new IdentityUserRole<string>
                 {
-                    RoleId = rolAdminId,
-                    UserId = userfaId
-                },
+                    RoleId = rolAnalystId,
+                    UserId = analystpnId
+                });
+
+            // ------- Analista PC
+
+            var analystpcId = "b5172b14-f9e4-48f6-9634-2241c87f1719";
+            username = "analystpc";
+            email = "normal@datalexion.lat";
+            userUser = new DatalexionUser()
+            {
+                Id = analystpcId,
+                UserName = username,
+                NormalizedUserName = username.ToUpper(),
+                Email = email,
+                NormalizedEmail = email.ToUpper(),
+                PasswordHash = passwordHasher.HashPassword(null, username + "1234"),
+                Name = "Analista PC",
+                ClientId = CLIENTID_PC,
+            };
+            // Guardar en BD
+            modelBuilder.Entity<DatalexionUser>()
+                .HasData(userUser);
+
+            // Asignar rol y guardar en BD
+            modelBuilder.Entity<IdentityUserClaim<string>>()
+                .HasData(new IdentityUserClaim<string>()
+                {
+                    Id = 6,
+                    ClaimType = "role",
+                    UserId = analystpcId,
+                    ClaimValue = UserTypeOptions.Analyst.ToString(),
+                });
+
+            // Asignar roles a usuarios
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
                 new IdentityUserRole<string>
                 {
-                    RoleId = rolAdminId,
-                    UserId = userpnId
-                },
-                new IdentityUserRole<string>
-                {
-                    RoleId = rolAdminId,
-                    UserId = userpcId
-                }
-            );
+                    RoleId = rolAnalystId,
+                    UserId = analystpcId
+                });
+
+            // -------
+
+            #endregion
+
+            #region Asignación de roles a usuarios
+
+            // Asignar roles a usuarios
+            // modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+            //     new IdentityUserRole<string>
+            //     {
+            //         RoleId = rolAdminId,
+            //         UserId = userAdminId
+            //     },
+            //     new IdentityUserRole<string>
+            //     {
+            //         RoleId = rolAdminId,
+            //         UserId = adminfaId
+            //     },
+            //     new IdentityUserRole<string>
+            //     {
+            //         RoleId = rolAdminId,
+            //         UserId = adminpnId
+            //     },
+            //     new IdentityUserRole<string>
+            //     {
+            //         RoleId = rolAdminId,
+            //         UserId = adminpcId
+            //     },
+            //     //
+            //     new IdentityUserRole<string>
+            //     {
+            //         RoleId = rolAnalystId,
+            //         UserId = analystfaId
+            //     },
+            //     new IdentityUserRole<string>
+            //     {
+            //         RoleId = rolAnalystId,
+            //         UserId = analystpnId
+            //     },
+            //     new IdentityUserRole<string>
+            //     {
+            //         RoleId = rolAnalystId,
+            //         UserId = analystpcId
+            //     }
+            // );
+
+            #endregion
 
             // Candidatos fotos
 

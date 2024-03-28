@@ -442,17 +442,27 @@ namespace DatalexionBackend.UI.Controllers.V1
                 {
                     _logger.LogInformation("Login correcto.");
                     var user = await _userManager.FindByNameAsync(datalexionUserLoginDTO.Username);
-                    var roles = await _userManager.GetRolesAsync(user); // Obtener roles del usuario
-
-                    _response.StatusCode = HttpStatusCode.OK;
-                    _response.Result = new
+                    if (user != null)
                     {
-                        Token = await TokenSetup(datalexionUserLoginDTO),
-                        UserRoles = roles,
-                        Fullname = user.Name,
-                        ClientId = user.ClientId
-                    };
-                    await SendLoginNotificationAdmin(datalexionUserLoginDTO);
+                        var roles = await _userManager.GetRolesAsync(user); // Obtener roles del usuario
+
+                        _response.StatusCode = HttpStatusCode.OK;
+                        _response.Result = new
+                        {
+                            Token = await TokenSetup(datalexionUserLoginDTO),
+                            UserRoles = roles,
+                            Fullname = user.Name,
+                            ClientId = user.ClientId
+                        };
+                        await SendLoginNotificationAdmin(datalexionUserLoginDTO);
+                    }
+                    else
+                    {
+                        _logger.LogError($"User not found.");
+                        _response.IsSuccess = false;
+                        _response.StatusCode = HttpStatusCode.BadRequest;
+                        return BadRequest("User not found");
+                    }
                 }
                 else
                 {
@@ -666,6 +676,10 @@ namespace DatalexionBackend.UI.Controllers.V1
             var user = await _userManager.FindByNameAsync(userCredential.Username);
             if (user == null)
             {
+                _logger.LogError($"User not found.");
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.ErrorMessages = new List<string> { "User not found" };
                 return null;
             }
 
