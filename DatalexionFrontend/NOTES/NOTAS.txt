@@ -67,3 +67,12 @@ Ctrl+M+U - Level 4 Methods
 
 
 /* ------------------------------------------------------------
+Error:
+HTTP Error 500.34 - ASP.NET Core does not support mixing hosting models
+
+https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/iis/out-of-process-hosting?view=aspnetcore-8.0
+
+Agregar en propiedades de proyecto UI.
+OutOfProcess
+<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+
