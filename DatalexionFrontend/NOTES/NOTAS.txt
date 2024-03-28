@@ -55,3 +55,15 @@ Agrupación por listas propias:
 Funcionalidades extras:
 - Buscador (deptos, circuitos)
 
+/* ------------------------------------------------------------
+
+VS Shortcuts
+
+Fold blocks:
+
+Ctrl+M+O - Level 3 Regions
+Ctrl+M+I - Level 2 Class
+Ctrl+M+U - Level 4 Methods
+
+
+/* ------------------------------------------------------------
