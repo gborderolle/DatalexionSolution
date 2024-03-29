@@ -117,7 +117,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (id <= 0)
                 {
                     _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new List<string> { Messages.Generic.NotValid };
+                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -127,7 +127,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (candidate == null)
                 {
                     _logger.LogError(string.Format(Messages.Candidate.NotFound, id));
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Candidate.NotFound, id) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Candidate.NotFound, id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -201,7 +201,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (client == null)
                 {
                     _logger.LogError(string.Format(Messages.Client.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Client.NotFound, clientId) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Client.NotFound, clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -210,7 +210,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (client.Party == null)
                 {
                     _logger.LogError(string.Format(Messages.Party.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Party.NotFound, clientId) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Party.NotFound, clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);

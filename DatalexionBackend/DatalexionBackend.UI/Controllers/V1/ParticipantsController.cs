@@ -101,7 +101,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (!ModelState.IsValid)
                 {
                     _logger.LogError($"Ocurrió un error en el servidor.");
-                    _response.ErrorMessages = new List<string> { $"Ocurrió un error en el servidor." };
+                    _response.ErrorMessages = new() { $"Ocurrió un error en el servidor." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(ModelState);
@@ -109,7 +109,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (await _participantRepository.Get(v => v.Name.ToLower() == participantCreateDto.Name.ToLower()) != null)
                 {
                     _logger.LogError($"El nombre {participantCreateDto.Name} ya existe en el sistema");
-                    _response.ErrorMessages = new List<string> { $"El nombre {participantCreateDto.Name} ya existe en el sistema." };
+                    _response.ErrorMessages = new() { $"El nombre {participantCreateDto.Name} ya existe en el sistema." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     ModelState.AddModelError("NameAlreadyExists", $"El nombre {participantCreateDto.Name} ya existe en el sistema.");

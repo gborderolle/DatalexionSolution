@@ -498,7 +498,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 {
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                    _response.ErrorMessages = new List<string> { "El rol ya existe." };
+                    _response.ErrorMessages = new() { "El rol ya existe." };
                     return BadRequest(_response);
                 }
 
@@ -593,7 +593,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (client == null)
                 {
                     _logger.LogError(string.Format(Messages.Client.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Client.NotFound, clientId) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Client.NotFound, clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -629,7 +629,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (client == null)
                 {
                     _logger.LogError(string.Format(Messages.Client.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Client.NotFound, clientId) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Client.NotFound, clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -679,7 +679,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _logger.LogError($"User not found.");
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.BadRequest;
-                _response.ErrorMessages = new List<string> { "User not found" };
+                _response.ErrorMessages = new() { "User not found" };
                 return null;
             }
 

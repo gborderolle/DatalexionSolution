@@ -109,7 +109,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (id <= 0)
                 {
                     _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new List<string> { Messages.Generic.NotValid };
+                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -119,7 +119,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (delegado == null)
                 {
                     _logger.LogError(string.Format(Messages.Delegados.NotFound, id));
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Delegados.NotFound, id) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Delegados.NotFound, id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -169,7 +169,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (client == null)
                 {
                     _logger.LogError(string.Format(Messages.Client.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Client.NotFound, clientId) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Client.NotFound, clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -218,7 +218,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (!ModelState.IsValid)
                 {
                     _logger.LogError(Messages.Generic.InternalError);
-                    _response.ErrorMessages = new List<string> { Messages.Generic.InternalError };
+                    _response.ErrorMessages = new() { Messages.Generic.InternalError };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(ModelState);
@@ -226,7 +226,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (await _delegadoRepository.Get(v => v.Name.ToLower() == delegateCreateDto.Name.ToLower()) != null)
                 {
                     _logger.LogError(Messages.Generic.NameAlreadyExists, delegateCreateDto.Name);
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Generic.NameAlreadyExists, delegateCreateDto.Name) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Generic.NameAlreadyExists, delegateCreateDto.Name) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     ModelState.AddModelError("NameAlreadyExists", string.Format(Messages.Generic.NameAlreadyExists, delegateCreateDto.Name));
@@ -237,7 +237,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (client == null)
                 {
                     _logger.LogError(Messages.Client.NotFoundGeneric);
-                    _response.ErrorMessages = new List<string> { Messages.Client.NotFoundGeneric };
+                    _response.ErrorMessages = new() { Messages.Client.NotFoundGeneric };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     ModelState.AddModelError("NotFound", Messages.Client.NotFoundGeneric);

@@ -120,7 +120,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (id <= 0)
                 {
                     _logger.LogError($"Error al obtener la entidad ID = {id}");
-                    _response.ErrorMessages = new List<string> { $"Error al obtener la entidad ID = {id}." };
+                    _response.ErrorMessages = new() { $"Error al obtener la entidad ID = {id}." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -135,7 +135,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (entity == null)
                 {
                     _logger.LogError($"Entidad no encontrada ID = {id}.");
-                    _response.ErrorMessages = new List<string> { $"Entidad no encontrada ID = {id}." };
+                    _response.ErrorMessages = new() { $"Entidad no encontrada ID = {id}." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -164,7 +164,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (id <= 0)
                 {
                     _logger.LogError($"El Id {id} es inválido.");
-                    _response.ErrorMessages = new List<string> { $"El Id {id} es inválido." };
+                    _response.ErrorMessages = new() { $"El Id {id} es inválido." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -174,7 +174,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (entity == null)
                 {
                     _logger.LogError($"Entidad no encontrada ID = {id}.");
-                    _response.ErrorMessages = new List<string> { $"Entidad no encontrada ID = {id}." };
+                    _response.ErrorMessages = new() { $"Entidad no encontrada ID = {id}." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -203,7 +203,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (id <= 0)
                 {
                     _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new List<string> { Messages.Generic.NotValid };
+                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -213,7 +213,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (entity == null)
                 {
                     _logger.LogError($"Entidad no encontrada ID = {id}.");
-                    _response.ErrorMessages = new List<string> { $"Entidad no encontrada ID = {id}" };
+                    _response.ErrorMessages = new() { $"Entidad no encontrada ID = {id}" };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -250,7 +250,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (patchDto == null || id <= 0)
                 {
                     _logger.LogError($"El Id {id} es inválido.");
-                    _response.ErrorMessages = new List<string> { $"El Id {id} es inválido." };
+                    _response.ErrorMessages = new() { $"El Id {id} es inválido." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);

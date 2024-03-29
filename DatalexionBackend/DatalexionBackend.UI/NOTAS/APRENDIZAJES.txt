@@ -11,7 +11,7 @@ Así se toma el User logueado:
     if (userId == null)
     {
         _logger.LogError($"Usuario no autorizado.");
-        _response.ErrorMessages = new List<string> { $"Usuario no autorizado." };
+        _response.ErrorMessages = new() { $"Usuario no autorizado." };
         _response.IsSuccess = false;
         _response.StatusCode = HttpStatusCode.Unauthorized;
         return Unauthorized($"Usuario no autorizado.");

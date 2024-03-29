@@ -93,7 +93,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (id <= 0)
                 {
                     _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new List<string> { Messages.Generic.NotValid };
+                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -103,7 +103,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (province == null)
                 {
                     _logger.LogError(string.Format(Messages.Province.NotFound, id));
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Province.NotFound, id) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Province.NotFound, id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -152,7 +152,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (!ModelState.IsValid)
                 {
                     _logger.LogError($"Ocurrió un error en el servidor.");
-                    _response.ErrorMessages = new List<string> { $"Ocurrió un error en el servidor." };
+                    _response.ErrorMessages = new() { $"Ocurrió un error en el servidor." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(ModelState);
@@ -160,7 +160,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (await _provinceRepository.Get(v => v.Name.ToLower() == provinceCreateDto.Name.ToLower()) != null)
                 {
                     _logger.LogError($"El nombre {provinceCreateDto.Name} ya existe en el sistema");
-                    _response.ErrorMessages = new List<string> { $"El nombre {provinceCreateDto.Name} ya existe en el sistema." };
+                    _response.ErrorMessages = new() { $"El nombre {provinceCreateDto.Name} ya existe en el sistema." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     ModelState.AddModelError("NameAlreadyExists", $"El nombre {provinceCreateDto.Name} ya existe en el sistema.");

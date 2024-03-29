@@ -109,7 +109,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (id <= 0)
                 {
                     _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new List<string> { Messages.Generic.NotValid };
+                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -128,7 +128,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (municipality == null)
                 {
                     _logger.LogError(string.Format(Messages.Municipality.NotFound, id));
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Municipality.NotFound, id) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Municipality.NotFound, id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -138,7 +138,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (municipality.Province == null)
                 {
                     _logger.LogError(string.Format(Messages.Province.NotFound, municipalityCreateDTO.ProvinceId), municipalityCreateDTO.ProvinceId);
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Province.NotFound, municipalityCreateDTO.ProvinceId) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Province.NotFound, municipalityCreateDTO.ProvinceId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -190,7 +190,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (!ModelState.IsValid)
                 {
                     _logger.LogError($"Ocurrió un error en el servidor.");
-                    _response.ErrorMessages = new List<string> { $"Ocurrió un error en el servidor." };
+                    _response.ErrorMessages = new() { $"Ocurrió un error en el servidor." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(ModelState);
@@ -198,7 +198,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (await _municipalityRepository.Get(v => v.Name.ToLower() == municipalityCreateDto.Name.ToLower()) != null)
                 {
                     _logger.LogError($"El nombre {municipalityCreateDto.Name} ya existe en el sistema");
-                    _response.ErrorMessages = new List<string> { $"El nombre {municipalityCreateDto.Name} ya existe en el sistema." };
+                    _response.ErrorMessages = new() { $"El nombre {municipalityCreateDto.Name} ya existe en el sistema." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     ModelState.AddModelError("NameAlreadyExists", $"El nombre {municipalityCreateDto.Name} ya existe en el sistema.");

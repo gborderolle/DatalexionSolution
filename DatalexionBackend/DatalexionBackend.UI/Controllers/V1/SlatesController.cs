@@ -145,7 +145,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (id <= 0)
                 {
                     _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new List<string> { Messages.Generic.NotValid };
+                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -188,7 +188,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (slate == null)
                 {
                     _logger.LogError(string.Format(Messages.Slate.NotFound, id));
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Slate.NotFound, id) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Slate.NotFound, id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -198,7 +198,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (slate.Candidate == null)
                 {
                     _logger.LogError(string.Format(Messages.Candidate.NotFound, slateCreateDTO.CandidateId), slateCreateDTO.CandidateId);
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Candidate.NotFound, slateCreateDTO.CandidateId) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Candidate.NotFound, slateCreateDTO.CandidateId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -208,7 +208,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (slate.Wing == null)
                 {
                     _logger.LogError(string.Format(Messages.Wing.NotFound, slateCreateDTO.WingId), slateCreateDTO.WingId);
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Wing.NotFound, slateCreateDTO.WingId) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Wing.NotFound, slateCreateDTO.WingId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -218,7 +218,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (slate.Province == null)
                 {
                     _logger.LogError(string.Format(Messages.Province.NotFound, slateCreateDTO.ProvinceId), slateCreateDTO.ProvinceId);
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Province.NotFound, slateCreateDTO.ProvinceId) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Province.NotFound, slateCreateDTO.ProvinceId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -284,7 +284,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (client == null)
                 {
                     _logger.LogError(string.Format(Messages.Client.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Client.NotFound, clientId) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Client.NotFound, clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -293,7 +293,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (client.Party == null)
                 {
                     _logger.LogError(string.Format(Messages.Party.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new List<string> { string.Format(Messages.Party.NotFound, clientId) };
+                    _response.ErrorMessages = new() { string.Format(Messages.Party.NotFound, clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -367,7 +367,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (!ModelState.IsValid)
                 {
                     _logger.LogError($"Ocurrió un error en el servidor.");
-                    _response.ErrorMessages = new List<string> { $"Ocurrió un error en el servidor." };
+                    _response.ErrorMessages = new() { $"Ocurrió un error en el servidor." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(ModelState);
@@ -375,7 +375,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 if (await _slateRepository.Get(v => v.Name.ToLower() == slateCreateDto.Name.ToLower()) != null)
                 {
                     _logger.LogError($"El nombre {slateCreateDto.Name} ya existe en el sistema");
-                    _response.ErrorMessages = new List<string> { $"El nombre {slateCreateDto.Name} ya existe en el sistema." };
+                    _response.ErrorMessages = new() { $"El nombre {slateCreateDto.Name} ya existe en el sistema." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     ModelState.AddModelError("NameAlreadyExists", $"El nombre {slateCreateDto.Name} ya existe en el sistema.");
