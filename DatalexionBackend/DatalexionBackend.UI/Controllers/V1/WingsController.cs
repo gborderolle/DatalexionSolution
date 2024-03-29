@@ -127,7 +127,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var wing = await _wingRepository.Get(v => v.Id == id, includes: includes);
                 if (wing == null)
                 {
-                    _logger.LogError(string.Format(Messages.Wing.NotFound, id), id);
+                    _logger.LogError(string.Format(Messages.Wing.NotFound, id));
                     _response.ErrorMessages = new List<string> { string.Format(Messages.Wing.NotFound, id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;

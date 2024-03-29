@@ -127,7 +127,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var municipality = await _municipalityRepository.Get(v => v.Id == id, includes: includes);
                 if (municipality == null)
                 {
-                    _logger.LogError(string.Format(Messages.Municipality.NotFound, id), id);
+                    _logger.LogError(string.Format(Messages.Municipality.NotFound, id));
                     _response.ErrorMessages = new List<string> { string.Format(Messages.Municipality.NotFound, id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;

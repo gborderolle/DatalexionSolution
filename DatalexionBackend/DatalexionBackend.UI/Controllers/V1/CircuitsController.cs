@@ -313,7 +313,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var circuit = await _circuitRepository.Get(v => v.Id == id);
                 if (circuit == null)
                 {
-                    _logger.LogError(string.Format(Messages.Circuit.NotFound, id), id);
+                    _logger.LogError(string.Format(Messages.Circuit.NotFound, id));
                     _response.ErrorMessages = new List<string> { string.Format(Messages.Circuit.NotFound, id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;

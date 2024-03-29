@@ -13,7 +13,7 @@ const AppFooter = (props) => {
           Datalexion
         </a>
         <span className="ms-1">
-          &copy; Todos los derechos reservados. - v.2.0 - Elecciones Generales
+          &copy; Todos los derechos reservados. - v.3.0 - Elecciones Generales
         </span>
       </div>
     </CFooter>

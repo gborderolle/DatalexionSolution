@@ -187,7 +187,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var slate = await _slateRepository.Get(v => v.Id == id, includes: includes, thenIncludes: thenIncludes);
                 if (slate == null)
                 {
-                    _logger.LogError(string.Format(Messages.Slate.NotFound, id), id);
+                    _logger.LogError(string.Format(Messages.Slate.NotFound, id));
                     _response.ErrorMessages = new List<string> { string.Format(Messages.Slate.NotFound, id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;

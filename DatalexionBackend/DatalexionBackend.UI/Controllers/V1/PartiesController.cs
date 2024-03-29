@@ -147,7 +147,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var party = await _partyRepository.Get(v => v.Id == id);
                 if (party == null)
                 {
-                    _logger.LogError(string.Format(Messages.Party.NotFound, id), id);
+                    _logger.LogError(string.Format(Messages.Party.NotFound, id));
                     _response.ErrorMessages = new List<string> { string.Format(Messages.Party.NotFound, id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;

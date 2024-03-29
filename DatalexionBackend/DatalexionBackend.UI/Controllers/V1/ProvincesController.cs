@@ -102,7 +102,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var province = await _provinceRepository.Get(v => v.Id == id);
                 if (province == null)
                 {
-                    _logger.LogError(string.Format(Messages.Province.NotFound, id), id);
+                    _logger.LogError(string.Format(Messages.Province.NotFound, id));
                     _response.ErrorMessages = new List<string> { string.Format(Messages.Province.NotFound, id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;

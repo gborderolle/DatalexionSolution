@@ -118,7 +118,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var delegado = await _delegadoRepository.Get(v => v.Id == id);
                 if (delegado == null)
                 {
-                    _logger.LogError(string.Format(Messages.Delegados.NotFound, id), id);
+                    _logger.LogError(string.Format(Messages.Delegados.NotFound, id));
                     _response.ErrorMessages = new List<string> { string.Format(Messages.Delegados.NotFound, id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
