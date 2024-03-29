@@ -227,7 +227,6 @@ namespace DatalexionBackend.Infrastructure.DbContext
             // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/20660148#notes
             // Generar GUID: https://guidgenerator.com/online-guid-generator.aspx
             // ---------------- Usuarios ---------------------------------------------
-            var userAdminId = "c2ee6493-5a73-46f3-a3f2-46d1d11d7176";
 
             var rolAdminId = "bef4cbd4-1f2b-472f-a1e2-e1a901f6808c";
             var rolAnalystId = "bef4cbd4-1f2b-472f-a3f2-e1a901f6811c";

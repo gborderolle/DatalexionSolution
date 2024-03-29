@@ -243,7 +243,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// </summary>
         /// <param name="datalexionUserCreateDTO">Datos para la creación del usuario.</param>
         /// <returns>Respuesta API indicando el resultado de la operación.</returns>
-        [HttpPost("CreateUser")] //api/accounts/register
+        [HttpPost("CreateUser")] //api/accounts/CreateUser
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> CreateUser(DatalexionUserCreateDTO datalexionUserCreateDTO)
         {
