@@ -49,7 +49,7 @@
             <summary>
             Crea un nuevo usuario en el sistema.
             </summary>
-            <param name="datalexionUserCreateDTO">Datos para la creación del usuario.</param>
+            <param name="dto">Datos para la creación del usuario.</param>
             <returns>Respuesta API indicando el resultado de la operación.</returns>
         </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.AccountsController.UpdateUser(System.String,DatalexionBackend.Core.DTO.DatalexionUserPatchDTO)">
@@ -57,28 +57,28 @@
             Actualiza los datos de un usuario existente.
             </summary>
             <param name="id">Identificador del usuario a actualizar.</param>
-            <param name="datalexionUserPatchDTO">Datos para la actualización del usuario.</param>
+            <param name="dto">Datos para la actualización del usuario.</param>
             <returns>Respuesta API indicando el resultado de la operación.</returns>
         </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.AccountsController.LoginDelegados(DatalexionBackend.Core.DTO.DelegadoLoginDTO)">
             <summary>
             Realiza el proceso de login para delegados.
             </summary>
-            <param name="delegadoLoginDTO">Credenciales de login del delegado.</param>
+            <param name="dto">Credenciales de login del delegado.</param>
             <returns>Respuesta API con el token de autenticación y datos del delegado.</returns>
         </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.AccountsController.LoginGeneral(DatalexionBackend.Core.DTO.DatalexionUserLoginDTO)">
             <summary>
             Realiza el proceso de login general.
             </summary>
-            <param name="datalexionUserLoginDTO">Credenciales de login del usuario.</param>
+            <param name="dto">Credenciales de login del usuario.</param>
             <returns>Respuesta API con el token de autenticación y datos del usuario.</returns>
         </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.AccountsController.CreateUserRole(DatalexionBackend.Core.DTO.DatalexionRoleCreateDTO)">
             <summary>
             Crea un nuevo rol en el sistema.
             </summary>
-            <param name="datalexionRoleCreateDTO">Datos para la creación del rol.</param>
+            <param name="dto">Datos para la creación del rol.</param>
             <returns>Respuesta API indicando el resultado de la operación.</returns>
         </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.AccountsController.UpdateUserRole(System.String,DatalexionBackend.Core.DTO.DatalexionRoleUpdateDTO)">
@@ -86,7 +86,7 @@
             Actualiza un rol existente.
             </summary>
             <param name="id">Identificador del rol a actualizar.</param>
-            <param name="datalexionRoleUpdateDTO">Datos para la actualización del rol.</param>
+            <param name="dto">Datos para la actualización del rol.</param>
             <returns>Respuesta API indicando el resultado de la operación.</returns>
         </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.AccountsController.GetUsersByClient(System.Int32)">

@@ -241,15 +241,15 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <summary>
         /// Crea un nuevo usuario en el sistema.
         /// </summary>
-        /// <param name="datalexionUserCreateDTO">Datos para la creación del usuario.</param>
+        /// <param name="dto">Datos para la creación del usuario.</param>
         /// <returns>Respuesta API indicando el resultado de la operación.</returns>
         [HttpPost("CreateUser")] //api/accounts/CreateUser
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
-        public async Task<ActionResult<APIResponse>> CreateUser(DatalexionUserCreateDTO datalexionUserCreateDTO)
+        public async Task<ActionResult<APIResponse>> CreateUser(DatalexionUserCreateDTO dto)
         {
             try
             {
-                var client = await _contextDB.Client.FirstOrDefaultAsync(c => c.Id == datalexionUserCreateDTO.ClientId);
+                var client = await _contextDB.Client.FirstOrDefaultAsync(c => c.Id == dto.ClientId);
                 if (client == null)
                 {
                     _response.IsSuccess = false;
@@ -260,23 +260,23 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 var user = new DatalexionUser
                 {
-                    UserName = datalexionUserCreateDTO.Username,
-                    Name = datalexionUserCreateDTO.Name,
-                    Email = datalexionUserCreateDTO.Email,
+                    UserName = dto.Username,
+                    Name = dto.Name,
+                    Email = dto.Email,
                     ClientId = client.Id
                 };
-                var result = await _userManager.CreateAsync(user, datalexionUserCreateDTO.Password);
+                var result = await _userManager.CreateAsync(user, dto.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("Registración correcta.");
-                    await _logService.LogAction("Account", "Create", $"Username: {datalexionUserCreateDTO.Username}, Rol: {datalexionUserCreateDTO.UserRoleId}.", datalexionUserCreateDTO.Username, client.Id);
+                    await _logService.LogAction("Account", "Create", $"Username: {dto.Username}, Rol: {dto.UserRoleId}.", dto.Username, client.Id);
 
                     _response.StatusCode = HttpStatusCode.OK;
 
                     // Asignar el rol al usuario
-                    if (!string.IsNullOrEmpty(datalexionUserCreateDTO.UserRoleId))
+                    if (!string.IsNullOrEmpty(dto.UserRoleId))
                     {
-                        var roleResult = await _userManager.AddToRoleAsync(user, datalexionUserCreateDTO.UserRoleName);
+                        var roleResult = await _userManager.AddToRoleAsync(user, dto.UserRoleName);
                         if (!roleResult.Succeeded)
                         {
                             _response.IsSuccess = false;
@@ -288,7 +288,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                     var userCredential = new DatalexionUserLoginDTO
                     {
                         Username = user.UserName,
-                        Password = datalexionUserCreateDTO.Password
+                        Password = dto.Password
                     };
                     _response.Result = await TokenSetup(userCredential);
                 }
@@ -314,11 +314,11 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// Actualiza los datos de un usuario existente.
         /// </summary>
         /// <param name="id">Identificador del usuario a actualizar.</param>
-        /// <param name="datalexionUserPatchDTO">Datos para la actualización del usuario.</param>
+        /// <param name="dto">Datos para la actualización del usuario.</param>
         /// <returns>Respuesta API indicando el resultado de la operación.</returns>
         [HttpPut("UpdateUser/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
-        public async Task<ActionResult<APIResponse>> UpdateUser(string id, [FromBody] DatalexionUserPatchDTO datalexionUserPatchDTO)
+        public async Task<ActionResult<APIResponse>> UpdateUser(string id, [FromBody] DatalexionUserPatchDTO dto)
         {
             try
             {
@@ -331,9 +331,9 @@ namespace DatalexionBackend.UI.Controllers.V1
                 }
 
                 // Actualiza los campos del usuario
-                user.UserName = datalexionUserPatchDTO.Username; // Si el email es también el nombre de usuario
-                user.Email = datalexionUserPatchDTO.Email;
-                user.Name = datalexionUserPatchDTO.Name;
+                user.UserName = dto.Username; // Si el email es también el nombre de usuario
+                user.Email = dto.Email;
+                user.Name = dto.Name;
 
                 var updateResult = await _userManager.UpdateAsync(user);
                 if (!updateResult.Succeeded)
@@ -345,15 +345,15 @@ namespace DatalexionBackend.UI.Controllers.V1
                 }
 
                 // Actualiza el rol si es necesario
-                if (!string.IsNullOrEmpty(datalexionUserPatchDTO.UserRoleId))
+                if (!string.IsNullOrEmpty(dto.UserRoleId))
                 {
                     var roles = await _userManager.GetRolesAsync(user);
                     await _userManager.RemoveFromRolesAsync(user, roles);
-                    await _userManager.AddToRoleAsync(user, datalexionUserPatchDTO.UserRoleName);
+                    await _userManager.AddToRoleAsync(user, dto.UserRoleName);
                 }
 
                 _logger.LogInformation("Usuario actualizado.");
-                await _logService.LogAction("Account", "Update", $"Username: {datalexionUserPatchDTO.Username}, Rol: {datalexionUserPatchDTO.UserRoleId}.", datalexionUserPatchDTO.Username, null);
+                await _logService.LogAction("Account", "Update", $"Username: {dto.Username}, Rol: {dto.UserRoleId}.", dto.Username, null);
 
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.Result = _mapper.Map<UserDTO>(user); // Mapea el usuario actualizado a un DTO si es necesario
@@ -371,19 +371,19 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <summary>
         /// Realiza el proceso de login para delegados.
         /// </summary>
-        /// <param name="delegadoLoginDTO">Credenciales de login del delegado.</param>
+        /// <param name="dto">Credenciales de login del delegado.</param>
         /// <returns>Respuesta API con el token de autenticación y datos del delegado.</returns>
         [HttpPost("LoginDelegados")]
         [AllowAnonymous]
-        public async Task<ActionResult<APIResponse>> LoginDelegados([FromBody] DelegadoLoginDTO delegadoLoginDTO)
+        public async Task<ActionResult<APIResponse>> LoginDelegados([FromBody] DelegadoLoginDTO dto)
         {
             try
             {
                 var delegado = await _contextDB.Delegado
                     .Include(d => d.ListCircuitDelegados) // Primero, incluye la lista de circuitos delegados del delegado
                     .ThenInclude(cd => cd.Circuit) // Luego, para cada circuito delegado, incluye el circuito relacionado
-                    .FirstOrDefaultAsync(d => d.CI == delegadoLoginDTO.CI); // Filtra para encontrar el delegado con el CI específico                
-                if (delegado != null && delegado.CI == delegadoLoginDTO.CI)
+                    .FirstOrDefaultAsync(d => d.CI == dto.CI); // Filtra para encontrar el delegado con el CI específico                
+                if (delegado != null && delegado.CI == dto.CI)
                 {
                     _logger.LogInformation("Login correcto.");
 
@@ -428,20 +428,20 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <summary>
         /// Realiza el proceso de login general.
         /// </summary>
-        /// <param name="datalexionUserLoginDTO">Credenciales de login del usuario.</param>
+        /// <param name="dto">Credenciales de login del usuario.</param>
         /// <returns>Respuesta API con el token de autenticación y datos del usuario.</returns>
         [HttpPost("LoginGeneral")]
         [AllowAnonymous]
-        public async Task<ActionResult<APIResponse>> LoginGeneral([FromBody] DatalexionUserLoginDTO datalexionUserLoginDTO)
+        public async Task<ActionResult<APIResponse>> LoginGeneral([FromBody] DatalexionUserLoginDTO dto)
         {
             try
             {
                 // lockoutOnFailure: bloquea al usuario si tiene muchos intentos de logueo
-                var result = await _signInManager.PasswordSignInAsync(datalexionUserLoginDTO.Username, datalexionUserLoginDTO.Password, isPersistent: false, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(dto.Username, dto.Password, isPersistent: false, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("Login correcto.");
-                    var user = await _userManager.FindByNameAsync(datalexionUserLoginDTO.Username);
+                    var user = await _userManager.FindByNameAsync(dto.Username);
                     if (user != null)
                     {
                         var roles = await _userManager.GetRolesAsync(user); // Obtener roles del usuario
@@ -449,12 +449,12 @@ namespace DatalexionBackend.UI.Controllers.V1
                         _response.StatusCode = HttpStatusCode.OK;
                         _response.Result = new
                         {
-                            Token = await TokenSetup(datalexionUserLoginDTO),
+                            Token = await TokenSetup(dto),
                             UserRoles = roles,
                             Fullname = user.Name,
                             ClientId = user.ClientId
                         };
-                        await SendLoginNotificationAdmin(datalexionUserLoginDTO);
+                        await SendLoginNotificationAdmin(dto);
                     }
                     else
                     {
@@ -485,15 +485,15 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <summary>
         /// Crea un nuevo rol en el sistema.
         /// </summary>
-        /// <param name="datalexionRoleCreateDTO">Datos para la creación del rol.</param>
+        /// <param name="dto">Datos para la creación del rol.</param>
         /// <returns>Respuesta API indicando el resultado de la operación.</returns>
         [HttpPost("CreateUserRole")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
-        public async Task<ActionResult<APIResponse>> CreateUserRole([FromBody] DatalexionRoleCreateDTO datalexionRoleCreateDTO)
+        public async Task<ActionResult<APIResponse>> CreateUserRole([FromBody] DatalexionRoleCreateDTO dto)
         {
             try
             {
-                var roleExist = await _roleManager.RoleExistsAsync(datalexionRoleCreateDTO.Name);
+                var roleExist = await _roleManager.RoleExistsAsync(dto.Name);
                 if (roleExist)
                 {
                     _response.IsSuccess = false;
@@ -504,7 +504,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 var newRole = new DatalexionRole
                 {
-                    Name = datalexionRoleCreateDTO.Name
+                    Name = dto.Name
                 };
 
                 var result = await _roleManager.CreateAsync(newRole);
@@ -536,11 +536,11 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// Actualiza un rol existente.
         /// </summary>
         /// <param name="id">Identificador del rol a actualizar.</param>
-        /// <param name="datalexionRoleUpdateDTO">Datos para la actualización del rol.</param>
+        /// <param name="dto">Datos para la actualización del rol.</param>
         /// <returns>Respuesta API indicando el resultado de la operación.</returns>
         [HttpPut("UpdateUserRole/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
-        public async Task<ActionResult<APIResponse>> UpdateUserRole(string id, [FromBody] DatalexionRoleUpdateDTO datalexionRoleUpdateDTO)
+        public async Task<ActionResult<APIResponse>> UpdateUserRole(string id, [FromBody] DatalexionRoleUpdateDTO dto)
         {
             try
             {
@@ -552,7 +552,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                     return NotFound(_response);
                 }
 
-                userRole.Name = datalexionRoleUpdateDTO.Name;
+                userRole.Name = dto.Name;
                 var updateResult = await _roleManager.UpdateAsync(userRole);
                 if (!updateResult.Succeeded)
                 {
