@@ -6,6 +6,10 @@ public class ClientMessage : IMessage<Client>
 {
     private readonly string _entityName = "Cliente";
     private readonly string _entityGender = "o";
+    public string ClientNotFoundUsername(string username)
+    {
+        return $"No existe el cliente con el nombre de usuario: {username}.";
+    }
     public string PartyNotFound(int partyId)
     {
         return $"No existe el partido Id: {partyId}.";

@@ -156,8 +156,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 client.Party = await _dbContext.Party.FindAsync(dto.PartyId);
                 if (client.Party == null)
                 {
-                    _logger.LogError(string.Format(Messages.Party.NotFound, dto.PartyId), dto.PartyId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Party.NotFound, dto.PartyId) };
+                    _logger.LogError(((ClientMessage)_message).PartyNotFound(dto.PartyId), dto.PartyId);
+                    _response.ErrorMessages = new() { ((ClientMessage)_message).PartyNotFound(dto.PartyId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -173,8 +173,8 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 var updatedClient = await _clientRepository.Update(client);
 
-                _logger.LogInformation(_message.ActionLog(id, party.Name));
-                await _logService.LogAction("Client", "Update", _message.ActionLog(id, party.Name), User.Identity.Name, null);
+                _logger.LogInformation(_message.ActionLog(id, client.Name));
+                await _logService.LogAction("Client", "Update", _message.ActionLog(id, client.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<ClientDTO>(updatedClient);
                 _response.StatusCode = HttpStatusCode.OK;
@@ -213,8 +213,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                     var delegado = await _delegadoRepository.Get(v => v.CI == username);
                     if (delegado == null)
                     {
-                        _logger.LogError(string.Format(Messages.Delegados.NotFoundUsername, username), username);
-                        _response.ErrorMessages = new() { string.Format(Messages.Delegados.NotFoundUsername, username) };
+                        _logger.LogError(((ClientMessage)_message).ClientNotFoundUsername(username), username);
+                        _response.ErrorMessages = new() { ((ClientMessage)_message).ClientNotFoundUsername(username) };
                         _response.IsSuccess = false;
                         _response.StatusCode = HttpStatusCode.NotFound;
                         return NotFound(_response);
@@ -237,8 +237,8 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 if (client == null)
                 {
-                    _logger.LogError(string.Format(Messages.Client.NotFoundUsername, username), username);
-                    _response.ErrorMessages = new() { string.Format(Messages.Client.NotFoundUsername, username) };
+                    _logger.LogError(((ClientMessage)_message).ClientNotFoundUsername(username));
+                    _response.ErrorMessages = new() { ((ClientMessage)_message).ClientNotFoundUsername(username) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);

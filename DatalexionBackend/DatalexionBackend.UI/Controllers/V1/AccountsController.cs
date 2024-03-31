@@ -450,7 +450,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                     {
                         var roles = await _userManager.GetRolesAsync(user);
 
-                        await _logService.LogAction(((DatalexionUserMessage)_messageUser).ActionLog(0, user.UserName), "Login", "Inicio de sesión.", user.UserName);
+                        await _logService.LogAction(((DatalexionUserMessage)_messageUser).ActionLog(0, user.UserName), "Login", "Inicio de sesión.", user.UserName, user.ClientId);
                         _logger.LogInformation(((DatalexionUserMessage)_messageUser).LoginSuccess(user.Id, user.UserName));
 
                         _response.StatusCode = HttpStatusCode.OK;

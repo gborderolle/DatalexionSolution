@@ -182,7 +182,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 await _provinceRepository.Create(province);
 
-                _logger.LogInformation(_message.Created(party.Id, party.Name));
+                _logger.LogInformation(_message.Created(province.Id, province.Name));
                 await _logService.LogAction("Province", "Create", $"Id:{province.Id}, Nombre: {province.Name}.", User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<ProvinceDTO>(province);

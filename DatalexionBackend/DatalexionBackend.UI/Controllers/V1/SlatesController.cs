@@ -197,11 +197,11 @@ namespace DatalexionBackend.UI.Controllers.V1
                     return NotFound(_response);
                 }
 
-                slate.Candidate = await _dbContext.Candidate.FindAsync(dto.CandidateId);
+                slate.Candidate = await _dbContext.Candidate.FindAsync(dto.CandidateId.Value);
                 if (slate.Candidate == null)
                 {
-                    _logger.LogError(string.Format(Messages.Candidate.NotFound, dto.CandidateId), dto.CandidateId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Candidate.NotFound, dto.CandidateId) };
+                    _logger.LogError(((CandidateMessage)_message).NotFound(dto.CandidateId.Value), dto.CandidateId.Value);
+                    _response.ErrorMessages = new() { ((CandidateMessage)_message).NotFound(dto.CandidateId.Value) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -210,8 +210,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 slate.Wing = await _dbContext.Wing.FindAsync(dto.WingId);
                 if (slate.Wing == null)
                 {
-                    _logger.LogError(string.Format(Messages.Wing.NotFound, dto.WingId), dto.WingId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Wing.NotFound, dto.WingId) };
+                    _logger.LogError(((WingMessage)_message).NotFound(dto.WingId), dto.WingId);
+                    _response.ErrorMessages = new() { ((WingMessage)_message).NotFound(dto.WingId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -220,8 +220,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 slate.Province = await _dbContext.Province.FindAsync(dto.ProvinceId);
                 if (slate.Province == null)
                 {
-                    _logger.LogError(string.Format(Messages.Province.NotFound, dto.ProvinceId), dto.ProvinceId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Province.NotFound, dto.ProvinceId) };
+                    _logger.LogError(((ProvinceMessage)_message).NotFound(dto.ProvinceId), dto.ProvinceId);
+                    _response.ErrorMessages = new() { ((ProvinceMessage)_message).NotFound(dto.ProvinceId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -295,8 +295,8 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 if (client.Party == null)
                 {
-                    _logger.LogError(string.Format(Messages.Party.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Party.NotFound, clientId) };
+                    _logger.LogError(((PartyMessage)_message).NotFound(clientId), clientId);
+                    _response.ErrorMessages = new() { ((PartyMessage)_message).NotFound(clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -403,7 +403,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                     await HandlePhotoUpload(dto.Photo, slate);
                 }
 
-                _logger.LogInformation(_message.Created(party.Id, party.Name));
+                _logger.LogInformation(_message.Created(slate.Id, slate.Name));
                 await _logService.LogAction("Slate", "Create", $"Id:{slate.Id}, Nombre: {slate.Name}.", User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<SlateDTO>(slate);

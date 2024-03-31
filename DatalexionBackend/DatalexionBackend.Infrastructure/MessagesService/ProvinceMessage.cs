@@ -10,7 +10,6 @@ public class ProvinceMessage : IMessage<Province>
     {
         return $"No existe el cliente Id: {clientId}.";
     }
-
     public string NotFoundGeneric()
     {
         return $"El sistema no tiene {_entityName} asignad{_entityGender}.";

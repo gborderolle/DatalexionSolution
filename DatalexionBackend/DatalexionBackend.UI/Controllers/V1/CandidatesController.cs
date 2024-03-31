@@ -212,8 +212,8 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 if (client.Party == null)
                 {
-                    _logger.LogError(_message.PartyNotFound(), clientId);
-                    _response.ErrorMessages = new() { _message.PartyNotFound() };
+                    _logger.LogError(((CandidateMessage)_message).PartyNotFound(), clientId);
+                    _response.ErrorMessages = new() { ((CandidateMessage)_message).PartyNotFound() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);

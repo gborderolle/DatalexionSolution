@@ -142,7 +142,7 @@
             Actualiza los datos de un candidato existente, incluyendo la posibilidad de actualizar su foto.
             </summary>
             <param name="id">ID del candidato a actualizar.</param>
-            <param name="candidateCreateDTO">Datos actualizados del candidato.</param>
+            <param name="dto">Datos actualizados del candidato.</param>
             <param name="file">Archivo de foto nueva del candidato.</param>
             <returns>El candidato actualizado.</returns>
         </member>
@@ -151,7 +151,7 @@
             Aplica cambios parciales a un candidato existente.
             </summary>
             <param name="id">ID del candidato a modificar.</param>
-            <param name="patchDto">Documento JSON con los cambios a aplicar.</param>
+            <param name="dto">Documento JSON con los cambios a aplicar.</param>
             <returns>El candidato con los cambios aplicados.</returns>
         </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.CandidatesController.GetCandidatesByClient(System.Int32)">
@@ -165,7 +165,7 @@
             <summary>
             Crea un nuevo candidato en el sistema.
             </summary>
-            <param name="candidateCreateDto">Datos del nuevo candidato.</param>
+            <param name="dto">Datos del nuevo candidato.</param>
             <returns>El candidato creado.</returns>
         </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.CandidatesController.HandlePhotoUpload(Microsoft.AspNetCore.Http.IFormFile,DatalexionBackend.Core.Domain.Entities.Candidate)">

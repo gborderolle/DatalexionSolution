@@ -330,8 +330,8 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 var updateCircuit = await _circuitRepository.Update(circuit);
 
-                _logger.LogInformation(_message.ActionLog(id, party.Name));
-                await _logService.LogAction("Circuit", "Update", _message.ActionLog(id, party.Name), User.Identity.Name, null);
+                _logger.LogInformation(_message.ActionLog(id, circuit.Name));
+                await _logService.LogAction("Circuit", "Update", _message.ActionLog(id, circuit.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<ProvinceDTO>(updateCircuit);
                 _response.StatusCode = HttpStatusCode.OK;
@@ -456,7 +456,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 await _circuitRepository.Create(circuit);
 
-                _logger.LogInformation(_message.Created(party.Id, party.Name));
+                _logger.LogInformation(_message.Created(circuit.Id, circuit.Name));
                 await _logService.LogAction("Circuit", "Create", $"Id:{circuit.Id}, Nombre: {circuit.Name}.", User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<CircuitDTO>(circuit);

@@ -140,8 +140,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 municipality.Province = await _dbContext.Province.FindAsync(dto.ProvinceId);
                 if (municipality.Province == null)
                 {
-                    _logger.LogError(_message.ProvinceNotFound(dto.ProvinceId));
-                    _response.ErrorMessages = new() { _message.ProvinceNotFound(dto.ProvinceId) };
+                    _logger.LogError(((ProvinceMessage)_message).NotFound(dto.ProvinceId));
+                    _response.ErrorMessages = new() { ((ProvinceMessage)_message).NotFound(dto.ProvinceId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);

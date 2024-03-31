@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using System.Net;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
@@ -202,8 +201,8 @@ namespace DatalexionBackend.UI.Controllers.V1
             {
                 if (id <= 0)
                 {
-                    _logger.LogError(_message.NotValid());
-                    _response.ErrorMessages = new() { _message.NotValid() };
+                    // _logger.LogError(_message.NotValid());
+                    // _response.ErrorMessages = new() { _message.NotValid() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
