@@ -202,8 +202,8 @@ namespace DatalexionBackend.UI.Controllers.V1
             {
                 if (id <= 0)
                 {
-                    _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
+                    _logger.LogError(_message.NotValid());
+                    _response.ErrorMessages = new() { _message.NotValid() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -241,13 +241,13 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
-        protected async Task<ActionResult<APIResponse>> Patch<TEntity, TDTO>(int id, JsonPatchDocument<TDTO> patchDto)
+        protected async Task<ActionResult<APIResponse>> Patch<TEntity, TDTO>(int id, JsonPatchDocument<TDTO> dto)
               where TEntity : class, IId, new()
               where TDTO : class
         {
             try
             {
-                if (patchDto == null || id <= 0)
+                if (dto == null || id <= 0)
                 {
                     _logger.LogError($"El Id {id} es inválido.");
                     _response.ErrorMessages = new() { $"El Id {id} es inválido." };
@@ -269,7 +269,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 TDTO dtoToPatch = _mapper.Map<TDTO>(entity);
 
                 // Aplicar el parche al DTO
-                patchDto.ApplyTo(dtoToPatch, error =>
+                dto.ApplyTo(dtoToPatch, error =>
                 {
                     ModelState.AddModelError(error.ErrorMessage, $"{error.Operation} failed on {error}: {error.ErrorMessage}");
                 });

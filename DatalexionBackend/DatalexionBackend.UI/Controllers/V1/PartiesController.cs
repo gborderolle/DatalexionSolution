@@ -1,4 +1,5 @@
 ﻿using DatalexionBackend.Infrastructure.DbContext;
+using DatalexionBackend.Infrastructure.MessagesService;
 using AutoMapper;
 using DatalexionBackend.Core.DTO;
 using DatalexionBackend.Core.Domain.Entities;
@@ -25,8 +26,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         private readonly ILogService _logService;
         private readonly IFileStorage _fileStorage;
         private readonly IPhotoRepository _photoRepository;
+        private readonly IMessage<Party> _message;
 
-        public PartiesController(ILogger<PartiesController> logger, IMapper mapper, IPartyRepository partyRepository, ContextDB dbContext, ILogService logService, IFileStorage fileStorage, IPhotoRepository photoRepository, IClientRepository clientRepository)
+        public PartiesController(ILogger<PartiesController> logger, IMapper mapper, IPartyRepository partyRepository, ContextDB dbContext, ILogService logService, IFileStorage fileStorage, IPhotoRepository photoRepository, IClientRepository clientRepository, IMessage<Party> message)
         : base(mapper, logger, partyRepository)
         {
             _response = new();
@@ -36,6 +38,7 @@ namespace DatalexionBackend.UI.Controllers.V1
             _fileStorage = fileStorage;
             _photoRepository = photoRepository;
             _clientRepository = clientRepository;
+            _message = message;
         }
 
         #region Endpoints genéricos
@@ -137,8 +140,8 @@ namespace DatalexionBackend.UI.Controllers.V1
             {
                 if (id <= 0)
                 {
-                    _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
+                    _logger.LogError(_message.NotValid());
+                    _response.ErrorMessages = new() { _message.NotValid() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -147,8 +150,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var party = await _partyRepository.Get(v => v.Id == id);
                 if (party == null)
                 {
-                    _logger.LogError(string.Format(Messages.Party.NotFound, id));
-                    _response.ErrorMessages = new() { string.Format(Messages.Party.NotFound, id) };
+                    _logger.LogError(_message.NotFound(id));
+                    _response.ErrorMessages = new() { _message.NotFound(id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -163,8 +166,8 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 var updatedParty = await _partyRepository.Update(party);
 
-                _logger.LogInformation(string.Format(Messages.Party.ActionLog, id, party.Name, id));
-                await _logService.LogAction("Party", "Update", string.Format(Messages.Party.ActionLog, id, party.Name), User.Identity.Name, null);
+                _logger.LogInformation(_message.ActionLog(id, party.Name));
+                await _logService.LogAction("Party", "Update", _message.ActionLog(id, party.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<PartyDTO>(updatedParty);
                 _response.StatusCode = HttpStatusCode.OK;
@@ -182,9 +185,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPatch("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<PartyPatchDTO> patchDto)
+        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<PartyPatchDTO> dto)
         {
-            return await Patch<Party, PartyPatchDTO>(id, patchDto);
+            return await Patch<Party, PartyPatchDTO>(id, dto);
         }
 
         #endregion
@@ -199,8 +202,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var client = await _clientRepository.Get(v => v.Id == clientId);
                 if (client == null)
                 {
-                    _logger.LogError(string.Format(Messages.Client.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Client.NotFound, clientId) };
+                    _logger.LogError(_message.ClientNotFound(clientId), clientId);
+                    _response.ErrorMessages = new() { _message.ClientNotFound(clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -299,7 +302,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                     await HandlePhotoUpload(partyCreateDto.PhotoShort, party, "partiesShort", (photo, p) => photo.PartyShort = p);
                 }
 
-                _logger.LogInformation($"Se creó correctamente el partido Id:{party.Id}.");
+                _logger.LogInformation(_message.Created(party.Id, party.Name));
                 await _logService.LogAction("Party", "Create", $"Id:{party.Id}, Nombre: {party.Name}.", User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<PartyDTO>(party);

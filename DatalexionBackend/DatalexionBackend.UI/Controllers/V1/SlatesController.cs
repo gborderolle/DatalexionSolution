@@ -4,6 +4,7 @@ using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Core.DTO;
 using DatalexionBackend.Core.Helpers;
 using DatalexionBackend.Infrastructure.DbContext;
+using DatalexionBackend.Infrastructure.MessagesService;
 using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -25,9 +26,10 @@ namespace DatalexionBackend.UI.Controllers.V1
         private readonly ContextDB _dbContext;
         private readonly ILogService _logService;
         private readonly IFileStorage _fileStorage;
-        private readonly IPhotoRepository _photoRepository; // Servicio que contiene la lógica principal de negocio para Reports.
+        private readonly IPhotoRepository _photoRepository;
+        private readonly IMessage<Slate> _message;
 
-        public SlatesController(ILogger<SlatesController> logger, IMapper mapper, ISlateRepository slateRepository, ContextDB dbContext, ILogService logService, IFileStorage fileStorage, IPhotoRepository photoRepository, IClientRepository clientRepository, IPartyRepository partyRepository, IWingRepository wingRepository)
+        public SlatesController(ILogger<SlatesController> logger, IMapper mapper, ISlateRepository slateRepository, ContextDB dbContext, ILogService logService, IFileStorage fileStorage, IPhotoRepository photoRepository, IClientRepository clientRepository, IPartyRepository partyRepository, IWingRepository wingRepository, IMessage<Slate> message)
         : base(mapper, logger, slateRepository)
         {
             _response = new();
@@ -39,6 +41,7 @@ namespace DatalexionBackend.UI.Controllers.V1
             _clientRepository = clientRepository;
             _partyRepository = partyRepository;
             _wingRepository = wingRepository;
+            _message = message;
         }
 
         #region Endpoints genéricos
@@ -138,14 +141,14 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] SlateCreateDTO slateCreateDTO)
+        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] SlateCreateDTO dto)
         {
             try
             {
                 if (id <= 0)
                 {
-                    _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
+                    _logger.LogError(_message.NotValid());
+                    _response.ErrorMessages = new() { _message.NotValid() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -187,61 +190,61 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var slate = await _slateRepository.Get(v => v.Id == id, includes: includes, thenIncludes: thenIncludes);
                 if (slate == null)
                 {
-                    _logger.LogError(string.Format(Messages.Slate.NotFound, id));
-                    _response.ErrorMessages = new() { string.Format(Messages.Slate.NotFound, id) };
+                    _logger.LogError(_message.NotFound(id));
+                    _response.ErrorMessages = new() { _message.NotFound(id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
 
-                slate.Candidate = await _dbContext.Candidate.FindAsync(slateCreateDTO.CandidateId);
+                slate.Candidate = await _dbContext.Candidate.FindAsync(dto.CandidateId);
                 if (slate.Candidate == null)
                 {
-                    _logger.LogError(string.Format(Messages.Candidate.NotFound, slateCreateDTO.CandidateId), slateCreateDTO.CandidateId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Candidate.NotFound, slateCreateDTO.CandidateId) };
+                    _logger.LogError(string.Format(Messages.Candidate.NotFound, dto.CandidateId), dto.CandidateId);
+                    _response.ErrorMessages = new() { string.Format(Messages.Candidate.NotFound, dto.CandidateId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
 
-                slate.Wing = await _dbContext.Wing.FindAsync(slateCreateDTO.WingId);
+                slate.Wing = await _dbContext.Wing.FindAsync(dto.WingId);
                 if (slate.Wing == null)
                 {
-                    _logger.LogError(string.Format(Messages.Wing.NotFound, slateCreateDTO.WingId), slateCreateDTO.WingId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Wing.NotFound, slateCreateDTO.WingId) };
+                    _logger.LogError(string.Format(Messages.Wing.NotFound, dto.WingId), dto.WingId);
+                    _response.ErrorMessages = new() { string.Format(Messages.Wing.NotFound, dto.WingId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
 
-                slate.Province = await _dbContext.Province.FindAsync(slateCreateDTO.ProvinceId);
+                slate.Province = await _dbContext.Province.FindAsync(dto.ProvinceId);
                 if (slate.Province == null)
                 {
-                    _logger.LogError(string.Format(Messages.Province.NotFound, slateCreateDTO.ProvinceId), slateCreateDTO.ProvinceId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Province.NotFound, slateCreateDTO.ProvinceId) };
+                    _logger.LogError(string.Format(Messages.Province.NotFound, dto.ProvinceId), dto.ProvinceId);
+                    _response.ErrorMessages = new() { string.Format(Messages.Province.NotFound, dto.ProvinceId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
 
                 // No usar AutoMapper para mapear todo el objeto, sino actualizar campo por campo
-                slate.Name = Utils.ToCamelCase(slateCreateDTO.Name);
-                slate.Comments = Utils.ToCamelCase(slateCreateDTO.Comments);
+                slate.Name = Utils.ToCamelCase(dto.Name);
+                slate.Comments = Utils.ToCamelCase(dto.Comments);
                 slate.Update = DateTime.Now;
 
-                slate.CandidateId = slateCreateDTO.CandidateId;
-                slate.Candidate = await _dbContext.Candidate.FindAsync(slateCreateDTO.CandidateId);
+                slate.CandidateId = dto.CandidateId;
+                slate.Candidate = await _dbContext.Candidate.FindAsync(dto.CandidateId);
 
-                slate.WingId = slateCreateDTO.WingId;
-                slate.Wing = await _dbContext.Wing.FindAsync(slateCreateDTO.WingId);
+                slate.WingId = dto.WingId;
+                slate.Wing = await _dbContext.Wing.FindAsync(dto.WingId);
 
-                slate.ProvinceId = slateCreateDTO.ProvinceId;
-                slate.Province = await _dbContext.Province.FindAsync(slateCreateDTO.ProvinceId);
+                slate.ProvinceId = dto.ProvinceId;
+                slate.Province = await _dbContext.Province.FindAsync(dto.ProvinceId);
 
                 var updatedSlate = await _slateRepository.Update(slate);
 
-                _logger.LogInformation(string.Format(Messages.Slate.ActionLog, id, slate.Name, id));
-                await _logService.LogAction("Slate", "Update", string.Format(Messages.Slate.ActionLog, id, slate.Name), User.Identity.Name, null);
+                _logger.LogInformation(_message.ActionLog(id, slate.Name));
+                await _logService.LogAction("Slate", "Update", _message.ActionLog(id, slate.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<SlateDTO>(updatedSlate);
                 _response.StatusCode = HttpStatusCode.OK;
@@ -259,9 +262,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPatch("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<SlatePatchDTO> patchDto)
+        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<SlatePatchDTO> dto)
         {
-            return await Patch<Slate, SlatePatchDTO>(id, patchDto);
+            return await Patch<Slate, SlatePatchDTO>(id, dto);
         }
 
         #endregion
@@ -283,8 +286,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var client = await _clientRepository.Get(v => v.Id == clientId, includes: includesClient);
                 if (client == null)
                 {
-                    _logger.LogError(string.Format(Messages.Client.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Client.NotFound, clientId) };
+                    _logger.LogError(_message.ClientNotFound(clientId), clientId);
+                    _response.ErrorMessages = new() { _message.ClientNotFound(clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -360,7 +363,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPost(Name = "CreateSlate")]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] SlateCreateDTO slateCreateDto)
+        public async Task<ActionResult<APIResponse>> Post([FromBody] SlateCreateDTO dto)
         {
             try
             {
@@ -372,35 +375,35 @@ namespace DatalexionBackend.UI.Controllers.V1
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(ModelState);
                 }
-                if (await _slateRepository.Get(v => v.Name.ToLower() == slateCreateDto.Name.ToLower()) != null)
+                if (await _slateRepository.Get(v => v.Name.ToLower() == dto.Name.ToLower()) != null)
                 {
-                    _logger.LogError($"El nombre {slateCreateDto.Name} ya existe en el sistema");
-                    _response.ErrorMessages = new() { $"El nombre {slateCreateDto.Name} ya existe en el sistema." };
+                    _logger.LogError($"El nombre {dto.Name} ya existe en el sistema");
+                    _response.ErrorMessages = new() { $"El nombre {dto.Name} ya existe en el sistema." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {slateCreateDto.Name} ya existe en el sistema.");
+                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {dto.Name} ya existe en el sistema.");
                     return BadRequest(ModelState);
                 }
 
-                slateCreateDto.Name = Utils.ToCamelCase(slateCreateDto.Name);
-                slateCreateDto.Comments = Utils.ToCamelCase(slateCreateDto.Comments);
+                dto.Name = Utils.ToCamelCase(dto.Name);
+                dto.Comments = Utils.ToCamelCase(dto.Comments);
 
-                Slate slate = _mapper.Map<Slate>(slateCreateDto);
+                Slate slate = _mapper.Map<Slate>(dto);
                 slate.Creation = DateTime.Now;
                 slate.Update = DateTime.Now;
 
-                slate.ListCircuitSlates = _mapper.Map<List<CircuitSlate>>(slateCreateDto.ListCircuitSlates);
-                slate.ListParticipants = _mapper.Map<List<Participant>>(slateCreateDto.ListParticipants);
+                slate.ListCircuitSlates = _mapper.Map<List<CircuitSlate>>(dto.ListCircuitSlates);
+                slate.ListParticipants = _mapper.Map<List<Participant>>(dto.ListParticipants);
 
                 await _slateRepository.Create(slate);
 
                 // Manejar carga de fotos
-                if (slateCreateDto.Photo != null)
+                if (dto.Photo != null)
                 {
-                    await HandlePhotoUpload(slateCreateDto.Photo, slate);
+                    await HandlePhotoUpload(dto.Photo, slate);
                 }
 
-                _logger.LogInformation($"Se creó correctamente la lista Id:{slate.Id}.");
+                _logger.LogInformation(_message.Created(party.Id, party.Name));
                 await _logService.LogAction("Slate", "Create", $"Id:{slate.Id}, Nombre: {slate.Name}.", User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<SlateDTO>(slate);

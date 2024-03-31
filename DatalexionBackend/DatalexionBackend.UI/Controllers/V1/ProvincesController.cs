@@ -4,6 +4,7 @@ using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Core.DTO;
 using DatalexionBackend.Core.Helpers;
 using DatalexionBackend.Infrastructure.DbContext;
+using DatalexionBackend.Infrastructure.MessagesService;
 using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -18,17 +19,19 @@ namespace DatalexionBackend.UI.Controllers.V1
     // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
     public class ProvincesController : CustomBaseController<Province>
     {
-        private readonly IProvinceRepository _provinceRepository; // Servicio que contiene la lógica principal de negocio para Provinces.
+        private readonly IProvinceRepository _provinceRepository;
         private readonly ContextDB _dbContext;
         private readonly ILogService _logService;
+        private readonly IMessage<Province> _message;
 
-        public ProvincesController(ILogger<ProvincesController> logger, IMapper mapper, IProvinceRepository provinceRepository, ContextDB dbContext, ILogService logService)
+        public ProvincesController(ILogger<ProvincesController> logger, IMapper mapper, IProvinceRepository provinceRepository, ContextDB dbContext, ILogService logService, IMessage<Province> message)
         : base(mapper, logger, provinceRepository)
         {
             _response = new();
             _provinceRepository = provinceRepository;
             _dbContext = dbContext;
             _logService = logService;
+            _message = message;
         }
 
         #region Endpoints genéricos
@@ -86,14 +89,14 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] ProvinceCreateDTO provinceCreateDTO)
+        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] ProvinceCreateDTO dto)
         {
             try
             {
                 if (id <= 0)
                 {
-                    _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
+                    _logger.LogError(_message.NotValid());
+                    _response.ErrorMessages = new() { _message.NotValid() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -102,22 +105,22 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var province = await _provinceRepository.Get(v => v.Id == id);
                 if (province == null)
                 {
-                    _logger.LogError(string.Format(Messages.Province.NotFound, id));
-                    _response.ErrorMessages = new() { string.Format(Messages.Province.NotFound, id) };
+                    _logger.LogError(_message.NotFound(id));
+                    _response.ErrorMessages = new() { _message.NotFound(id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
 
                 // No usar AutoMapper para mapear todo el objeto, sino actualizar campo por campo
-                province.Name = Utils.ToCamelCase(provinceCreateDTO.Name);
-                province.Comments = Utils.ToCamelCase(provinceCreateDTO.Comments);
+                province.Name = Utils.ToCamelCase(dto.Name);
+                province.Comments = Utils.ToCamelCase(dto.Comments);
                 province.Update = DateTime.Now;
 
                 var updatedProvince = await _provinceRepository.Update(province);
 
-                _logger.LogInformation(string.Format(Messages.Party.ActionLog, id, province.Name, id));
-                await _logService.LogAction("Province", "Update", string.Format(Messages.Province.ActionLog, id, province.Name), User.Identity.Name, null);
+                _logger.LogInformation(_message.ActionLog(id, province.Name));
+                await _logService.LogAction("Province", "Update", _message.ActionLog(id, province.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<ProvinceDTO>(updatedProvince);
                 _response.StatusCode = HttpStatusCode.OK;
@@ -135,9 +138,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPatch("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<ProvincePatchDTO> patchDto)
+        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<ProvincePatchDTO> dto)
         {
-            return await Patch<Province, ProvincePatchDTO>(id, patchDto);
+            return await Patch<Province, ProvincePatchDTO>(id, dto);
         }
 
         #endregion
@@ -145,7 +148,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         #region Endpoints específicos
 
         [HttpPost(Name = "CreateProvince")]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] ProvinceCreateDTO provinceCreateDto)
+        public async Task<ActionResult<APIResponse>> Post([FromBody] ProvinceCreateDTO dto)
         {
             try
             {
@@ -157,29 +160,29 @@ namespace DatalexionBackend.UI.Controllers.V1
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(ModelState);
                 }
-                if (await _provinceRepository.Get(v => v.Name.ToLower() == provinceCreateDto.Name.ToLower()) != null)
+                if (await _provinceRepository.Get(v => v.Name.ToLower() == dto.Name.ToLower()) != null)
                 {
-                    _logger.LogError($"El nombre {provinceCreateDto.Name} ya existe en el sistema");
-                    _response.ErrorMessages = new() { $"El nombre {provinceCreateDto.Name} ya existe en el sistema." };
+                    _logger.LogError($"El nombre {dto.Name} ya existe en el sistema");
+                    _response.ErrorMessages = new() { $"El nombre {dto.Name} ya existe en el sistema." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {provinceCreateDto.Name} ya existe en el sistema.");
+                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {dto.Name} ya existe en el sistema.");
                     return BadRequest(ModelState);
                 }
 
-                provinceCreateDto.Name = Utils.ToCamelCase(provinceCreateDto.Name);
-                provinceCreateDto.Comments = Utils.ToCamelCase(provinceCreateDto.Comments);
+                dto.Name = Utils.ToCamelCase(dto.Name);
+                dto.Comments = Utils.ToCamelCase(dto.Comments);
 
-                Province province = _mapper.Map<Province>(provinceCreateDto);
+                Province province = _mapper.Map<Province>(dto);
                 province.Creation = DateTime.Now;
                 province.Update = DateTime.Now;
 
-                province.ListMunicipalities = provinceCreateDto.ListMunicipalities;
-                province.ListSlates = provinceCreateDto.ListSlates;
+                province.ListMunicipalities = dto.ListMunicipalities;
+                province.ListSlates = dto.ListSlates;
 
                 await _provinceRepository.Create(province);
 
-                _logger.LogInformation($"Se creó correctamente el province Id:{province.Id}.");
+                _logger.LogInformation(_message.Created(party.Id, party.Name));
                 await _logService.LogAction("Province", "Create", $"Id:{province.Id}, Nombre: {province.Name}.", User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<ProvinceDTO>(province);

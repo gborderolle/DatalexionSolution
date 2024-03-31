@@ -4,6 +4,7 @@ using DatalexionBackend.Core.DTO;
 using DatalexionBackend.Core.Domain.Entities;
 using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Infrastructure.Services;
+using DatalexionBackend.Infrastructure.MessagesService;
 using DatalexionBackend.Core.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -26,8 +27,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         private readonly ILogService _logService;
         private readonly IFileStorage _fileStorage;
         private readonly IHubContext<NotifyHub> _hubContext;
+        private readonly IMessage<Circuit> _message;
 
-        public CircuitsController(ILogger<CircuitsController> logger, IMapper mapper, ICircuitRepository circuitRepository, IPhotoRepository photoRepository, IFileStorage fileStorage, ContextDB dbContext, ILogService logService, IHubContext<NotifyHub> hubContext)
+        public CircuitsController(ILogger<CircuitsController> logger, IMapper mapper, ICircuitRepository circuitRepository, IPhotoRepository photoRepository, IFileStorage fileStorage, ContextDB dbContext, ILogService logService, IHubContext<NotifyHub> hubContext, IMessage<Circuit> message)
             : base(mapper, logger, circuitRepository)
         {
             _circuitRepository = circuitRepository;
@@ -36,6 +38,7 @@ namespace DatalexionBackend.UI.Controllers.V1
             _dbContext = dbContext;
             _logService = logService;
             _hubContext = hubContext;
+            _message = message;
         }
 
         #region Endpoints genéricos
@@ -172,8 +175,8 @@ namespace DatalexionBackend.UI.Controllers.V1
             {
                 if (circuitCreateDTO == null || id <= 0)
                 {
-                    _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
+                    _logger.LogError(_message.NotValid());
+                    _response.ErrorMessages = new() { _message.NotValid() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -303,8 +306,8 @@ namespace DatalexionBackend.UI.Controllers.V1
             {
                 if (id <= 0)
                 {
-                    _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
+                    _logger.LogError(_message.NotValid());
+                    _response.ErrorMessages = new() { _message.NotValid() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -313,8 +316,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var circuit = await _circuitRepository.Get(v => v.Id == id);
                 if (circuit == null)
                 {
-                    _logger.LogError(string.Format(Messages.Circuit.NotFound, id));
-                    _response.ErrorMessages = new() { string.Format(Messages.Circuit.NotFound, id) };
+                    _logger.LogError(_message.NotFound(id));
+                    _response.ErrorMessages = new() { _message.NotFound(id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -327,8 +330,8 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 var updateCircuit = await _circuitRepository.Update(circuit);
 
-                _logger.LogInformation(string.Format(Messages.Circuit.ActionLog, id, circuit.Name));
-                await _logService.LogAction("Circuit", "Update", string.Format(Messages.Circuit.ActionLog, id, circuit.Name), User.Identity.Name, null);
+                _logger.LogInformation(_message.ActionLog(id, party.Name));
+                await _logService.LogAction("Circuit", "Update", _message.ActionLog(id, party.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<ProvinceDTO>(updateCircuit);
                 _response.StatusCode = HttpStatusCode.OK;
@@ -360,8 +363,8 @@ namespace DatalexionBackend.UI.Controllers.V1
             {
                 if (id <= 0)
                 {
-                    _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
+                    _logger.LogError(_message.NotValid());
+                    _response.ErrorMessages = new() { _message.NotValid() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -453,7 +456,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 await _circuitRepository.Create(circuit);
 
-                _logger.LogInformation($"Se creó correctamente el circuit Id:{circuit.Id}.");
+                _logger.LogInformation(_message.Created(party.Id, party.Name));
                 await _logService.LogAction("Circuit", "Create", $"Id:{circuit.Id}, Nombre: {circuit.Name}.", User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<CircuitDTO>(circuit);

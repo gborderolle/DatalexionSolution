@@ -4,6 +4,7 @@ using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Core.DTO;
 using DatalexionBackend.Core.Helpers;
 using DatalexionBackend.Infrastructure.DbContext;
+using DatalexionBackend.Infrastructure.MessagesService;
 using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -23,8 +24,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         private readonly IMunicipalityRepository _municipalityRepository;
         private readonly ContextDB _dbContext;
         private readonly ILogService _logService;
+        private readonly IMessage<Delegado> _message;
 
-        public DelegadosController(ILogger<DelegadosController> logger, IMapper mapper, IDelegadoRepository delegateRepository, ContextDB dbContext, ILogService logService, IClientRepository clientRepository, IMunicipalityRepository municipalityRepository)
+        public DelegadosController(ILogger<DelegadosController> logger, IMapper mapper, IDelegadoRepository delegateRepository, ContextDB dbContext, ILogService logService, IClientRepository clientRepository, IMunicipalityRepository municipalityRepository, IMessage<Delegado> message)
         : base(mapper, logger, delegateRepository)
         {
             _response = new();
@@ -33,6 +35,7 @@ namespace DatalexionBackend.UI.Controllers.V1
             _logService = logService;
             _clientRepository = clientRepository;
             _municipalityRepository = municipalityRepository;
+            _message = message;
         }
 
         #region Endpoints genéricos
@@ -102,14 +105,14 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] DelegadoCreateDTO delegateCreateDTO)
+        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] DelegadoCreateDTO dto)
         {
             try
             {
                 if (id <= 0)
                 {
-                    _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
+                    _logger.LogError(_message.NotValid());
+                    _response.ErrorMessages = new() { _message.NotValid() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -118,22 +121,22 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var delegado = await _delegadoRepository.Get(v => v.Id == id);
                 if (delegado == null)
                 {
-                    _logger.LogError(string.Format(Messages.Delegados.NotFound, id));
-                    _response.ErrorMessages = new() { string.Format(Messages.Delegados.NotFound, id) };
+                    _logger.LogError(_message.NotFound(id));
+                    _response.ErrorMessages = new() { _message.NotFound(id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
 
                 // No usar AutoMapper para mapear todo el objeto, sino actualizar campo por campo
-                delegado.Name = Utils.ToCamelCase(delegateCreateDTO.Name);
-                delegado.Comments = Utils.ToCamelCase(delegateCreateDTO.Comments);
+                delegado.Name = Utils.ToCamelCase(dto.Name);
+                delegado.Comments = Utils.ToCamelCase(dto.Comments);
                 delegado.Update = DateTime.Now;
 
                 var updatedDelegado = await _delegadoRepository.Update(delegado);
 
-                _logger.LogInformation(string.Format(Messages.Delegados.ActionLog, id, delegado.Name, id));
-                await _logService.LogAction("Delegado", "Update", string.Format(Messages.Delegados.ActionLog, id, delegado.Name), User.Identity.Name, null);
+                _logger.LogInformation(_message.ActionLog(id, delegado.Name));
+                await _logService.LogAction("Delegado", "Update", _message.ActionLog(id, delegado.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<DelegadoDTO>(updatedDelegado);
                 _response.StatusCode = HttpStatusCode.OK;
@@ -151,9 +154,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPatch("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<DelegadoPatchDTO> patchDto)
+        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<DelegadoPatchDTO> dto)
         {
-            return await Patch<Delegado, DelegadoPatchDTO>(id, patchDto);
+            return await Patch<Delegado, DelegadoPatchDTO>(id, dto);
         }
 
         #endregion
@@ -168,8 +171,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var client = await _clientRepository.Get(v => v.Id == clientId);
                 if (client == null)
                 {
-                    _logger.LogError(string.Format(Messages.Client.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Client.NotFound, clientId) };
+                    _logger.LogError(_message.ClientNotFound(clientId), clientId);
+                    _response.ErrorMessages = new() { _message.ClientNotFound(clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -211,56 +214,56 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPost(Name = "CreateDelegado")]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] DelegadoCreateDTO delegateCreateDto)
+        public async Task<ActionResult<APIResponse>> Post([FromBody] DelegadoCreateDTO dto)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    _logger.LogError(Messages.Generic.InternalError);
-                    _response.ErrorMessages = new() { Messages.Generic.InternalError };
+                    _logger.LogError(_message.InternalError());
+                    _response.ErrorMessages = new() { _message.InternalError() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(ModelState);
                 }
-                if (await _delegadoRepository.Get(v => v.Name.ToLower() == delegateCreateDto.Name.ToLower()) != null)
+                if (await _delegadoRepository.Get(v => v.Name.ToLower() == dto.Name.ToLower()) != null)
                 {
-                    _logger.LogError(Messages.Generic.NameAlreadyExists, delegateCreateDto.Name);
-                    _response.ErrorMessages = new() { string.Format(Messages.Generic.NameAlreadyExists, delegateCreateDto.Name) };
+                    _logger.LogError(_message.NameAlreadyExists(dto.Name), dto.Name);
+                    _response.ErrorMessages = new() { _message.NameAlreadyExists(dto.Name) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                    ModelState.AddModelError("NameAlreadyExists", string.Format(Messages.Generic.NameAlreadyExists, delegateCreateDto.Name));
+                    ModelState.AddModelError("NameAlreadyExists", _message.NameAlreadyExists(dto.Name));
                     return BadRequest(ModelState);
                 }
 
-                var client = _dbContext.Client.Where(c => c.Id == delegateCreateDto.ClientId).FirstOrDefault();
+                var client = _dbContext.Client.Where(c => c.Id == dto.ClientId).FirstOrDefault();
                 if (client == null)
                 {
-                    _logger.LogError(Messages.Client.NotFoundGeneric);
-                    _response.ErrorMessages = new() { Messages.Client.NotFoundGeneric };
+                    _logger.LogError(_message.ClientNotFound(dto.ClientId));
+                    _response.ErrorMessages = new() { _message.ClientNotFound(dto.ClientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                    ModelState.AddModelError("NotFound", Messages.Client.NotFoundGeneric);
+                    ModelState.AddModelError("NotFound", _message.ClientNotFound(dto.ClientId));
                     return BadRequest(ModelState);
                 }
 
-                delegateCreateDto.Name = Utils.ToCamelCase(delegateCreateDto.Name);
-                delegateCreateDto.Comments = Utils.ToCamelCase(delegateCreateDto.Comments);
+                dto.Name = Utils.ToCamelCase(dto.Name);
+                dto.Comments = Utils.ToCamelCase(dto.Comments);
 
-                Delegado delegado = _mapper.Map<Delegado>(delegateCreateDto);
+                Delegado delegado = _mapper.Map<Delegado>(dto);
                 delegado.Creation = DateTime.Now;
                 delegado.Update = DateTime.Now;
 
                 //
-                delegado.ListMunicipalities = _dbContext.Municipality.Where(m => delegateCreateDto.MunicipalityIds.Contains(m.Id)).ToList();
+                delegado.ListMunicipalities = _dbContext.Municipality.Where(m => dto.MunicipalityIds.Contains(m.Id)).ToList();
                 delegado.Client = client;
                 delegado.ClientId = client.Id;
                 //  
 
                 await _delegadoRepository.Create(delegado);
 
-                _logger.LogInformation(string.Format(Messages.Delegados.Created, delegado.Id));
-                await _logService.LogAction("Delegado", "Create", string.Format(Messages.Delegados.ActionLog, delegado.Id, delegado.Name), User.Identity.Name, null);
+                _logger.LogInformation(_message.Created(delegado.Id, delegado.Name));
+                await _logService.LogAction("Delegado", "Create", _message.ActionLog(delegado.Id, delegado.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<DelegadoDTO>(delegado);
                 _response.StatusCode = HttpStatusCode.Created;

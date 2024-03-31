@@ -4,6 +4,7 @@ using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Core.DTO;
 using DatalexionBackend.Core.Helpers;
 using DatalexionBackend.Infrastructure.DbContext;
+using DatalexionBackend.Infrastructure.MessagesService;
 using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -24,8 +25,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         private readonly IDelegadoRepository _delegadoRepository;
         private readonly ContextDB _dbContext;
         private readonly ILogService _logService;
+        private readonly IMessage<Client> _message;
 
-        public ClientsController(ILogger<ClientsController> logger, IMapper mapper, IClientRepository clientRepository, ContextDB dbContext, ILogService logService, IDatalexionUserRepository datalexionUserRepository, IDelegadoRepository delegadoRepository)
+        public ClientsController(ILogger<ClientsController> logger, IMapper mapper, IClientRepository clientRepository, ContextDB dbContext, ILogService logService, IDatalexionUserRepository datalexionUserRepository, IDelegadoRepository delegadoRepository, IMessage<Client> message)
         : base(mapper, logger, clientRepository)
         {
             _response = new();
@@ -34,6 +36,7 @@ namespace DatalexionBackend.UI.Controllers.V1
             _logService = logService;
             _datalexionUserRepository = datalexionUserRepository;
             _delegadoRepository = delegadoRepository;
+            _message = message;
         }
 
         #region Endpoints genéricos
@@ -118,14 +121,14 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] ClientCreateDTO clientCreateDTO)
+        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] ClientCreateDTO dto)
         {
             try
             {
                 if (id <= 0)
                 {
-                    _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
+                    _logger.LogError(_message.NotValid());
+                    _response.ErrorMessages = new() { _message.NotValid() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -143,35 +146,35 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var client = await _clientRepository.Get(v => v.Id == id, includes: includes);
                 if (client == null)
                 {
-                    _logger.LogError(string.Format(Messages.Client.NotFound, id));
-                    _response.ErrorMessages = new() { string.Format(Messages.Client.NotFound, id) };
+                    _logger.LogError(_message.NotFound(id));
+                    _response.ErrorMessages = new() { _message.NotFound(id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
 
-                client.Party = await _dbContext.Party.FindAsync(clientCreateDTO.PartyId);
+                client.Party = await _dbContext.Party.FindAsync(dto.PartyId);
                 if (client.Party == null)
                 {
-                    _logger.LogError(string.Format(Messages.Party.NotFound, clientCreateDTO.PartyId), clientCreateDTO.PartyId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Party.NotFound, clientCreateDTO.PartyId) };
+                    _logger.LogError(string.Format(Messages.Party.NotFound, dto.PartyId), dto.PartyId);
+                    _response.ErrorMessages = new() { string.Format(Messages.Party.NotFound, dto.PartyId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
 
                 // No usar AutoMapper para mapear todo el objeto, sino actualizar campo por campo
-                client.Name = Utils.ToCamelCase(clientCreateDTO.Name);
-                client.Comments = Utils.ToCamelCase(clientCreateDTO.Comments);
+                client.Name = Utils.ToCamelCase(dto.Name);
+                client.Comments = Utils.ToCamelCase(dto.Comments);
                 client.Update = DateTime.Now;
 
-                client.PartyId = clientCreateDTO.PartyId;
-                client.Party = await _dbContext.Party.FindAsync(clientCreateDTO.PartyId);
+                client.PartyId = dto.PartyId;
+                client.Party = await _dbContext.Party.FindAsync(dto.PartyId);
 
                 var updatedClient = await _clientRepository.Update(client);
 
-                _logger.LogInformation(string.Format(Messages.Client.ActionLog, id, client.Name));
-                await _logService.LogAction("Client", "Update", string.Format(Messages.Client.ActionLog, id, client.Name), User.Identity.Name, null);
+                _logger.LogInformation(_message.ActionLog(id, party.Name));
+                await _logService.LogAction("Client", "Update", _message.ActionLog(id, party.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<ClientDTO>(updatedClient);
                 _response.StatusCode = HttpStatusCode.OK;
@@ -189,9 +192,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPatch("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<ClientPatchDTO> patchDto)
+        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<ClientPatchDTO> dto)
         {
-            return await Patch<Client, ClientPatchDTO>(id, patchDto);
+            return await Patch<Client, ClientPatchDTO>(id, dto);
         }
 
         #endregion
@@ -256,7 +259,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPost(Name = "CreateClient")]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] ClientCreateDTO clientCreateDto)
+        public async Task<ActionResult<APIResponse>> Post([FromBody] ClientCreateDTO dto)
         {
             return Ok();
         }

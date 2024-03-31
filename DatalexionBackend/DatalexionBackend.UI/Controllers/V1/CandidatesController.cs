@@ -3,6 +3,7 @@ using DatalexionBackend.Core.Domain.Entities;
 using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Core.DTO;
 using DatalexionBackend.Core.Helpers;
+using DatalexionBackend.Infrastructure.MessagesService;
 using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -24,8 +25,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         private readonly ILogService _logService;
         private readonly IFileStorage _fileStorage;
         private readonly IPhotoRepository _photoRepository;
+        private readonly IMessage<Candidate> _message;
 
-        public CandidatesController(ILogger<CandidatesController> logger, IMapper mapper, ICandidateRepository candidateRepository, ILogService logService, IFileStorage fileStorage, IPhotoRepository photoRepository, IClientRepository clientRepository, IWingRepository wingRepository, ISlateRepository slateRepository)
+        public CandidatesController(ILogger<CandidatesController> logger, IMapper mapper, ICandidateRepository candidateRepository, ILogService logService, IFileStorage fileStorage, IPhotoRepository photoRepository, IClientRepository clientRepository, IWingRepository wingRepository, ISlateRepository slateRepository, IMessage<Candidate> message)
         : base(mapper, logger, candidateRepository)
         {
             _response = new();
@@ -36,6 +38,7 @@ namespace DatalexionBackend.UI.Controllers.V1
             _clientRepository = clientRepository;
             _wingRepository = wingRepository;
             _slateRepository = slateRepository;
+            _message = message;
         }
 
         #region Endpoints genéricos
@@ -105,19 +108,19 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// Actualiza los datos de un candidato existente, incluyendo la posibilidad de actualizar su foto.
         /// </summary>
         /// <param name="id">ID del candidato a actualizar.</param>
-        /// <param name="candidateCreateDTO">Datos actualizados del candidato.</param>
+        /// <param name="dto">Datos actualizados del candidato.</param>
         /// <param name="file">Archivo de foto nueva del candidato.</param>
         /// <returns>El candidato actualizado.</returns>
         [HttpPut("{id:int}")]
         [Consumes("multipart/form-data")]
-        public async Task<ActionResult<APIResponse>> Put(int id, [FromForm] CandidateCreateDTO candidateCreateDTO, IFormFile file)
+        public async Task<ActionResult<APIResponse>> Put(int id, [FromForm] CandidateCreateDTO dto, IFormFile file)
         {
             try
             {
                 if (id <= 0)
                 {
-                    _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
+                    _logger.LogError(_message.NotValid());
+                    _response.ErrorMessages = new() { _message.NotValid() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -126,16 +129,16 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var candidate = await _candidateRepository.Get(v => v.Id == id);
                 if (candidate == null)
                 {
-                    _logger.LogError(string.Format(Messages.Candidate.NotFound, id));
-                    _response.ErrorMessages = new() { string.Format(Messages.Candidate.NotFound, id) };
+                    _logger.LogError(_message.NotFound(id));
+                    _response.ErrorMessages = new() { _message.NotFound(id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
 
                 // No usar AutoMapper para mapear todo el objeto, sino actualizar campo por campo
-                candidate.Name = Utils.ToCamelCase(candidateCreateDTO.Name);
-                candidate.Comments = Utils.ToCamelCase(candidateCreateDTO.Comments);
+                candidate.Name = Utils.ToCamelCase(dto.Name);
+                candidate.Comments = Utils.ToCamelCase(dto.Comments);
                 candidate.Update = DateTime.Now;
 
                 // Manejar carga de fotos
@@ -146,8 +149,8 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 var updatedCandidate = await _candidateRepository.Update(candidate);
 
-                _logger.LogInformation(string.Format(Messages.Candidate.ActionLog, id, candidate.Name));
-                await _logService.LogAction("Candidate", "Update", string.Format(Messages.Candidate.ActionLog, id, candidate.Name), User.Identity.Name, null);
+                _logger.LogInformation(_message.ActionLog(id, candidate.Name));
+                await _logService.LogAction("Candidate", "Update", _message.ActionLog(id, candidate.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<CandidateDTO>(updatedCandidate);
                 _response.StatusCode = HttpStatusCode.OK;
@@ -168,12 +171,12 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// Aplica cambios parciales a un candidato existente.
         /// </summary>
         /// <param name="id">ID del candidato a modificar.</param>
-        /// <param name="patchDto">Documento JSON con los cambios a aplicar.</param>
+        /// <param name="dto">Documento JSON con los cambios a aplicar.</param>
         /// <returns>El candidato con los cambios aplicados.</returns>
         [HttpPatch("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<CandidatePatchDTO> patchDto)
+        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<CandidatePatchDTO> dto)
         {
-            return await Patch<Candidate, CandidatePatchDTO>(id, patchDto);
+            return await Patch<Candidate, CandidatePatchDTO>(id, dto);
         }
 
         #endregion
@@ -200,8 +203,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var client = await _clientRepository.Get(v => v.Id == clientId, includes: includesClient);
                 if (client == null)
                 {
-                    _logger.LogError(string.Format(Messages.Client.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Client.NotFound, clientId) };
+                    _logger.LogError(_message.ClientNotFound(clientId), clientId);
+                    _response.ErrorMessages = new() { _message.ClientNotFound(clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -209,8 +212,8 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 if (client.Party == null)
                 {
-                    _logger.LogError(string.Format(Messages.Party.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Party.NotFound, clientId) };
+                    _logger.LogError(_message.PartyNotFound(), clientId);
+                    _response.ErrorMessages = new() { _message.PartyNotFound() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -263,10 +266,10 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <summary>
         /// Crea un nuevo candidato en el sistema.
         /// </summary>
-        /// <param name="candidateCreateDto">Datos del nuevo candidato.</param>
+        /// <param name="dto">Datos del nuevo candidato.</param>
         /// <returns>El candidato creado.</returns>
         [HttpPost(Name = "CreateCandidate")]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] CandidateCreateDTO candidateCreateDto)
+        public async Task<ActionResult<APIResponse>> Post([FromBody] CandidateCreateDTO dto)
         {
             return Ok();
         }

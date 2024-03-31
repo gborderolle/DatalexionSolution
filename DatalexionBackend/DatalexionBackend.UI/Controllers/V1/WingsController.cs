@@ -4,6 +4,7 @@ using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Core.DTO;
 using DatalexionBackend.Core.Helpers;
 using DatalexionBackend.Infrastructure.DbContext;
+using DatalexionBackend.Infrastructure.MessagesService;
 using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -18,15 +19,16 @@ namespace DatalexionBackend.UI.Controllers.V1
     // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
     public class WingsController : CustomBaseController<Wing>
     {
-        private readonly IWingRepository _wingRepository; // Servicio que contiene la lógica principal de negocio para Wings.
+        private readonly IWingRepository _wingRepository;
         private readonly IClientRepository _clientRepository;
         private readonly IPartyRepository _partyRepository;
         private readonly ContextDB _dbContext;
         private readonly ILogService _logService;
         private readonly IFileStorage _fileStorage;
-        private readonly IPhotoRepository _photoRepository; // Servicio que contiene la lógica principal de negocio para Reports.
+        private readonly IPhotoRepository _photoRepository;
+        private readonly IMessage<Wing> _message;
 
-        public WingsController(ILogger<WingsController> logger, IMapper mapper, IWingRepository wingRepository, ContextDB dbContext, ILogService logService, IFileStorage fileStorage, IPhotoRepository photoRepository, IClientRepository clientRepository, IPartyRepository partyRepository)
+        public WingsController(ILogger<WingsController> logger, IMapper mapper, IWingRepository wingRepository, ContextDB dbContext, ILogService logService, IFileStorage fileStorage, IPhotoRepository photoRepository, IClientRepository clientRepository, IPartyRepository partyRepository, IMessage<Wing> message)
         : base(mapper, logger, wingRepository)
         {
             _response = new();
@@ -37,6 +39,7 @@ namespace DatalexionBackend.UI.Controllers.V1
             _photoRepository = photoRepository;
             _clientRepository = clientRepository;
             _partyRepository = partyRepository;
+            _message = message;
         }
 
         #region Endpoints genéricos
@@ -102,14 +105,14 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] WingCreateDTO wingCreateDTO)
+        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] WingCreateDTO dto)
         {
             try
             {
                 if (id <= 0)
                 {
-                    _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
+                    _logger.LogError(_message.NotValid());
+                    _response.ErrorMessages = new() { _message.NotValid() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -127,35 +130,35 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var wing = await _wingRepository.Get(v => v.Id == id, includes: includes);
                 if (wing == null)
                 {
-                    _logger.LogError(string.Format(Messages.Wing.NotFound, id));
-                    _response.ErrorMessages = new() { string.Format(Messages.Wing.NotFound, id) };
+                    _logger.LogError(_message.NotFound(id));
+                    _response.ErrorMessages = new() { _message.NotFound(id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
 
-                wing.Party = await _dbContext.Party.FindAsync(wingCreateDTO.PartyId);
+                wing.Party = await _dbContext.Party.FindAsync(dto.PartyId);
                 if (wing.Party == null)
                 {
-                    _logger.LogError(string.Format(Messages.Party.NotFound, wingCreateDTO.PartyId), wingCreateDTO.PartyId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Party.NotFound, wingCreateDTO.PartyId) };
+                    _logger.LogError(_message.PartyNotFound(dto.PartyId));
+                    _response.ErrorMessages = new() { _message.PartyNotFound(dto.PartyId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
 
                 // No usar AutoMapper para mapear todo el objeto, sino actualizar campo por campo
-                wing.Name = Utils.ToCamelCase(wingCreateDTO.Name);
-                wing.Comments = Utils.ToCamelCase(wingCreateDTO.Comments);
+                wing.Name = Utils.ToCamelCase(dto.Name);
+                wing.Comments = Utils.ToCamelCase(dto.Comments);
                 wing.Update = DateTime.Now;
 
-                wing.PartyId = wingCreateDTO.PartyId;
-                wing.Party = await _dbContext.Party.FindAsync(wingCreateDTO.PartyId);
+                wing.PartyId = dto.PartyId;
+                wing.Party = await _dbContext.Party.FindAsync(dto.PartyId);
 
                 var updatedWing = await _wingRepository.Update(wing);
 
-                _logger.LogInformation(string.Format(Messages.Wing.ActionLog, id, wing.Name, id));
-                await _logService.LogAction("Wing", "Update", string.Format(Messages.Wing.ActionLog, id, wing.Name), User.Identity.Name, null);
+                _logger.LogInformation(_message.ActionLog(id, wing.Name));
+                await _logService.LogAction("Wing", "Update", _message.ActionLog(id, wing.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<WingDTO>(updatedWing);
                 _response.StatusCode = HttpStatusCode.OK;
@@ -173,9 +176,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPatch("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<WingPatchDTO> patchDto)
+        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<WingPatchDTO> dto)
         {
-            return await Patch<Wing, WingPatchDTO>(id, patchDto);
+            return await Patch<Wing, WingPatchDTO>(id, dto);
         }
 
         #endregion
@@ -197,8 +200,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var client = await _clientRepository.Get(v => v.Id == clientId, includes: includesClient);
                 if (client == null)
                 {
-                    _logger.LogError(string.Format(Messages.Client.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Client.NotFound, clientId) };
+                    _logger.LogError(_message.ClientNotFound(clientId), clientId);
+                    _response.ErrorMessages = new() { _message.ClientNotFound(clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -206,8 +209,8 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 if (client.Party == null)
                 {
-                    _logger.LogError(string.Format(Messages.Party.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Party.NotFound, clientId) };
+                    _logger.LogError(_message.PartyNotFound(), clientId);
+                    _response.ErrorMessages = new() { _message.PartyNotFound() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -247,7 +250,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPost(Name = "CreateWing")]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] WingCreateDTO wingCreateDto)
+        public async Task<ActionResult<APIResponse>> Post([FromBody] WingCreateDTO dto)
         {
             try
             {
@@ -259,34 +262,34 @@ namespace DatalexionBackend.UI.Controllers.V1
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(ModelState);
                 }
-                if (await _wingRepository.Get(v => v.Name.ToLower() == wingCreateDto.Name.ToLower()) != null)
+                if (await _wingRepository.Get(v => v.Name.ToLower() == dto.Name.ToLower()) != null)
                 {
-                    _logger.LogError($"El nombre {wingCreateDto.Name} ya existe en el sistema");
-                    _response.ErrorMessages = new() { $"El nombre {wingCreateDto.Name} ya existe en el sistema." };
+                    _logger.LogError($"El nombre {dto.Name} ya existe en el sistema");
+                    _response.ErrorMessages = new() { $"El nombre {dto.Name} ya existe en el sistema." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {wingCreateDto.Name} ya existe en el sistema.");
+                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {dto.Name} ya existe en el sistema.");
                     return BadRequest(ModelState);
                 }
 
-                wingCreateDto.Name = Utils.ToCamelCase(wingCreateDto.Name);
-                wingCreateDto.Comments = Utils.ToCamelCase(wingCreateDto.Comments);
+                dto.Name = Utils.ToCamelCase(dto.Name);
+                dto.Comments = Utils.ToCamelCase(dto.Comments);
 
-                Wing wing = _mapper.Map<Wing>(wingCreateDto);
+                Wing wing = _mapper.Map<Wing>(dto);
                 wing.Creation = DateTime.Now;
                 wing.Update = DateTime.Now;
 
-                wing.ListSlates = _mapper.Map<List<Slate>>(wingCreateDto.ListSlates);
+                wing.ListSlates = _mapper.Map<List<Slate>>(dto.ListSlates);
 
                 await _wingRepository.Create(wing);
 
                 // Manejar carga de fotos
-                if (wingCreateDto.Photo != null)
+                if (dto.Photo != null)
                 {
-                    await HandlePhotoUpload(wingCreateDto.Photo, wing);
+                    await HandlePhotoUpload(dto.Photo, wing);
                 }
 
-                _logger.LogInformation($"Se creó correctamente el wing Id:{wing.Id}.");
+                _logger.LogInformation(_message.Created(wing.Id, wing.Name));
                 await _logService.LogAction("Wing", "Create", $"Id:{wing.Id}, Nombre: {wing.Name}.", User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<WingDTO>(wing);

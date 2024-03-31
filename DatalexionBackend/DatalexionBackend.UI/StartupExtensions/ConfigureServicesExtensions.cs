@@ -7,6 +7,7 @@ using DatalexionBackend.Core.Helpers;
 using DatalexionBackend.Core.Services;
 using DatalexionBackend.EmailService;
 using DatalexionBackend.Infrastructure.DbContext;
+using DatalexionBackend.Infrastructure.MessagesService;
 using DatalexionBackend.Infrastructure.Repositories;
 using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,7 +17,6 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -97,8 +97,11 @@ public static class ConfigureServicesExtensions
         services.AddScoped<ISlateRepository, SlateRepository>();
         services.AddScoped<IWingRepository, WingRepository>();
         services.AddScoped<IPhotoRepository, PhotoRepository>();
-
         services.AddScoped<ILogService, LogService>();
+
+        // Mensajes
+        services.AddScoped<IMessage<DatalexionUser>, DatalexionUserMessage>();
+        services.AddScoped<IMessage<DatalexionRole>, DatalexionRoleMessage>();
 
         // Filtros
         //Ejemplo: services.AddScoped<MovieExistsAttribute>();

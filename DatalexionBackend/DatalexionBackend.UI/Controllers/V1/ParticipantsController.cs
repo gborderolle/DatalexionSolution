@@ -4,6 +4,7 @@ using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Core.DTO;
 using DatalexionBackend.Core.Helpers;
 using DatalexionBackend.Infrastructure.DbContext;
+using DatalexionBackend.Infrastructure.MessagesService;
 using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -21,14 +22,17 @@ namespace DatalexionBackend.UI.Controllers.V1
         private readonly IParticipantRepository _participantRepository;
         private readonly ContextDB _dbContext;
         private readonly ILogService _logService;
+        private readonly IMessage<Participant> _message;
 
-        public ParticipantsController(ILogger<ParticipantsController> logger, IMapper mapper, IParticipantRepository participantRepository, ContextDB dbContext, ILogService logService)
+        public ParticipantsController(ILogger<ParticipantsController> logger, IMapper mapper, IParticipantRepository participantRepository, ContextDB dbContext, ILogService logService, IMessage<Participant> message)
         : base(mapper, logger, participantRepository)
         {
             _response = new();
             _participantRepository = participantRepository;
             _dbContext = dbContext;
             _logService = logService;
+            _message = message;
+            _message = message;
         }
 
         #region Endpoints genéricos
@@ -84,9 +88,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPatch("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<ParticipantPatchDTO> patchDto)
+        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<ParticipantPatchDTO> dto)
         {
-            return await Patch<Participant, ParticipantPatchDTO>(id, patchDto);
+            return await Patch<Participant, ParticipantPatchDTO>(id, dto);
         }
 
         #endregion
@@ -125,7 +129,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                 await _participantRepository.Create(participant);
 
-                _logger.LogInformation($"Se creó correctamente el participant Id:{participant.Id}.");
+                _logger.LogInformation(_message.Created(participant.Id, participant.Name));
                 await _logService.LogAction("Participant", "Create", $"Id:{participant.Id}, Nombre: {participant.Name}.", User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<ParticipantDTO>(participant);

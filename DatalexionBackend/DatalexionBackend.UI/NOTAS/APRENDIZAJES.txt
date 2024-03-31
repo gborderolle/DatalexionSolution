@@ -134,3 +134,19 @@ Cuidado 2: En la BD, si la tabla AspNetUserClaims está sucia, jode los Claims y
         }
 
 --------------------------------------
+
+Buscar con Regex (regular expression):
+_logger.LogError(_message.NotFound(id));
+
+Reemplazar
+_logger.LogError(_message.NotFound(id));
+
+Regex:
+_logger\.LogError\(string\.Format\(Messages\..*?\.NotFound, id\)\);
+
+
+---
+
+_logger.LogInformation(_message.Created(party.Id, party.Name));
+_logger\.LogInformation\(\$"Se creó correctamente .*? Id:\{.*?\.Id\}."\);
+

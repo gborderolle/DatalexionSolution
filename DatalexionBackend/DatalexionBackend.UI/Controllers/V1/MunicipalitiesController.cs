@@ -4,6 +4,7 @@ using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Core.DTO;
 using DatalexionBackend.Core.Helpers;
 using DatalexionBackend.Infrastructure.DbContext;
+using DatalexionBackend.Infrastructure.MessagesService;
 using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -21,14 +22,16 @@ namespace DatalexionBackend.UI.Controllers.V1
         private readonly IMunicipalityRepository _municipalityRepository;
         private readonly ContextDB _dbContext;
         private readonly ILogService _logService;
+        private readonly IMessage<Municipality> _message;
 
-        public MunicipalitiesController(ILogger<MunicipalitiesController> logger, IMapper mapper, IMunicipalityRepository municipalityRepository, ContextDB dbContext, ILogService logService)
+        public MunicipalitiesController(ILogger<MunicipalitiesController> logger, IMapper mapper, IMunicipalityRepository municipalityRepository, ContextDB dbContext, ILogService logService, IMessage<Municipality> message)
         : base(mapper, logger, municipalityRepository)
         {
             _response = new();
             _municipalityRepository = municipalityRepository;
             _dbContext = dbContext;
             _logService = logService;
+            _message = message;
         }
 
         #region Endpoints genéricos
@@ -102,14 +105,14 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] MunicipalityCreateDTO municipalityCreateDTO)
+        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] MunicipalityCreateDTO dto)
         {
             try
             {
                 if (id <= 0)
                 {
-                    _logger.LogError(Messages.Generic.NotValid);
-                    _response.ErrorMessages = new() { Messages.Generic.NotValid };
+                    _logger.LogError(_message.NotValid());
+                    _response.ErrorMessages = new() { _message.NotValid() };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
@@ -127,35 +130,35 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var municipality = await _municipalityRepository.Get(v => v.Id == id, includes: includes);
                 if (municipality == null)
                 {
-                    _logger.LogError(string.Format(Messages.Municipality.NotFound, id));
-                    _response.ErrorMessages = new() { string.Format(Messages.Municipality.NotFound, id) };
+                    _logger.LogError(_message.NotFound(id));
+                    _response.ErrorMessages = new() { _message.NotFound(id) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
 
-                municipality.Province = await _dbContext.Province.FindAsync(municipalityCreateDTO.ProvinceId);
+                municipality.Province = await _dbContext.Province.FindAsync(dto.ProvinceId);
                 if (municipality.Province == null)
                 {
-                    _logger.LogError(string.Format(Messages.Province.NotFound, municipalityCreateDTO.ProvinceId), municipalityCreateDTO.ProvinceId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Province.NotFound, municipalityCreateDTO.ProvinceId) };
+                    _logger.LogError(_message.ProvinceNotFound(dto.ProvinceId));
+                    _response.ErrorMessages = new() { _message.ProvinceNotFound(dto.ProvinceId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
 
                 // No usar AutoMapper para mapear todo el objeto, sino actualizar campo por campo
-                municipality.Name = Utils.ToCamelCase(municipalityCreateDTO.Name);
-                municipality.Comments = Utils.ToCamelCase(municipalityCreateDTO.Comments);
+                municipality.Name = Utils.ToCamelCase(dto.Name);
+                municipality.Comments = Utils.ToCamelCase(dto.Comments);
                 municipality.Update = DateTime.Now;
 
-                municipality.ProvinceId = municipalityCreateDTO.ProvinceId;
-                municipality.Province = await _dbContext.Province.FindAsync(municipalityCreateDTO.ProvinceId);
+                municipality.ProvinceId = dto.ProvinceId;
+                municipality.Province = await _dbContext.Province.FindAsync(dto.ProvinceId);
 
                 var updatedMunicipality = await _municipalityRepository.Update(municipality);
 
-                _logger.LogInformation(string.Format(Messages.Municipality.ActionLog, id, municipality.Name, id));
-                await _logService.LogAction("Municipality", "Update", string.Format(Messages.Municipality.ActionLog, id, municipality.Name), User.Identity.Name, null);
+                _logger.LogInformation(_message.ActionLog(id, municipality.Name));
+                await _logService.LogAction("Municipality", "Update", _message.ActionLog(id, municipality.Name), User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<MunicipalityDTO>(updatedMunicipality);
                 _response.StatusCode = HttpStatusCode.OK;
@@ -173,9 +176,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPatch("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<MunicipalityPatchDTO> patchDto)
+        public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<MunicipalityPatchDTO> dto)
         {
-            return await Patch<Municipality, MunicipalityPatchDTO>(id, patchDto);
+            return await Patch<Municipality, MunicipalityPatchDTO>(id, dto);
         }
 
         #endregion
@@ -183,7 +186,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         #region Endpoints específicos
 
         [HttpPost(Name = "CreateMunicipality")]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] MunicipalityCreateDTO municipalityCreateDto)
+        public async Task<ActionResult<APIResponse>> Post([FromBody] MunicipalityCreateDTO dto)
         {
             try
             {
@@ -195,28 +198,28 @@ namespace DatalexionBackend.UI.Controllers.V1
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(ModelState);
                 }
-                if (await _municipalityRepository.Get(v => v.Name.ToLower() == municipalityCreateDto.Name.ToLower()) != null)
+                if (await _municipalityRepository.Get(v => v.Name.ToLower() == dto.Name.ToLower()) != null)
                 {
-                    _logger.LogError($"El nombre {municipalityCreateDto.Name} ya existe en el sistema");
-                    _response.ErrorMessages = new() { $"El nombre {municipalityCreateDto.Name} ya existe en el sistema." };
+                    _logger.LogError($"El nombre {dto.Name} ya existe en el sistema");
+                    _response.ErrorMessages = new() { $"El nombre {dto.Name} ya existe en el sistema." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {municipalityCreateDto.Name} ya existe en el sistema.");
+                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {dto.Name} ya existe en el sistema.");
                     return BadRequest(ModelState);
                 }
 
-                municipalityCreateDto.Name = Utils.ToCamelCase(municipalityCreateDto.Name);
-                municipalityCreateDto.Comments = Utils.ToCamelCase(municipalityCreateDto.Comments);
+                dto.Name = Utils.ToCamelCase(dto.Name);
+                dto.Comments = Utils.ToCamelCase(dto.Comments);
 
-                Municipality municipality = _mapper.Map<Municipality>(municipalityCreateDto);
+                Municipality municipality = _mapper.Map<Municipality>(dto);
                 municipality.Creation = DateTime.Now;
                 municipality.Update = DateTime.Now;
 
-                municipality.ListCircuits = _mapper.Map<List<Circuit>>(municipalityCreateDto.ListCircuits);
+                municipality.ListCircuits = _mapper.Map<List<Circuit>>(dto.ListCircuits);
 
                 await _municipalityRepository.Create(municipality);
 
-                _logger.LogInformation($"Se creó correctamente el municipality Id:{municipality.Id}.");
+                _logger.LogInformation(_message.Created(municipality.Id, municipality.Name));
                 await _logService.LogAction("Municipality", "Create", $"Id:{municipality.Id}, Nombre: {municipality.Name}.", User.Identity.Name, null);
 
                 _response.Result = _mapper.Map<MunicipalityDTO>(municipality);

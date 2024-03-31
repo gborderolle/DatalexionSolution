@@ -7,6 +7,7 @@ using DatalexionBackend.Core.Enums;
 using DatalexionBackend.Core.Helpers;
 using DatalexionBackend.EmailService;
 using DatalexionBackend.Infrastructure.DbContext;
+using DatalexionBackend.Infrastructure.MessagesService;
 using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -42,7 +43,8 @@ namespace DatalexionBackend.UI.Controllers.V1
         private readonly ILogService _logService;
         private readonly ContextDB _contextDB;
         private APIResponse _response;
-        private readonly IWebHostEnvironment _environment;
+        private readonly IMessage<DatalexionUser> _messageUser;
+        private readonly IMessage<DatalexionRole> _messageRole;
 
         public AccountsController
         (
@@ -57,9 +59,10 @@ namespace DatalexionBackend.UI.Controllers.V1
             RoleManager<DatalexionRole> roleManager,
             ILogService logService,
             ContextDB dbContext,
-            IWebHostEnvironment environment,
             IClientRepository clientRepository,
-            IDatalexionUserRepository datalexionUserRepository
+            IDatalexionUserRepository datalexionUserRepository,
+            IMessage<DatalexionUser> messageUser,
+            IMessage<DatalexionRole> messageRole
         )
         {
             _response = new();
@@ -74,9 +77,10 @@ namespace DatalexionBackend.UI.Controllers.V1
             _roleManager = roleManager;
             _logService = logService;
             _contextDB = dbContext;
-            _environment = environment;
             _clientRepository = clientRepository;
             _datalexionUserRepository = datalexionUserRepository;
+            _messageUser = messageUser;
+            _messageRole = messageRole;
         }
 
         #region Endpoints genéricos
@@ -444,7 +448,10 @@ namespace DatalexionBackend.UI.Controllers.V1
                     var user = await _userManager.FindByNameAsync(dto.Username);
                     if (user != null)
                     {
-                        var roles = await _userManager.GetRolesAsync(user); // Obtener roles del usuario
+                        var roles = await _userManager.GetRolesAsync(user);
+
+                        await _logService.LogAction(((DatalexionUserMessage)_messageUser).ActionLog(0, user.UserName), "Login", "Inicio de sesión.", user.UserName);
+                        _logger.LogInformation(((DatalexionUserMessage)_messageUser).LoginSuccess(user.Id, user.UserName));
 
                         _response.StatusCode = HttpStatusCode.OK;
                         _response.Result = new
@@ -592,8 +599,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var client = await _clientRepository.Get(v => v.Id == clientId);
                 if (client == null)
                 {
-                    _logger.LogError(string.Format(Messages.Client.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Client.NotFound, clientId) };
+                    _logger.LogError(_messageUser.ClientNotFound(clientId), clientId);
+                    _response.ErrorMessages = new() { _messageUser.ClientNotFound(clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -628,14 +635,12 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var client = await _clientRepository.Get(v => v.Id == clientId);
                 if (client == null)
                 {
-                    _logger.LogError(string.Format(Messages.Client.NotFound, clientId), clientId);
-                    _response.ErrorMessages = new() { string.Format(Messages.Client.NotFound, clientId) };
+                    _logger.LogError(_messageUser.ClientNotFound(clientId), clientId);
+                    _response.ErrorMessages = new() { _messageUser.ClientNotFound(clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
-
-                //var usersList = await _logger.GetAll(v => v.ClientId == clientId);
 
                 var queryable = _contextDB.Log;
                 await HttpContext.InsertParamPaginationHeader(queryable);
@@ -671,9 +676,9 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         #region Private methods
 
-        private async Task<AuthenticationResponse> TokenSetup(DatalexionUserLoginDTO userCredential)
+        private async Task<AuthenticationResponse> TokenSetup(DatalexionUserLoginDTO dto)
         {
-            var user = await _userManager.FindByNameAsync(userCredential.Username);
+            var user = await _userManager.FindByNameAsync(dto.Username);
             if (user == null)
             {
                 _logger.LogError($"User not found.");
@@ -775,15 +780,9 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         #region Email
 
-        private async Task SendLoginNotificationAdmin(DatalexionUserLoginDTO userCredential)
+        private async Task SendLoginNotificationAdmin(DatalexionUserLoginDTO dto)
         {
-            // Comprueba si el entorno es de producción
-            //if (!_environment.IsProduction())
-            //{
-            //    return;
-            //}
-
-            var user = await _userManager.FindByNameAsync(userCredential.Username);
+            var user = await _userManager.FindByNameAsync(dto.Username);
             if (user == null)
             {
                 _logger.LogError("Usuario no encontrado para la notificación de inicio de sesión.");
@@ -803,17 +802,11 @@ namespace DatalexionBackend.UI.Controllers.V1
 #pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
             string? clientIPCity = await GetIpInfo(clientIP);
             bool isMobile = _detectionService.Device.Type == Wangkanai.Detection.Models.Device.Mobile;
-            await SendAsyncEmail(userCredential.Username, clientIP, clientIPCity, isMobile, userRoles[0]);
+            await SendAsyncEmail(dto.Username, clientIP, clientIPCity, isMobile, userRoles[0]);
         }
 
         private async Task SendLoginNotificationDelegado(Delegado delegado)
         {
-            // Comprueba si el entorno es de producción
-            // if (!_environment.IsProduction())
-            // {
-            //     return;
-            // }
-
             if (delegado == null)
             {
                 _logger.LogError("Delegado no encontrado para la notificación de inicio de sesión.");
