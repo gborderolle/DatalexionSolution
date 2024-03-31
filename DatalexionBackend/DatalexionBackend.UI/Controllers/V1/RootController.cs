@@ -6,7 +6,6 @@ namespace DatalexionBackend.UI.Controllers.V1
 {
     [ApiController]
     [Route("api/v1")]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class RootController : ControllerBase
     {
         private readonly IAuthorizationService _authorizationService;

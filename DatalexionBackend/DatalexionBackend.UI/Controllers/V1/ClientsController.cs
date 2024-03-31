@@ -2,6 +2,7 @@
 using DatalexionBackend.Core.Domain.Entities;
 using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Core.DTO;
+using DatalexionBackend.Core.Enums;
 using DatalexionBackend.Core.Helpers;
 using DatalexionBackend.Infrastructure.DbContext;
 using DatalexionBackend.Infrastructure.MessagesService;
@@ -17,7 +18,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/clients")]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
+    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     public class ClientsController : CustomBaseController<Client>
     {
         private readonly IClientRepository _clientRepository;
@@ -115,12 +116,14 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpDelete("{id:int}")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Client>(id);
         }
 
         [HttpPut("{id:int}")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] ClientCreateDTO dto)
         {
             try
@@ -259,6 +262,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPost(Name = "CreateClient")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Post([FromBody] ClientCreateDTO dto)
         {
             return Ok();

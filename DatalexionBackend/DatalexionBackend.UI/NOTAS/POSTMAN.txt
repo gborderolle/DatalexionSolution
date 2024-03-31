@@ -6,7 +6,7 @@ x-version	1
 // ---------------------------------------------------------- *****************
 
 POSTMAN: Login de Admin (Dashboard)
-POST: http://localhost:7015/api/accounts/loginGeneral
+POST: http://localhost:8015/api/accounts/loginGeneral
 HTTP
 Authorization: No Auth
 
@@ -35,7 +35,7 @@ Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9y
 
 
 POSTMAN: Circuitos
-GET: http://localhost:7015/api/circuits/GetCircuit
+GET: http://localhost:8015/api/circuits/GetCircuit
 HTTP
 Authorization: (Bearer Token)
 Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImMyZWU2NDkzLTVhNzMtNDZmMy1hM2YyLTQ2ZDFkMTFkNzE3NiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJ1c2VyYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbkBkYXRhbGV4aW9uLmxhdCIsInJvbGUiOiJBZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzM4NjE4NzAyfQ.n2qv9jjrEzB-VSvgJ27bXTwGPhPOMJFFp5lsVevGg7M

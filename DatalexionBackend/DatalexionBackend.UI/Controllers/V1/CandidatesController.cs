@@ -8,6 +8,7 @@ using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using DatalexionBackend.Core.Enums;
 using System.Net;
 
 namespace DatalexionBackend.UI.Controllers.V1
@@ -15,7 +16,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/candidates")]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
+    // //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     public class CandidatesController : CustomBaseController<Candidate>
     {
         private readonly ICandidateRepository _candidateRepository;
@@ -99,6 +100,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="id">ID del candidato a eliminar.</param>
         /// <returns>Resultado de la operación de eliminación.</returns>
         [HttpDelete("{id:int}")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Candidate>(id);
@@ -113,6 +115,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <returns>El candidato actualizado.</returns>
         [HttpPut("{id:int}")]
         [Consumes("multipart/form-data")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromForm] CandidateCreateDTO dto, IFormFile file)
         {
             try
@@ -269,6 +272,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="dto">Datos del nuevo candidato.</param>
         /// <returns>El candidato creado.</returns>
         [HttpPost(Name = "CreateCandidate")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Post([FromBody] CandidateCreateDTO dto)
         {
             return Ok();

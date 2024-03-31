@@ -8,7 +8,7 @@
         "ASPNETCORE_ENVIRONMENT": "development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7015"
+      "applicationUrl": "https://localhost:8015"
     }
   }
 }

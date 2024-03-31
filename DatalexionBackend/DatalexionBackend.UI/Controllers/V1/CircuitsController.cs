@@ -12,13 +12,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using Microsoft.AspNetCore.SignalR;
+using DatalexionBackend.Core.Enums;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/circuits")]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
     public class CircuitsController : CustomBaseController<Circuit>
     {
         private readonly ICircuitRepository _circuitRepository;
@@ -166,14 +166,15 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// Actualiza los datos de un circuito existente, incluyendo las partes y votos asociados.
         /// </summary>
         /// <param name="id">ID del circuito a actualizar.</param>
-        /// <param name="circuitCreateDTO">Datos actualizados del circuito.</param>
+        /// <param name="dto">Datos actualizados del circuito.</param>
         /// <returns>El circuito actualizado.</returns>
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] CircuitCreateDTO circuitCreateDTO)
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] CircuitCreateDTO dto)
         {
             try
             {
-                if (circuitCreateDTO == null || id <= 0)
+                if (dto == null || id <= 0)
                 {
                     _logger.LogError(_message.NotValid());
                     _response.ErrorMessages = new() { _message.NotValid() };
@@ -198,10 +199,10 @@ namespace DatalexionBackend.UI.Controllers.V1
                 }
 
                 // Paso 1) Actualizar CircuitSlates
-                if (circuitCreateDTO.ListCircuitSlates != null && circuitCreateDTO.ListCircuitSlates.Any())
+                if (dto.ListCircuitSlates != null && dto.ListCircuitSlates.Any())
                 {
                     var existingSlates = _circuitDB.ListCircuitSlates.ToList(); // Hacer una copia de la lista para evitar modificar la colección durante la iteración.
-                    foreach (var circuitSlateDTO in circuitCreateDTO.ListCircuitSlates)
+                    foreach (var circuitSlateDTO in dto.ListCircuitSlates)
                     {
                         var circuitSlate = existingSlates.FirstOrDefault(cs => cs.CircuitId == id && cs.SlateId == circuitSlateDTO.SlateId);
 
@@ -223,14 +224,14 @@ namespace DatalexionBackend.UI.Controllers.V1
                         }
                     }
                     // Elimina los slates que no están en el DTO
-                    _circuitDB.ListCircuitSlates = _circuitDB.ListCircuitSlates.Where(cs => circuitCreateDTO.ListCircuitSlates.Any(dto => dto.SlateId == cs.SlateId)).ToList();
+                    _circuitDB.ListCircuitSlates = _circuitDB.ListCircuitSlates.Where(cs => dto.ListCircuitSlates.Any(dto => dto.SlateId == cs.SlateId)).ToList();
                 }
 
                 // Paso 2) Actualizar CircuitParties
-                if (circuitCreateDTO.ListCircuitParties != null && circuitCreateDTO.ListCircuitParties.Any())
+                if (dto.ListCircuitParties != null && dto.ListCircuitParties.Any())
                 {
                     var existingCircuitParties = _circuitDB.ListCircuitParties.ToList(); // Hacer una copia de la lista para evitar modificar la colección durante la iteración.
-                    foreach (var circuitPartyDTO in circuitCreateDTO.ListCircuitParties)
+                    foreach (var circuitPartyDTO in dto.ListCircuitParties)
                     {
                         var circuitParty1 = existingCircuitParties.FirstOrDefault(cs => cs.CircuitId == id && cs.PartyId == circuitPartyDTO.PartyId);
                         if (circuitParty1 != null)
@@ -251,27 +252,27 @@ namespace DatalexionBackend.UI.Controllers.V1
                         }
                     }
                     // Elimina los Partys que no están en el DTO
-                    _circuitDB.ListCircuitParties = _circuitDB.ListCircuitParties.Where(cs => circuitCreateDTO.ListCircuitParties.Any(dto => dto.PartyId == cs.PartyId)).ToList();
+                    _circuitDB.ListCircuitParties = _circuitDB.ListCircuitParties.Where(cs => dto.ListCircuitParties.Any(dto => dto.PartyId == cs.PartyId)).ToList();
                 }
 
                 // Paso 3) Actualizar Extra votes y Step actual
-                if (circuitCreateDTO != null)
+                if (dto != null)
                 {
-                    _circuitDB.BlankVotes = circuitCreateDTO.BlankVotes;
-                    _circuitDB.NullVotes = circuitCreateDTO.NullVotes;
-                    _circuitDB.ObservedVotes = circuitCreateDTO.ObservedVotes;
-                    _circuitDB.RecurredVotes = circuitCreateDTO.RecurredVotes;
+                    _circuitDB.BlankVotes = dto.BlankVotes;
+                    _circuitDB.NullVotes = dto.NullVotes;
+                    _circuitDB.ObservedVotes = dto.ObservedVotes;
+                    _circuitDB.RecurredVotes = dto.RecurredVotes;
 
-                    _circuitDB.Step1completed = circuitCreateDTO.Step1completed;
-                    _circuitDB.Step2completed = circuitCreateDTO.Step2completed;
-                    _circuitDB.Step3completed = circuitCreateDTO.Step3completed;
+                    _circuitDB.Step1completed = dto.Step1completed;
+                    _circuitDB.Step2completed = dto.Step2completed;
+                    _circuitDB.Step3completed = dto.Step3completed;
                 }
 
                 // Fotos
-                if (circuitCreateDTO.ListPhotos != null && circuitCreateDTO.ListPhotos.Count > 0)
+                if (dto.ListPhotos != null && dto.ListPhotos.Count > 0)
                 {
                     // En el método de creación o actualización de un circuito:
-                    await HandlePhotoUpload(circuitCreateDTO.ListPhotos, _circuitDB);
+                    await HandlePhotoUpload(dto.ListPhotos, _circuitDB);
                 }
 
                 await _dbContext.SaveChangesAsync();
@@ -297,10 +298,11 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// Actualiza un circuito existente, aplicando los cambios especificados en el DTO de creación.
         /// </summary>
         /// <param name="id">ID del circuito a actualizar.</param>
-        /// <param name="circuitCreateDTO">DTO de creación con los datos para actualizar el circuito.</param>
+        /// <param name="dto">DTO de creación con los datos para actualizar el circuito.</param>
         /// <returns>Respuesta indicando el resultado de la operación de actualización.</returns>
         [HttpPut("{id:int}/update")]
-        public async Task<ActionResult<APIResponse>> UpdateCircuit(int id, [FromBody] CircuitCreateDTO circuitCreateDTO)
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        public async Task<ActionResult<APIResponse>> UpdateCircuit(int id, [FromBody] CircuitCreateDTO dto)
         {
             try
             {
@@ -324,8 +326,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 }
 
                 // No usar AutoMapper para mapear todo el objeto, sino actualizar campo por campo
-                circuit.Name = Utils.ToCamelCase(circuitCreateDTO.Name);
-                circuit.Comments = Utils.ToCamelCase(circuitCreateDTO.Comments);
+                circuit.Name = Utils.ToCamelCase(dto.Name);
+                circuit.Comments = Utils.ToCamelCase(dto.Comments);
                 circuit.Update = DateTime.Now;
 
                 var updateCircuit = await _circuitRepository.Update(circuit);
@@ -352,12 +354,13 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// Aplica actualizaciones parciales a un circuito existente, específicamente dirigido a los votos y la carga de fotos.
         /// </summary>
         /// <param name="id">ID del circuito a actualizar.</param>
-        /// <param name="circuitPatchDTO">DTO para aplicar actualizaciones parciales.</param>
+        /// <param name="dto">DTO para aplicar actualizaciones parciales.</param>
         /// <param name="photos">Lista de fotos nuevas a cargar.</param>
         /// <returns>Respuesta indicando el resultado de la operación de actualización parcial.</returns>
         [HttpPatch("{id:int}")]
         [Consumes("multipart/form-data")] // Indicar que el método aceptará multipart/form-data
-        public async Task<ActionResult<APIResponse>> Patch(int id, [FromForm] CircuitPatchDTO circuitPatchDTO, [FromForm] List<IFormFile> photos)
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        public async Task<ActionResult<APIResponse>> Patch(int id, [FromForm] CircuitPatchDTO dto, [FromForm] List<IFormFile> photos)
         {
             try
             {
@@ -381,10 +384,10 @@ namespace DatalexionBackend.UI.Controllers.V1
                 }
 
                 // Actualizar votos
-                _circuitDB.BlankVotes = circuitPatchDTO.BlankVotes;
-                _circuitDB.NullVotes = circuitPatchDTO.NullVotes;
-                _circuitDB.ObservedVotes = circuitPatchDTO.ObservedVotes;
-                _circuitDB.RecurredVotes = circuitPatchDTO.RecurredVotes;
+                _circuitDB.BlankVotes = dto.BlankVotes;
+                _circuitDB.NullVotes = dto.NullVotes;
+                _circuitDB.ObservedVotes = dto.ObservedVotes;
+                _circuitDB.RecurredVotes = dto.RecurredVotes;
                 _circuitDB.Step3completed = true;
 
                 // Manejar carga de fotos

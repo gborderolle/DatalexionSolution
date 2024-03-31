@@ -9,6 +9,7 @@ using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using DatalexionBackend.Core.Enums;
 using System.Net;
 
 namespace DatalexionBackend.UI.Controllers.V1
@@ -16,7 +17,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/provinces")]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
+    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     public class ProvincesController : CustomBaseController<Province>
     {
         private readonly IProvinceRepository _provinceRepository;
@@ -83,12 +84,14 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpDelete("{id:int}")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Province>(id);
         }
 
         [HttpPut("{id:int}")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] ProvinceCreateDTO dto)
         {
             try
@@ -148,6 +151,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         #region Endpoints específicos
 
         [HttpPost(Name = "CreateProvince")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Post([FromBody] ProvinceCreateDTO dto)
         {
             try

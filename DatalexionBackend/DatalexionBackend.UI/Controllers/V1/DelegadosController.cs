@@ -9,6 +9,7 @@ using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using DatalexionBackend.Core.Enums;
 using System.Net;
 
 namespace DatalexionBackend.UI.Controllers.V1
@@ -16,7 +17,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/delegados")]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
+    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     public class DelegadosController : CustomBaseController<Delegado>
     {
         private readonly IDelegadoRepository _delegadoRepository;
@@ -99,12 +100,14 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpDelete("{id:int}")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Delegado>(id);
         }
 
         [HttpPut("{id:int}")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] DelegadoCreateDTO dto)
         {
             try
@@ -214,6 +217,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPost(Name = "CreateDelegado")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Post([FromBody] DelegadoCreateDTO dto)
         {
             try

@@ -9,6 +9,7 @@ using DatalexionBackend.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using DatalexionBackend.Core.Enums;
 using System.Net;
 
 namespace DatalexionBackend.UI.Controllers.V1
@@ -16,7 +17,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/slates")]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
+    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     public class SlatesController : CustomBaseController<Slate>
     {
         private readonly ISlateRepository _slateRepository;
@@ -135,12 +136,14 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpDelete("{id:int}")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Slate>(id);
         }
 
         [HttpPut("{id:int}")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] SlateCreateDTO dto)
         {
             try
@@ -363,6 +366,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPost(Name = "CreateSlate")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Post([FromBody] SlateCreateDTO dto)
         {
             try

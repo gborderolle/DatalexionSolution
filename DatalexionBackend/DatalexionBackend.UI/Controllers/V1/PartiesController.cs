@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using DatalexionBackend.Core.Enums;
 using DatalexionBackend.Infrastructure.Services;
 
 namespace DatalexionBackend.UI.Controllers.V1
@@ -17,7 +18,8 @@ namespace DatalexionBackend.UI.Controllers.V1
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/parties")]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
+    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PartiesController : CustomBaseController<Party>
     {
         private readonly IPartyRepository _partyRepository;
@@ -128,13 +130,15 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpDelete("{id:int}")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Party>(id);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] PartyCreateDTO partyCreateDTO)
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] PartyCreateDTO dto)
         {
             try
             {
@@ -158,11 +162,11 @@ namespace DatalexionBackend.UI.Controllers.V1
                 }
 
                 // No usar AutoMapper para mapear todo el objeto, sino actualizar campo por campo
-                party.Name = Utils.ToCamelCase(partyCreateDTO.Name);
-                party.Comments = Utils.ToCamelCase(partyCreateDTO.Comments);
+                party.Name = Utils.ToCamelCase(dto.Name);
+                party.Comments = Utils.ToCamelCase(dto.Comments);
                 party.Update = DateTime.Now;
-                party.ShortName = partyCreateDTO.ShortName;
-                party.Color = partyCreateDTO.Color;
+                party.ShortName = dto.ShortName;
+                party.Color = dto.Color;
 
                 var updatedParty = await _partyRepository.Update(party);
 
@@ -185,6 +189,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPatch("{id:int}")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<PartyPatchDTO> dto)
         {
             return await Patch<Party, PartyPatchDTO>(id, dto);
@@ -257,7 +262,8 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpPost(Name = "CreateParty")]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] PartyCreateDTO partyCreateDto)
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        public async Task<ActionResult<APIResponse>> Post([FromBody] PartyCreateDTO dto)
         {
             try
             {
@@ -269,37 +275,37 @@ namespace DatalexionBackend.UI.Controllers.V1
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(ModelState);
                 }
-                if (await _partyRepository.Get(v => v.Name.ToLower() == partyCreateDto.Name.ToLower()) != null)
+                if (await _partyRepository.Get(v => v.Name.ToLower() == dto.Name.ToLower()) != null)
                 {
-                    _logger.LogError($"El nombre {partyCreateDto.Name} ya existe en el sistema");
-                    _response.ErrorMessages = new() { $"El nombre {partyCreateDto.Name} ya existe en el sistema." };
+                    _logger.LogError($"El nombre {dto.Name} ya existe en el sistema");
+                    _response.ErrorMessages = new() { $"El nombre {dto.Name} ya existe en el sistema." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {partyCreateDto.Name} ya existe en el sistema.");
+                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {dto.Name} ya existe en el sistema.");
                     return BadRequest(ModelState);
                 }
 
-                partyCreateDto.Name = Utils.ToCamelCase(partyCreateDto.Name);
-                partyCreateDto.Comments = Utils.ToCamelCase(partyCreateDto.Comments);
+                dto.Name = Utils.ToCamelCase(dto.Name);
+                dto.Comments = Utils.ToCamelCase(dto.Comments);
 
-                Party party = _mapper.Map<Party>(partyCreateDto);
+                Party party = _mapper.Map<Party>(dto);
                 party.Creation = DateTime.Now;
                 party.Update = DateTime.Now;
 
-                party.ListCircuitParties = _mapper.Map<List<CircuitParty>>(partyCreateDto.ListCircuitParties);
-                party.ListWings = _mapper.Map<List<Wing>>(partyCreateDto.ListWings);
+                party.ListCircuitParties = _mapper.Map<List<CircuitParty>>(dto.ListCircuitParties);
+                party.ListWings = _mapper.Map<List<Wing>>(dto.ListWings);
 
                 await _partyRepository.Create(party);
 
                 // Para PhotoLong
-                if (partyCreateDto.PhotoLong != null)
+                if (dto.PhotoLong != null)
                 {
-                    await HandlePhotoUpload(partyCreateDto.PhotoLong, party, "partiesLong", (photo, p) => photo.PartyLong = p);
+                    await HandlePhotoUpload(dto.PhotoLong, party, "partiesLong", (photo, p) => photo.PartyLong = p);
                 }
                 // Para PhotoShort
-                if (partyCreateDto.PhotoShort != null)
+                if (dto.PhotoShort != null)
                 {
-                    await HandlePhotoUpload(partyCreateDto.PhotoShort, party, "partiesShort", (photo, p) => photo.PartyShort = p);
+                    await HandlePhotoUpload(dto.PhotoShort, party, "partiesShort", (photo, p) => photo.PartyShort = p);
                 }
 
                 _logger.LogInformation(_message.Created(party.Id, party.Name));

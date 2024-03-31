@@ -1,4 +1,5 @@
 ﻿using DatalexionBackend.Core.ApiBehavior;
+using DatalexionBackend.Core.Domain.Entities;
 using DatalexionBackend.Core.Domain.IdentityEntities;
 using DatalexionBackend.Core.Domain.RepositoryContracts;
 using DatalexionBackend.Core.Enums;
@@ -77,7 +78,8 @@ public static class ConfigureServicesExtensions
 
         services.AddAutoMapper(typeof(AutoMapperProfiles));
 
-        // Registro de servicios 
+        #region Registro de servicios
+
         // --------------
 
         // AddTransient: cambia dentro del contexto
@@ -100,8 +102,18 @@ public static class ConfigureServicesExtensions
         services.AddScoped<ILogService, LogService>();
 
         // Mensajes
-        services.AddScoped<IMessage<DatalexionUser>, DatalexionUserMessage>();
+        services.AddScoped<IMessage<Candidate>, CandidateMessage>();
+        services.AddScoped<IMessage<Circuit>, CircuitMessage>();
+        services.AddScoped<IMessage<Client>, ClientMessage>();
         services.AddScoped<IMessage<DatalexionRole>, DatalexionRoleMessage>();
+        services.AddScoped<IMessage<DatalexionUser>, DatalexionUserMessage>();
+        services.AddScoped<IMessage<Delegado>, DelegadoMessage>();
+        services.AddScoped<IMessage<Municipality>, MunicipalityMessage>();
+        services.AddScoped<IMessage<Participant>, ParticipantMessage>();
+        services.AddScoped<IMessage<Party>, PartyMessage>();
+        services.AddScoped<IMessage<Province>, ProvinceMessage>();
+        services.AddScoped<IMessage<Slate>, SlateMessage>();
+        services.AddScoped<IMessage<Wing>, WingMessage>();
 
         // Filtros
         //Ejemplo: services.AddScoped<MovieExistsAttribute>();
@@ -120,6 +132,10 @@ public static class ConfigureServicesExtensions
         services.AddSingleton(emailConfig);
         services.AddScoped<IEmailSender, EmailSender>();
         services.AddDetection();
+
+        #endregion
+
+        #region AddDbContext and AddIdentity
 
         services.AddDbContext<ContextDB>(options =>
         {
@@ -153,7 +169,26 @@ public static class ConfigureServicesExtensions
             .AddUserStore<UserStore<DatalexionUser, DatalexionRole, ContextDB, string>>()
             .AddRoleStore<RoleStore<DatalexionRole, ContextDB, string>>();
 
+        #endregion
+
         // --------------
+
+        #region AddAuthentication
+
+        // Intentar obtener la clave JWT desde una variable de entorno
+        var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+
+        // Si la variable de entorno no está establecida, intenta obtenerla desde appsettings.json
+        if (string.IsNullOrEmpty(jwtKey))
+        {
+            jwtKey = configuration["JWT:key"];
+        }
+
+        // Asegúrate de que la clave no sea nula o vacía
+        if (string.IsNullOrEmpty(jwtKey))
+        {
+            throw new InvalidOperationException("No se encontró la clave JWT. Asegúrese de configurar la variable de entorno 'JWT_KEY' o definirla en appsettings.");
+        }
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
@@ -165,9 +200,13 @@ public static class ConfigureServicesExtensions
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(configuration["JWT:key"])),
+                Encoding.UTF8.GetBytes(jwtKey)),
             ClockSkew = TimeSpan.Zero
         });
+
+        #endregion
+
+        #region AddAuthorization
 
         // Autorización basada en Claims
         // Agregar los roles del sistema
@@ -177,6 +216,10 @@ public static class ConfigureServicesExtensions
             options.AddPolicy("IsAdmin", policy => policy.RequireRole(UserTypeOptions.Admin.ToString()));
             options.AddPolicy("IsAnalyst", policy => policy.RequireRole(UserTypeOptions.Analyst.ToString()));
         });
+
+        #endregion
+
+        #region AddCors
 
         // Configuración CORS: para permitir recibir peticiones http desde un origen específico
         // CORS Sólo sirve para aplicaciones web (Angular, React, etc)
@@ -193,14 +236,11 @@ public static class ConfigureServicesExtensions
             });
         });
 
+        #endregion
+
         // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/27148834#notes
         services.AddTransient<GenerateLinks>();
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-
-        // services.ConfigureApplicationCookie(options =>
-        // {
-        //     options.LoginPath = "/Account/Login";
-        // });
 
         services.AddHttpLogging(logging =>
         {

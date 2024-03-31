@@ -208,7 +208,7 @@
             Actualiza los datos de un circuito existente, incluyendo las partes y votos asociados.
             </summary>
             <param name="id">ID del circuito a actualizar.</param>
-            <param name="circuitCreateDTO">Datos actualizados del circuito.</param>
+            <param name="dto">Datos actualizados del circuito.</param>
             <returns>El circuito actualizado.</returns>
         </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.UpdateCircuit(System.Int32,DatalexionBackend.Core.DTO.CircuitCreateDTO)">
@@ -216,7 +216,7 @@
             Actualiza un circuito existente, aplicando los cambios especificados en el DTO de creación.
             </summary>
             <param name="id">ID del circuito a actualizar.</param>
-            <param name="circuitCreateDTO">DTO de creación con los datos para actualizar el circuito.</param>
+            <param name="dto">DTO de creación con los datos para actualizar el circuito.</param>
             <returns>Respuesta indicando el resultado de la operación de actualización.</returns>
         </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.Patch(System.Int32,DatalexionBackend.Core.DTO.CircuitPatchDTO,System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile})">
@@ -224,7 +224,7 @@
             Aplica actualizaciones parciales a un circuito existente, específicamente dirigido a los votos y la carga de fotos.
             </summary>
             <param name="id">ID del circuito a actualizar.</param>
-            <param name="circuitPatchDTO">DTO para aplicar actualizaciones parciales.</param>
+            <param name="dto">DTO para aplicar actualizaciones parciales.</param>
             <param name="photos">Lista de fotos nuevas a cargar.</param>
             <returns>Respuesta indicando el resultado de la operación de actualización parcial.</returns>
         </member>

@@ -10,13 +10,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using DatalexionBackend.Core.Enums;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/participants")]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Analyst")]
+    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     public class ParticipantsController : CustomBaseController<Participant>
     {
         private readonly IParticipantRepository _participantRepository;
@@ -76,18 +77,21 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpDelete("{id:int}")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Participant>(id);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] ParticipantCreateDTO participantCreateDTO)
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] ParticipantCreateDTO dto)
         {
-            return await Put<ParticipantCreateDTO, ParticipantDTO, Participant>(id, participantCreateDTO);
+            return await Put<ParticipantCreateDTO, ParticipantDTO, Participant>(id, dto);
         }
 
         [HttpPatch("{id:int}")]
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<ParticipantPatchDTO> dto)
         {
             return await Patch<Participant, ParticipantPatchDTO>(id, dto);
@@ -98,7 +102,8 @@ namespace DatalexionBackend.UI.Controllers.V1
         #region Endpoints específicos
 
         [HttpPost(Name = "CreateParticipant")]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] ParticipantCreateDTO participantCreateDto)
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        public async Task<ActionResult<APIResponse>> Post([FromBody] ParticipantCreateDTO dto)
         {
             try
             {
@@ -110,20 +115,20 @@ namespace DatalexionBackend.UI.Controllers.V1
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(ModelState);
                 }
-                if (await _participantRepository.Get(v => v.Name.ToLower() == participantCreateDto.Name.ToLower()) != null)
+                if (await _participantRepository.Get(v => v.Name.ToLower() == dto.Name.ToLower()) != null)
                 {
-                    _logger.LogError($"El nombre {participantCreateDto.Name} ya existe en el sistema");
-                    _response.ErrorMessages = new() { $"El nombre {participantCreateDto.Name} ya existe en el sistema." };
+                    _logger.LogError($"El nombre {dto.Name} ya existe en el sistema");
+                    _response.ErrorMessages = new() { $"El nombre {dto.Name} ya existe en el sistema." };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {participantCreateDto.Name} ya existe en el sistema.");
+                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {dto.Name} ya existe en el sistema.");
                     return BadRequest(ModelState);
                 }
 
-                participantCreateDto.Name = Utils.ToCamelCase(participantCreateDto.Name);
-                participantCreateDto.Comments = Utils.ToCamelCase(participantCreateDto.Comments);
+                dto.Name = Utils.ToCamelCase(dto.Name);
+                dto.Comments = Utils.ToCamelCase(dto.Comments);
 
-                Participant participant = _mapper.Map<Participant>(participantCreateDto);
+                Participant participant = _mapper.Map<Participant>(dto);
                 participant.Creation = DateTime.Now;
                 participant.Update = DateTime.Now;
 
