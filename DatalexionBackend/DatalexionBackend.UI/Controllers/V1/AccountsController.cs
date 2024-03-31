@@ -599,8 +599,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var client = await _clientRepository.Get(v => v.Id == clientId);
                 if (client == null)
                 {
-                    _logger.LogError(_messageUser.ClientNotFound(clientId), clientId);
-                    _response.ErrorMessages = new() { _messageUser.ClientNotFound(clientId) };
+                    _logger.LogError(((ClientMessage)_messageUser).NotFound(clientId), clientId);
+                    _response.ErrorMessages = new() { ((ClientMessage)_messageUser).NotFound(clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -635,8 +635,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var client = await _clientRepository.Get(v => v.Id == clientId);
                 if (client == null)
                 {
-                    _logger.LogError(_messageUser.ClientNotFound(clientId), clientId);
-                    _response.ErrorMessages = new() { _messageUser.ClientNotFound(clientId) };
+                    _logger.LogError(((ClientMessage)_messageUser).NotFound(clientId), clientId);
+                    _response.ErrorMessages = new() { ((ClientMessage)_messageUser).NotFound(clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);

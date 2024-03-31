@@ -6,15 +6,6 @@ public class CandidateMessage : IMessage<Candidate>
 {
     private readonly string _entityName = "Candidato";
     private readonly string _entityGender = "o";
-    public string PartyNotFound(int? partyId = 0)
-    {
-        return $"No existe el departamento Id: {partyId}.";
-    }
-
-    public string ClientNotFound(int clientId)
-    {
-        return $"No existe el cliente Id: {clientId}.";
-    }
     public string NotFoundGeneric()
     {
         return $"El sistema no tiene {_entityName} asignad{_entityGender}.";
@@ -30,6 +21,10 @@ public class CandidateMessage : IMessage<Candidate>
     public string NotFound(int id)
     {
         return $"{_entityName} no encontrad{_entityGender} Id: {id}.";
+    }
+    public string NotFound()
+    {
+        return $"{_entityName} no encontrado.";
     }
     public string NotValid()
     {

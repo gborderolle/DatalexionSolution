@@ -6,14 +6,6 @@ public class WingMessage : IMessage<Wing>
 {
     private readonly string _entityName = "Agrupación";
     private readonly string _entityGender = "a";
-    public string PartyNotFound(int? partyId = 0)
-    {
-        return $"No existe el departamento Id: {partyId}.";
-    }
-    public string ClientNotFound(int clientId)
-    {
-        return $"No existe el cliente Id: {clientId}.";
-    }
     public string NotFoundGeneric()
     {
         return $"El sistema no tiene {_entityName} asignad{_entityGender}.";
@@ -29,6 +21,10 @@ public class WingMessage : IMessage<Wing>
     public string NotFound(int id)
     {
         return $"{_entityName} no encontrad{_entityGender} Id: {id}.";
+    }
+    public string NotFound()
+    {
+        return $"{_entityName} no encontrado.";
     }
     public string NotValid()
     {

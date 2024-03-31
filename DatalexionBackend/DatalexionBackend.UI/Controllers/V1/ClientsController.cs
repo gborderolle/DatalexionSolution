@@ -156,8 +156,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 client.Party = await _dbContext.Party.FindAsync(dto.PartyId);
                 if (client.Party == null)
                 {
-                    _logger.LogError(((ClientMessage)_message).PartyNotFound(dto.PartyId), dto.PartyId);
-                    _response.ErrorMessages = new() { ((ClientMessage)_message).PartyNotFound(dto.PartyId) };
+                    _logger.LogError(((ClientMessage)_message).NotFound(dto.PartyId), dto.PartyId);
+                    _response.ErrorMessages = new() { ((ClientMessage)_message).NotFound(dto.PartyId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);

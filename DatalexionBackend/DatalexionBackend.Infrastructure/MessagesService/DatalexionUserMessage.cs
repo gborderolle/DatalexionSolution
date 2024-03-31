@@ -6,11 +6,6 @@ public class DatalexionUserMessage : IMessage<DatalexionUser>
 {
     private readonly string _entityName = "Usuario";
     private readonly string _entityGender = "o";
-    public string ClientNotFound(int clientId)
-    {
-        return $"No existe el cliente Id: {clientId}.";
-    }
-
     public string NotFoundGeneric()
     {
         return $"El sistema no tiene {_entityName} asignad{_entityGender}.";
@@ -26,6 +21,10 @@ public class DatalexionUserMessage : IMessage<DatalexionUser>
     public string NotFound(int id)
     {
         return $"{_entityName} no encontrad{_entityGender} Id: {id}.";
+    }
+    public string NotFound()
+    {
+        return $"{_entityName} no encontrado.";
     }
     public string NotValid()
     {

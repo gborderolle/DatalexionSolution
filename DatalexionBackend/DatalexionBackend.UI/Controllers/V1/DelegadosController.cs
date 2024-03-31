@@ -171,8 +171,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var client = await _clientRepository.Get(v => v.Id == clientId);
                 if (client == null)
                 {
-                    _logger.LogError(_message.ClientNotFound(clientId), clientId);
-                    _response.ErrorMessages = new() { _message.ClientNotFound(clientId) };
+                    _logger.LogError(((ClientMessage)_message).NotFound(clientId), clientId);
+                    _response.ErrorMessages = new() { ((ClientMessage)_message).NotFound(clientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -239,11 +239,11 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var client = _dbContext.Client.Where(c => c.Id == dto.ClientId).FirstOrDefault();
                 if (client == null)
                 {
-                    _logger.LogError(_message.ClientNotFound(dto.ClientId));
-                    _response.ErrorMessages = new() { _message.ClientNotFound(dto.ClientId) };
+                    _logger.LogError(((ClientMessage)_message).NotFound(dto.ClientId));
+                    _response.ErrorMessages = new() { ((ClientMessage)_message).NotFound(dto.ClientId) };
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                    ModelState.AddModelError("NotFound", _message.ClientNotFound(dto.ClientId));
+                    ModelState.AddModelError("NotFound", ((ClientMessage)_message).NotFound(dto.ClientId));
                     return BadRequest(ModelState);
                 }
 

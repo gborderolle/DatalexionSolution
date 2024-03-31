@@ -10,14 +10,6 @@ public class ClientMessage : IMessage<Client>
     {
         return $"No existe el cliente con el nombre de usuario: {username}.";
     }
-    public string PartyNotFound(int partyId)
-    {
-        return $"No existe el partido Id: {partyId}.";
-    }
-    public string ClientNotFound(int clientId)
-    {
-        return $"No existe el cliente Id: {clientId}.";
-    }
     public string NotFoundGeneric()
     {
         return $"El sistema no tiene {_entityName} asignad{_entityGender}.";
@@ -33,6 +25,10 @@ public class ClientMessage : IMessage<Client>
     public string NotFound(int id)
     {
         return $"{_entityName} no encontrad{_entityGender} Id: {id}.";
+    }
+    public string NotFound()
+    {
+        return $"{_entityName} no encontrado.";
     }
     public string NotValid()
     {
