@@ -32,10 +32,6 @@ import "./FormExtras2.css";
 
 const buttonColor = "dark";
 
-if (!backendURL) {
-  backendURL = "http://localhost:8015";
-}
-
 const initialFixedCards = [
   {
     id: "nullVotes",

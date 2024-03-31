@@ -3,19 +3,21 @@ using DatalexionBackend.Core.Domain.Entities;
 using DatalexionBackend.Infrastructure.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
 namespace DatalexionBackend.Infrastructure.Services
 {
     public static class ExcelDataSeeder
     {
-        public static async Task LoadDataFromExcel(IServiceProvider serviceProvider, string wwwrootPath)
+        public static async Task LoadDataFromExcel(IServiceProvider serviceProvider, string wwwrootPath, ILogger logger)
         {
             try
             {
                 using (var scope = serviceProvider.CreateScope())
                 {
                     var services = scope.ServiceProvider;
+                    var loggerService = services.GetRequiredService<ILogService>();
                     using (var context = services.GetRequiredService<ContextDB>())
                     {
                         var filePath = Path.Combine(wwwrootPath, "Circuitos_upload.xlsx");
@@ -156,21 +158,23 @@ namespace DatalexionBackend.Infrastructure.Services
                             }
                         }
                         await context.SaveChangesAsync();
+                        await loggerService.LogAction("Circuitos", "Carga", "System", "Carga de circuitos desde Excel", null);
                     }
 
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                logger.LogError(ex, "Error al cargar datos desde Excel.");
             }
         }
 
-        public static void SeedVotes(IServiceProvider serviceProvider)
+        public static void SeedVotes(IServiceProvider serviceProvider, ILogger logger)
         {
             using (var scope = serviceProvider.CreateScope())
             {
                 var services = scope.ServiceProvider;
+                var loggerService = services.GetRequiredService<ILogService>();
 
                 Random random = new();
                 using (var context = services.GetRequiredService<ContextDB>())
@@ -241,11 +245,11 @@ namespace DatalexionBackend.Infrastructure.Services
                         }
 
                         context.SaveChanges();
-                        Console.WriteLine("Votos actualizados correctamente.");
+                        loggerService.LogAction("Votos", "Carga", "System", "Carga de votos desde Excel", client.Id);
                     }
                     else
                     {
-                        Console.WriteLine("No hay circuitos para actualizar.");
+                        logger.LogError("No hay circuitos para actualizar.");
                     }
                 }
             }

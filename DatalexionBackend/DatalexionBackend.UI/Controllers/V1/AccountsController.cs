@@ -258,7 +258,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 {
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
-                    _logger.LogError($"No existe el cliente.");
+                    _logger.LogError(((ClientMessage)_messageUser).NotFound(dto.ClientId));
                     return NotFound(_response);
                 }
 
@@ -272,7 +272,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var result = await _userManager.CreateAsync(user, dto.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("Registración correcta.");
+                    _logger.LogInformation(_messageUser.Created(0, user.UserName));
                     await _logService.LogAction("Account", "Create", $"Username: {dto.Username}, Rol: {dto.UserRoleId}.", dto.Username, client.Id);
 
                     _response.StatusCode = HttpStatusCode.OK;
@@ -285,7 +285,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                         {
                             _response.IsSuccess = false;
                             _response.StatusCode = HttpStatusCode.InternalServerError;
-                            _logger.LogError($"Error al asignar rol al usuario.");
+                            _logger.LogError(_messageUser.NotValid());
                         }
                     }
 
@@ -298,7 +298,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 }
                 else
                 {
-                    _logger.LogError($"Registración incorrecta.");
+                    _logger.LogError(_messageUser.NotValid());
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(result.Errors);
@@ -389,7 +389,8 @@ namespace DatalexionBackend.UI.Controllers.V1
                     .FirstOrDefaultAsync(d => d.CI == dto.CI); // Filtra para encontrar el delegado con el CI específico                
                 if (delegado != null && delegado.CI == dto.CI)
                 {
-                    _logger.LogInformation("Login correcto.");
+                    _logger.LogInformation(((DatalexionUserMessage)_messageUser).LoginSuccess(delegado.Id.ToString(), delegado.Name));
+                    await _logService.LogAction(((DatalexionUserMessage)_messageUser).LoginSuccess(delegado.Id.ToString(), delegado.Name), "Login", "Inicio de sesión.", delegado.Name, delegado.ClientId);
 
                     var municipalities = await _contextDB.Municipality
                         .Include(m => m.ListCircuits) // Incluye la lista de circuitos de cada municipio
@@ -414,6 +415,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 else
                 {
                     _logger.LogError($"Login incorrecto.");
+                    await _logService.LogAction(((DatalexionUserMessage)_messageUser).LoginFailed(dto.CI), "Login", "Inicio de sesión incorrecto.", dto.CI, null);
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest("Login incorrecto");
@@ -422,6 +424,7 @@ namespace DatalexionBackend.UI.Controllers.V1
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
+                await _logService.LogAction(((DatalexionUserMessage)_messageUser).LoginFailed(dto.CI), "Login", "Inicio de sesión incorrecto.", dto.CI, null);
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
                 _response.ErrorMessages = [ex.ToString()];
@@ -444,7 +447,6 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var result = await _signInManager.PasswordSignInAsync(dto.Username, dto.Password, isPersistent: false, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("Login correcto.");
                     var user = await _userManager.FindByNameAsync(dto.Username);
                     if (user != null)
                     {
@@ -465,23 +467,26 @@ namespace DatalexionBackend.UI.Controllers.V1
                     }
                     else
                     {
-                        _logger.LogError($"User not found.");
+                        _logger.LogError($"Inicio de sesión incorrecto.");
+                        await _logService.LogAction(((DatalexionUserMessage)_messageUser).LoginFailed(dto.Username), "Login", "Inicio de sesión incorrecto.", dto.Username, null);
                         _response.IsSuccess = false;
                         _response.StatusCode = HttpStatusCode.BadRequest;
-                        return BadRequest("User not found");
+                        return BadRequest("Inicio de sesión incorrecto");
                     }
                 }
                 else
                 {
-                    _logger.LogError($"Login incorrecto.");
+                    _logger.LogError($"Inicio de sesión incorrecto.");
+                    await _logService.LogAction(((DatalexionUserMessage)_messageUser).LoginFailed(dto.Username), "Login", "Inicio de sesión incorrecto.", dto.Username, null);
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                    return BadRequest("Login incorrecto");  // respuesta genérica para no revelar información
+                    return BadRequest("Inicio de sesión incorrecto");
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
+                await _logService.LogAction(((DatalexionUserMessage)_messageUser).LoginFailed(dto.Username), "Login", "Inicio de sesión incorrecto.", dto.Username, null);
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.InternalServerError;
                 _response.ErrorMessages = [ex.ToString()];

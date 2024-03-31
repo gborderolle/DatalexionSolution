@@ -113,6 +113,8 @@ public static class ConfigureServicesExtensions
         services.AddSingleton<IFileStorage, FileStorageLocal>();
         services.AddHttpContextAccessor();
 
+        services.AddScoped<DataSeeder>();
+
         // Email Configuration
         var emailConfig = configuration.GetSection("NotificationEmail").Get<EmailConfiguration>();
         services.AddSingleton(emailConfig);

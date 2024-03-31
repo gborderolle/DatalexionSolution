@@ -18,6 +18,18 @@ builder.Services.ConfigureServices(builder.Configuration);
 
 var app = builder.Build();
 
+// Crear un ámbito manualmente
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    // Registrar el inicio de la aplicación
+    var loggerProgram = services.GetRequiredService<ILogger<Program>>();
+    var loggerService = services.GetRequiredService<ILogService>();
+    loggerProgram.LogInformation("La aplicación DatalexionBackend ha iniciado.");
+    await loggerService.LogAction("Program", "Inicio", "System", "La aplicación DatalexionBackend ha iniciado.", null);
+}
+
 var webHostEnvironment = app.Services.GetService<IWebHostEnvironment>();
 var wwwrootPath = webHostEnvironment?.WebRootPath ?? "";
 
@@ -34,12 +46,14 @@ else
 bool SeedCircuitsAndMunicipalitiesFromExcelOnStartup = builder.Configuration.GetValue<bool>("SeedCircuitsAndMunicipalitiesFromExcelOnStartup");
 if (SeedCircuitsAndMunicipalitiesFromExcelOnStartup)
 {
-    await ExcelDataSeeder.LoadDataFromExcel(app.Services, wwwrootPath);
+    var logger = app.Services.GetRequiredService<ILogger<DataSeeder>>();
+    await ExcelDataSeeder.LoadDataFromExcel(app.Services, wwwrootPath, logger);
 }
 bool SeedVotesOnStartup = builder.Configuration.GetValue<bool>("SeedVotesOnStartup");
 if (SeedVotesOnStartup)
 {
-    ExcelDataSeeder.SeedVotes(app.Services);
+    var logger = app.Services.GetRequiredService<ILogger<SeedVotes>>();
+    ExcelDataSeeder.SeedVotes(app.Services, logger);
 }
 
 app.UseSwagger();
