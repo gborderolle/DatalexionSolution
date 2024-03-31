@@ -58,6 +58,22 @@ namespace DatalexionBackend.EmailService
                 {
                     await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.SmtpPort, true);
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
+
+                    // Obtener la contraseña desde una variable de entorno
+                    var emailPassword = Environment.GetEnvironmentVariable("EMAIL_PASSWORD");
+
+                    // Si la variable de entorno no está establecida, intenta obtenerla desde la configuración cargada
+                    if (string.IsNullOrEmpty(emailPassword))
+                    {
+                        emailPassword = _emailConfig.Password;
+                    }
+
+                    // Asegurarse de que la contraseña no sea nula o vacía
+                    if (string.IsNullOrEmpty(emailPassword))
+                    {
+                        throw new InvalidOperationException("No se encontró la contraseña del correo electrónico. Asegúrese de configurar la variable de entorno 'EMAIL_PASSWORD'.");
+                    }
+
                     await client.AuthenticateAsync(_emailConfig.UserName, _emailConfig.Password);
                     await client.SendAsync(mailMessage);
                 }

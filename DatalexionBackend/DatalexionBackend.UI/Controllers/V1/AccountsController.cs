@@ -702,17 +702,26 @@ namespace DatalexionBackend.UI.Controllers.V1
                 claims.Add(new Claim(ClaimTypes.Role, userRole));
             }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
+            // Intentar obtener la clave JWT desde una variable de entorno
+            var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+
+            // Si la variable de entorno no está establecida, intenta obtenerla desde appsettings.json
+            if (string.IsNullOrEmpty(jwtKey))
+            {
+                jwtKey = _configuration["JWT:key"];
+            }
+
+            // Asegúrate de que la clave no sea nula o vacía
+            if (string.IsNullOrEmpty(jwtKey))
+            {
+                throw new InvalidOperationException("No se encontró la clave JWT. Asegúrese de configurar la variable de entorno 'JWT_KEY' o definirla en appsettings.");
+            }
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
             var expiration = DateTime.UtcNow.AddYears(1);
-
-            var token = new JwtSecurityToken(
-                issuer: null, // Opcionalmente añadir el emisor del token
-                audience: null, // Opcionalmente añadir la audiencia del token
-                claims: claims,
-                expires: expiration,
-                signingCredentials: credentials);
+            var token = new JwtSecurityToken(issuer: null, audience: null, claims: claims,
+                expires: expiration, signingCredentials: credentials);
 
             return new AuthenticationResponse()
             {
@@ -730,7 +739,22 @@ namespace DatalexionBackend.UI.Controllers.V1
                         new Claim(ClaimTypes.Email, user.Email)
                 };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
+            // Intentar obtener la clave JWT desde una variable de entorno
+            var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+
+            // Si la variable de entorno no está establecida, intenta obtenerla desde appsettings.json
+            if (string.IsNullOrEmpty(jwtKey))
+            {
+                jwtKey = _configuration["JWT:key"];
+            }
+
+            // Asegúrate de que la clave no sea nula o vacía
+            if (string.IsNullOrEmpty(jwtKey))
+            {
+                throw new InvalidOperationException("No se encontró la clave JWT. Asegúrese de configurar la variable de entorno 'JWT_KEY' o definirla en appsettings.");
+            }
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var expiration = DateTime.UtcNow.AddYears(1);

@@ -24,3 +24,5 @@ DatalexionBackend/DatalexionBackend.ServiceTests/bin/
 
 DatalexionFrontend/.vs/
 DatalexionFrontend/node_modules/
+
+DatalexionBackend/DatalexionBackend.UI/appsettings.Development.json

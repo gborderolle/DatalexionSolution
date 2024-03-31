@@ -118,7 +118,19 @@ public static class ConfigureServicesExtensions
 
         services.AddDbContext<ContextDB>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("ConnectionString_Datalexion"))
+            // Obtener el ConnectionString desde una variable de entorno
+            var connectionString = Environment.GetEnvironmentVariable("CONNECTIONSTRING_DATALEXION");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                // Si no se encuentra el ConnectionString en las variables de entorno, intenta obtenerlo de appsettings
+                connectionString = configuration.GetConnectionString("ConnectionString_Datalexion"); // Localhost
+                // Si aún es nulo o vacío, lanza una excepción
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    throw new InvalidOperationException("No se encontró el ConnectionString. Asegúrese de configurar la variable de entorno 'ConnectionString_Datalexion' o definirla en appsettings.");
+                }
+            }
+            options.UseSqlServer(connectionString)
             .EnableSensitiveDataLogging();
         });
 
