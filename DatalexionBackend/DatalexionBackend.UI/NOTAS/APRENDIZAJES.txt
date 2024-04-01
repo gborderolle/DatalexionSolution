@@ -150,3 +150,12 @@ _logger\.LogError\(string\.Format\(Messages\..*?\.NotFound, id\)\);
 _logger.LogInformation(_message.Created(party.Id, party.Name));
 _logger\.LogInformation\(\$"Se creó correctamente .*? Id:\{.*?\.Id\}."\);
 
+--------------------------------------
+ConnectionString
+
+El ConnectionString no se guarda en Appsettings.json porque es un archivo público, entonces se usan Variables de entorno (environment variables) que se setean desde el Hosting mismo (por ej en SmarterASP en ApplicationPool): clave-valor (sin "").
+
+Nombre: CONNECTIONSTRING_DATALEXION
+
+--------------------------------------
+
