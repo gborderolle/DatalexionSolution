@@ -15,10 +15,10 @@ using System.Net;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
+    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/clients")]
-    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     public class ClientsController : CustomBaseController<Client>
     {
         private readonly IClientRepository _clientRepository;
@@ -115,15 +115,15 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await GetById<Client, ClientDTO>(id, includes: includes, thenIncludes: thenIncludes);
         }
 
-        [HttpDelete("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Client>(id);
         }
 
-        [HttpPut("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] ClientCreateDTO dto)
         {
             try
@@ -261,8 +261,8 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
-        [HttpPost(Name = "CreateClient")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPost(Name = "CreateClient")]
         public async Task<ActionResult<APIResponse>> Post([FromBody] ClientCreateDTO dto)
         {
             return Ok();

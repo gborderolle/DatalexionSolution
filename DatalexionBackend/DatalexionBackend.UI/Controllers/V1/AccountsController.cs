@@ -26,7 +26,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/accounts")]
-    //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+    [Authorize(Roles = nameof(UserTypeOptions.Admin))]
     public class AccountsController : ControllerBase
     {
         private readonly IConfiguration _configuration;
@@ -195,8 +195,8 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// </summary>
         /// <param name="usuarioId">Identificador del usuario.</param>
         /// <returns>Respuesta API indicando el resultado de la operación.</returns>
+        // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         [HttpPost("makeAdmin")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> MakeAdmin([FromBody] string usuarioId)
         {
             try
@@ -221,8 +221,8 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// </summary>
         /// <param name="usuarioId">Identificador del usuario.</param>
         /// <returns>Respuesta API indicando el resultado de la operación.</returns>
+        // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         [HttpPost("removeAdmin")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> RemoveAdmin([FromBody] string usuarioId)
         {
             try
@@ -247,8 +247,8 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// </summary>
         /// <param name="dto">Datos para la creación del usuario.</param>
         /// <returns>Respuesta API indicando el resultado de la operación.</returns>
+        // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         [HttpPost("CreateUser")] //api/accounts/CreateUser
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> CreateUser(DatalexionUserCreateDTO dto)
         {
             try
@@ -320,8 +320,8 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="id">Identificador del usuario a actualizar.</param>
         /// <param name="dto">Datos para la actualización del usuario.</param>
         /// <returns>Respuesta API indicando el resultado de la operación.</returns>
+        // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         [HttpPut("UpdateUser/{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> UpdateUser(string id, [FromBody] DatalexionUserPatchDTO dto)
         {
             try
@@ -499,8 +499,8 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// </summary>
         /// <param name="dto">Datos para la creación del rol.</param>
         /// <returns>Respuesta API indicando el resultado de la operación.</returns>
+        // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         [HttpPost("CreateUserRole")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> CreateUserRole([FromBody] DatalexionRoleCreateDTO dto)
         {
             try
@@ -550,8 +550,8 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="id">Identificador del rol a actualizar.</param>
         /// <param name="dto">Datos para la actualización del rol.</param>
         /// <returns>Respuesta API indicando el resultado de la operación.</returns>
+        // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         [HttpPut("UpdateUserRole/{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> UpdateUserRole(string id, [FromBody] DatalexionRoleUpdateDTO dto)
         {
             try

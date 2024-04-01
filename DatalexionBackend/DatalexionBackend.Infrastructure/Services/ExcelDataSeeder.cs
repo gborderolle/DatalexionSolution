@@ -10,7 +10,7 @@ namespace DatalexionBackend.Infrastructure.Services
 {
     public static class ExcelDataSeeder
     {
-        public static async Task LoadDataFromExcel(IServiceProvider serviceProvider, string wwwrootPath, ILogger logger)
+        public static async Task LoadDataFromExcel(IServiceProvider serviceProvider, string wwwrootPath)
         {
             try
             {
@@ -158,18 +158,19 @@ namespace DatalexionBackend.Infrastructure.Services
                             }
                         }
                         await context.SaveChangesAsync();
-                        await loggerService.LogAction("Circuitos", "Carga", "System", "Carga de circuitos desde Excel", null);
+                        // await loggerService.LogAction("Circuitos", "Carga", "System", "Carga de circuitos desde Excel", null);
+                        // logger.LogInformation("Carga de circuitos desde Excel completada.");
                     }
 
                 }
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error al cargar datos desde Excel.");
+                // logger.LogError(ex, "Error al cargar datos desde Excel.");
             }
         }
 
-        public static void SeedVotes(IServiceProvider serviceProvider, ILogger logger)
+        public static void SeedVotes(IServiceProvider serviceProvider)
         {
             using (var scope = serviceProvider.CreateScope())
             {
@@ -245,11 +246,12 @@ namespace DatalexionBackend.Infrastructure.Services
                         }
 
                         context.SaveChanges();
-                        loggerService.LogAction("Votos", "Carga", "System", "Carga de votos desde Excel", client.Id);
+                        // loggerService.LogAction("Votos", "Carga", "System", "Carga de votos desde Excel", client.Id);
+                        // logger.LogInformation("Carga de votos desde Excel completada.");
                     }
                     else
                     {
-                        logger.LogError("No hay circuitos para actualizar.");
+                        // logger.LogError("No hay circuitos para actualizar.");
                     }
                 }
             }

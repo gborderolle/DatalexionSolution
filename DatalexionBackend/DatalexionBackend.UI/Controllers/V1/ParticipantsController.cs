@@ -14,10 +14,10 @@ using DatalexionBackend.Core.Enums;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
+    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/participants")]
-    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     public class ParticipantsController : CustomBaseController<Participant>
     {
         private readonly IParticipantRepository _participantRepository;
@@ -76,22 +76,22 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await GetById<Participant, ParticipantDTO>(id, includes: includes);
         }
 
-        [HttpDelete("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Participant>(id);
         }
 
-        [HttpPut("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] ParticipantCreateDTO dto)
         {
             return await Put<ParticipantCreateDTO, ParticipantDTO, Participant>(id, dto);
         }
 
-        [HttpPatch("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<ParticipantPatchDTO> dto)
         {
             return await Patch<Participant, ParticipantPatchDTO>(id, dto);
@@ -101,8 +101,8 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         #region Endpoints específicos
 
-        [HttpPost(Name = "CreateParticipant")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPost(Name = "CreateParticipant")]
         public async Task<ActionResult<APIResponse>> Post([FromBody] ParticipantCreateDTO dto)
         {
             try

@@ -15,11 +15,11 @@ using DatalexionBackend.Infrastructure.Services;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
+    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/parties")]
-    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PartiesController : CustomBaseController<Party>
     {
         private readonly IPartyRepository _partyRepository;
@@ -129,15 +129,15 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await GetById<Party, PartyDTO>(id, includes: includes, thenIncludes: thenIncludes);
         }
 
-        [HttpDelete("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Party>(id);
         }
 
-        [HttpPut("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] PartyCreateDTO dto)
         {
             try
@@ -188,8 +188,8 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
-        [HttpPatch("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<PartyPatchDTO> dto)
         {
             return await Patch<Party, PartyPatchDTO>(id, dto);
@@ -261,8 +261,8 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
-        [HttpPost(Name = "CreateParty")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPost(Name = "CreateParty")]
         public async Task<ActionResult<APIResponse>> Post([FromBody] PartyCreateDTO dto)
         {
             try

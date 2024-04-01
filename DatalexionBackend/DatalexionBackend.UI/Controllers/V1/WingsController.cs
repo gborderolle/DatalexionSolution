@@ -14,10 +14,10 @@ using System.Net;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
+    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/wings")]
-    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     public class WingsController : CustomBaseController<Wing>
     {
         private readonly IWingRepository _wingRepository;
@@ -99,15 +99,15 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await GetById<Wing, WingDTO>(id, includes: includes);
         }
 
-        [HttpDelete("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Wing>(id);
         }
 
-        [HttpPut("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] WingCreateDTO dto)
         {
             try
@@ -252,8 +252,8 @@ namespace DatalexionBackend.UI.Controllers.V1
             }
         }
 
-        [HttpPost(Name = "CreateWing")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPost(Name = "CreateWing")]
         public async Task<ActionResult<APIResponse>> Post([FromBody] WingCreateDTO dto)
         {
             try

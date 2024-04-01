@@ -46,14 +46,14 @@ else
 bool SeedCircuitsAndMunicipalitiesFromExcelOnStartup = builder.Configuration.GetValue<bool>("SeedCircuitsAndMunicipalitiesFromExcelOnStartup");
 if (SeedCircuitsAndMunicipalitiesFromExcelOnStartup)
 {
-    var logger = app.Services.GetRequiredService<ILogger<DataSeeder>>();
-    await ExcelDataSeeder.LoadDataFromExcel(app.Services, wwwrootPath, logger);
+    // var logger = app.Services.GetRequiredService<ILogger<DataSeeder>>();
+    await ExcelDataSeeder.LoadDataFromExcel(app.Services, wwwrootPath);
 }
 bool SeedVotesOnStartup = builder.Configuration.GetValue<bool>("SeedVotesOnStartup");
 if (SeedVotesOnStartup)
 {
-    var logger = app.Services.GetRequiredService<ILogger<SeedVotes>>();
-    ExcelDataSeeder.SeedVotes(app.Services, logger);
+    // var logger = app.Services.GetRequiredService<ILogger<SeedVotes>>();
+    ExcelDataSeeder.SeedVotes(app.Services);
 }
 
 app.UseSwagger();

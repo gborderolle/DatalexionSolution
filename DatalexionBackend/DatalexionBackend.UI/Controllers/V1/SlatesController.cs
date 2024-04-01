@@ -14,10 +14,10 @@ using System.Net;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
+    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/slates")]
-    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     public class SlatesController : CustomBaseController<Slate>
     {
         private readonly ISlateRepository _slateRepository;
@@ -135,15 +135,15 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await GetById<Slate, SlateDTO>(id, includes: includes, thenIncludes: thenIncludes);
         }
 
-        [HttpDelete("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Slate>(id);
         }
 
-        [HttpPut("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] SlateCreateDTO dto)
         {
             try
@@ -365,8 +365,8 @@ namespace DatalexionBackend.UI.Controllers.V1
             }
         }
 
-        [HttpPost(Name = "CreateSlate")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPost(Name = "CreateSlate")]
         public async Task<ActionResult<APIResponse>> Post([FromBody] SlateCreateDTO dto)
         {
             try

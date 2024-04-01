@@ -14,10 +14,10 @@ using System.Net;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
+    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/provinces")]
-    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     public class ProvincesController : CustomBaseController<Province>
     {
         private readonly IProvinceRepository _provinceRepository;
@@ -83,15 +83,15 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await GetById<Province, ProvinceDTO>(id, includes: includes);
         }
 
-        [HttpDelete("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Province>(id);
         }
 
-        [HttpPut("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] ProvinceCreateDTO dto)
         {
             try
@@ -150,8 +150,8 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         #region Endpoints específicos
 
-        [HttpPost(Name = "CreateProvince")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPost(Name = "CreateProvince")]
         public async Task<ActionResult<APIResponse>> Post([FromBody] ProvinceCreateDTO dto)
         {
             try

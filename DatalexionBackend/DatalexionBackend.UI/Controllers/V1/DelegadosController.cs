@@ -14,10 +14,10 @@ using System.Net;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
+    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/delegados")]
-    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     public class DelegadosController : CustomBaseController<Delegado>
     {
         private readonly IDelegadoRepository _delegadoRepository;
@@ -99,15 +99,15 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await GetById<Delegate, DelegadoDTO>(id, includes: includes, thenIncludes: thenIncludes);
         }
 
-        [HttpDelete("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Delegado>(id);
         }
 
-        [HttpPut("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] DelegadoCreateDTO dto)
         {
             try
@@ -216,8 +216,8 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
-        [HttpPost(Name = "CreateDelegado")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPost(Name = "CreateDelegado")]
         public async Task<ActionResult<APIResponse>> Post([FromBody] DelegadoCreateDTO dto)
         {
             try

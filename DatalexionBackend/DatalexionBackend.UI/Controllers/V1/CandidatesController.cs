@@ -13,10 +13,10 @@ using System.Net;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
+    // //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/candidates")]
-    // //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     public class CandidatesController : CustomBaseController<Candidate>
     {
         private readonly ICandidateRepository _candidateRepository;
@@ -99,8 +99,8 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// </summary>
         /// <param name="id">ID del candidato a eliminar.</param>
         /// <returns>Resultado de la operación de eliminación.</returns>
-        [HttpDelete("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Candidate>(id);
@@ -113,9 +113,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="dto">Datos actualizados del candidato.</param>
         /// <param name="file">Archivo de foto nueva del candidato.</param>
         /// <returns>El candidato actualizado.</returns>
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPut("{id:int}")]
         [Consumes("multipart/form-data")]
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromForm] CandidateCreateDTO dto, IFormFile file)
         {
             try
@@ -271,8 +271,8 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// </summary>
         /// <param name="dto">Datos del nuevo candidato.</param>
         /// <returns>El candidato creado.</returns>
-        [HttpPost(Name = "CreateCandidate")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPost(Name = "CreateCandidate")]
         public async Task<ActionResult<APIResponse>> Post([FromBody] CandidateCreateDTO dto)
         {
             return Ok();

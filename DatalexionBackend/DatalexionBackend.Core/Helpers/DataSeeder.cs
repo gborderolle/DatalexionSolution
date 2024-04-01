@@ -10,8 +10,4 @@ public class DataSeeder
         _logger = logger;
     }
 
-    public async Task LoadDataFromExcel(IServiceProvider serviceProvider, string wwwrootPath)
-    {
-        _logger.LogInformation("Iniciando carga de datos desde Excel...");
-    }
 }

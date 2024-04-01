@@ -168,8 +168,8 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="id">ID del circuito a actualizar.</param>
         /// <param name="dto">Datos actualizados del circuito.</param>
         /// <returns>El circuito actualizado.</returns>
-        [HttpPut("{id:int}")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] CircuitCreateDTO dto)
         {
             try
@@ -300,8 +300,8 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="id">ID del circuito a actualizar.</param>
         /// <param name="dto">DTO de creación con los datos para actualizar el circuito.</param>
         /// <returns>Respuesta indicando el resultado de la operación de actualización.</returns>
-        [HttpPut("{id:int}/update")]
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPut("{id:int}/update")]
         public async Task<ActionResult<APIResponse>> UpdateCircuit(int id, [FromBody] CircuitCreateDTO dto)
         {
             try
@@ -357,9 +357,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="dto">DTO para aplicar actualizaciones parciales.</param>
         /// <param name="photos">Lista de fotos nuevas a cargar.</param>
         /// <returns>Respuesta indicando el resultado de la operación de actualización parcial.</returns>
+        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPatch("{id:int}")]
         [Consumes("multipart/form-data")] // Indicar que el método aceptará multipart/form-data
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromForm] CircuitPatchDTO dto, [FromForm] List<IFormFile> photos)
         {
             try
