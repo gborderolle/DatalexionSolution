@@ -14,7 +14,6 @@ using System.Net;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
-    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/slates")]
@@ -135,14 +134,14 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await GetById<Slate, SlateDTO>(id, includes: includes, thenIncludes: thenIncludes);
         }
 
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Slate>(id);
         }
 
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] SlateCreateDTO dto)
         {
@@ -264,10 +263,73 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<SlatePatchDTO> dto)
         {
             return await Patch<Slate, SlatePatchDTO>(id, dto);
+        }
+
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPost(Name = "CreateSlate")]
+        public async Task<ActionResult<APIResponse>> Post([FromBody] SlateCreateDTO dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    _logger.LogError($"Ocurrió un error en el servidor.");
+                    _response.ErrorMessages = new() { $"Ocurrió un error en el servidor." };
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(ModelState);
+                }
+                if (await _slateRepository.Get(v => v.Name.ToLower() == dto.Name.ToLower()) != null)
+                {
+                    _logger.LogError($"El nombre {dto.Name} ya existe en el sistema");
+                    _response.ErrorMessages = new() { $"El nombre {dto.Name} ya existe en el sistema." };
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {dto.Name} ya existe en el sistema.");
+                    return BadRequest(ModelState);
+                }
+
+                dto.Name = Utils.ToCamelCase(dto.Name);
+                dto.Comments = Utils.ToCamelCase(dto.Comments);
+
+                Slate slate = _mapper.Map<Slate>(dto);
+                slate.Creation = DateTime.Now;
+                slate.Update = DateTime.Now;
+
+                slate.ListCircuitSlates = _mapper.Map<List<CircuitSlate>>(dto.ListCircuitSlates);
+                slate.ListParticipants = _mapper.Map<List<Participant>>(dto.ListParticipants);
+
+                await _slateRepository.Create(slate);
+
+                // Manejar carga de fotos
+                if (dto.Photo != null)
+                {
+                    await HandlePhotoUpload(dto.Photo, slate);
+                }
+
+                _logger.LogInformation(_message.Created(slate.Id, slate.Name));
+                await _logService.LogAction("Slate", "Create", $"Id:{slate.Id}, Nombre: {slate.Name}.", User.Identity.Name, null);
+
+                _response.Result = _mapper.Map<SlateDTO>(slate);
+                _response.StatusCode = HttpStatusCode.Created;
+
+                // CreatedAtRoute -> Nombre de la ruta (del método): GetCountryDSById
+                // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/13816172#notes
+                return CreatedAtAction(nameof(Get), new { id = slate.Id }, _response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.InternalServerError;
+                _response.ErrorMessages = [ex.ToString()];
+            }
+            return _response;
         }
 
         #endregion
@@ -363,68 +425,6 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _response.ErrorMessages = [ex.ToString()];
                 return BadRequest(_response);
             }
-        }
-
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
-        [HttpPost(Name = "CreateSlate")]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] SlateCreateDTO dto)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    _logger.LogError($"Ocurrió un error en el servidor.");
-                    _response.ErrorMessages = new() { $"Ocurrió un error en el servidor." };
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.BadRequest;
-                    return BadRequest(ModelState);
-                }
-                if (await _slateRepository.Get(v => v.Name.ToLower() == dto.Name.ToLower()) != null)
-                {
-                    _logger.LogError($"El nombre {dto.Name} ya existe en el sistema");
-                    _response.ErrorMessages = new() { $"El nombre {dto.Name} ya existe en el sistema." };
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.BadRequest;
-                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {dto.Name} ya existe en el sistema.");
-                    return BadRequest(ModelState);
-                }
-
-                dto.Name = Utils.ToCamelCase(dto.Name);
-                dto.Comments = Utils.ToCamelCase(dto.Comments);
-
-                Slate slate = _mapper.Map<Slate>(dto);
-                slate.Creation = DateTime.Now;
-                slate.Update = DateTime.Now;
-
-                slate.ListCircuitSlates = _mapper.Map<List<CircuitSlate>>(dto.ListCircuitSlates);
-                slate.ListParticipants = _mapper.Map<List<Participant>>(dto.ListParticipants);
-
-                await _slateRepository.Create(slate);
-
-                // Manejar carga de fotos
-                if (dto.Photo != null)
-                {
-                    await HandlePhotoUpload(dto.Photo, slate);
-                }
-
-                _logger.LogInformation(_message.Created(slate.Id, slate.Name));
-                await _logService.LogAction("Slate", "Create", $"Id:{slate.Id}, Nombre: {slate.Name}.", User.Identity.Name, null);
-
-                _response.Result = _mapper.Map<SlateDTO>(slate);
-                _response.StatusCode = HttpStatusCode.Created;
-
-                // CreatedAtRoute -> Nombre de la ruta (del método): GetCountryDSById
-                // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/13816172#notes
-                return CreatedAtAction(nameof(Get), new { id = slate.Id }, _response);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.ToString());
-                _response.IsSuccess = false;
-                _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = [ex.ToString()];
-            }
-            return _response;
         }
 
         #endregion

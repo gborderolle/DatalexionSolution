@@ -89,17 +89,16 @@ public static class ConfigureServicesExtensions
         // Repositorios
         services.AddScoped<ICandidateRepository, CandidateRepository>();
         services.AddScoped<ICircuitRepository, CircuitRepository>();
-        services.AddScoped<IDatalexionUserRepository, DatalexionUserRepository>();
         services.AddScoped<IClientRepository, ClientRepository>();
+        services.AddScoped<IDatalexionUserRepository, DatalexionUserRepository>();
         services.AddScoped<IDelegadoRepository, DelegadoRepository>();
         services.AddScoped<IMunicipalityRepository, MunicipalityRepository>();
         services.AddScoped<IParticipantRepository, ParticipantRepository>();
         services.AddScoped<IPartyRepository, PartyRepository>();
+        services.AddScoped<IPhotoRepository, PhotoRepository>();
         services.AddScoped<IProvinceRepository, ProvinceRepository>();
         services.AddScoped<ISlateRepository, SlateRepository>();
         services.AddScoped<IWingRepository, WingRepository>();
-        services.AddScoped<IPhotoRepository, PhotoRepository>();
-        services.AddScoped<ILogService, LogService>();
 
         // Mensajes
         services.AddScoped<IMessage<Candidate>, CandidateMessage>();
@@ -115,11 +114,19 @@ public static class ConfigureServicesExtensions
         services.AddScoped<IMessage<Slate>, SlateMessage>();
         services.AddScoped<IMessage<Wing>, WingMessage>();
 
+        // Otros servicios
+        services.AddScoped<ILogService, LogService>();
+
+        // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/27148834#notes
+        services.AddTransient<GenerateLinks>();
+        services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
+
         // Filtros
         //Ejemplo: services.AddScoped<MovieExistsAttribute>();
 
         // Servicios extra
-        services.AddSignalR();
+        // services.AddSignalR();
 
         // Manejo de archivos en el servidor 
         services.AddSingleton<IFileStorage, FileStorageLocal>();
@@ -128,7 +135,10 @@ public static class ConfigureServicesExtensions
         // services.AddScoped<DataSeeder>();
         // services.AddScoped<SeedVotes>();
 
-        // Email Configuration
+        #endregion
+
+        #region Email Configuration
+
         var emailConfig = configuration.GetSection("NotificationEmail").Get<EmailConfiguration>();
         services.AddSingleton(emailConfig);
         services.AddScoped<IEmailSender, EmailSender>();
@@ -238,10 +248,6 @@ public static class ConfigureServicesExtensions
         });
 
         #endregion
-
-        // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/27148834#notes
-        services.AddTransient<GenerateLinks>();
-        services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
         services.AddHttpLogging(logging =>
         {

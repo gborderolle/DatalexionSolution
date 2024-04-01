@@ -508,9 +508,10 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var roleExist = await _roleManager.RoleExistsAsync(dto.Name);
                 if (roleExist)
                 {
+                    _logger.LogError(_messageRole.NameAlreadyExists(dto.Name));
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                    _response.ErrorMessages = new() { "El rol ya existe." };
+                    _response.ErrorMessages = new() { _messageRole.NameAlreadyExists(dto.Name) };
                     return BadRequest(_response);
                 }
 
@@ -522,11 +523,13 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var result = await _roleManager.CreateAsync(newRole);
                 if (result.Succeeded)
                 {
+                    _logger.LogInformation(_messageRole.Created(0, newRole.Name));
                     _response.StatusCode = HttpStatusCode.Created;
                     _response.Result = newRole;
                 }
                 else
                 {
+                    _logger.LogError(_messageRole.NotValid());
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.InternalServerError;
                     _response.ErrorMessages = result.Errors.Select(e => e.Description).ToList();
@@ -559,6 +562,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var userRole = await _roleManager.FindByIdAsync(id);
                 if (userRole == null)
                 {
+                    _logger.LogError(_messageRole.NotFound(0));
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
@@ -568,12 +572,14 @@ namespace DatalexionBackend.UI.Controllers.V1
                 var updateResult = await _roleManager.UpdateAsync(userRole);
                 if (!updateResult.Succeeded)
                 {
+                    _logger.LogError(_messageRole.NotValid());
                     _response.IsSuccess = false;
                     _response.StatusCode = HttpStatusCode.InternalServerError;
                     _response.ErrorMessages = updateResult.Errors.Select(e => e.Description).ToList();
                     return BadRequest(_response);
                 }
 
+                _logger.LogInformation(_messageRole.Updated(0, userRole.Name));
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.Result = _mapper.Map<UserDTO>(userRole); // Mapea el usuario actualizado a un DTO si es necesario
             }

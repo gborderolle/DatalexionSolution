@@ -26,10 +26,10 @@ namespace DatalexionBackend.UI.Controllers.V1
         private readonly ContextDB _dbContext;
         private readonly ILogService _logService;
         private readonly IFileStorage _fileStorage;
-        private readonly IHubContext<NotifyHub> _hubContext;
+        // private readonly IHubContext<NotifyHub> _hubContext; // SignalR
         private readonly IMessage<Circuit> _message;
 
-        public CircuitsController(ILogger<CircuitsController> logger, IMapper mapper, ICircuitRepository circuitRepository, IPhotoRepository photoRepository, IFileStorage fileStorage, ContextDB dbContext, ILogService logService, IHubContext<NotifyHub> hubContext, IMessage<Circuit> message)
+        public CircuitsController(ILogger<CircuitsController> logger, IMapper mapper, ICircuitRepository circuitRepository, IPhotoRepository photoRepository, IFileStorage fileStorage, ContextDB dbContext, ILogService logService, IMessage<Circuit> message)
             : base(mapper, logger, circuitRepository)
         {
             _circuitRepository = circuitRepository;
@@ -37,7 +37,6 @@ namespace DatalexionBackend.UI.Controllers.V1
             _fileStorage = fileStorage;
             _dbContext = dbContext;
             _logService = logService;
-            _hubContext = hubContext;
             _message = message;
         }
 
@@ -156,6 +155,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// </summary>
         /// <param name="id">ID del circuito a eliminar.</param>
         /// <returns>Resultado de la operación de eliminación.</returns>
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
@@ -168,7 +168,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="id">ID del circuito a actualizar.</param>
         /// <param name="dto">Datos actualizados del circuito.</param>
         /// <returns>El circuito actualizado.</returns>
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] CircuitCreateDTO dto)
         {
@@ -280,7 +280,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _response.StatusCode = HttpStatusCode.OK;
 
                 // SignalR
-                await _hubContext.Clients.All.SendAsync("ReceiveMessage", "System", $"Se actualizó correctamente el circuito Id:{id}.");
+                // await _hubContext.Clients.All.SendAsync("ReceiveMessage", "System", $"Se actualizó correctamente el circuito Id:{id}.");
 
                 return Ok(_response);
             }
@@ -300,7 +300,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="id">ID del circuito a actualizar.</param>
         /// <param name="dto">DTO de creación con los datos para actualizar el circuito.</param>
         /// <returns>Respuesta indicando el resultado de la operación de actualización.</returns>
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPut("{id:int}/update")]
         public async Task<ActionResult<APIResponse>> UpdateCircuit(int id, [FromBody] CircuitCreateDTO dto)
         {
@@ -357,7 +357,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="dto">DTO para aplicar actualizaciones parciales.</param>
         /// <param name="photos">Lista de fotos nuevas a cargar.</param>
         /// <returns>Respuesta indicando el resultado de la operación de actualización parcial.</returns>
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPatch("{id:int}")]
         [Consumes("multipart/form-data")] // Indicar que el método aceptará multipart/form-data
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromForm] CircuitPatchDTO dto, [FromForm] List<IFormFile> photos)
@@ -412,15 +412,12 @@ namespace DatalexionBackend.UI.Controllers.V1
             }
         }
 
-        #endregion
-
-        #region Endpoints específicos
-
         /// <summary>
         /// Crea un nuevo circuito en el sistema.
         /// </summary>
         /// <param name="circuitCreateDto">Datos del nuevo circuito.</param>
         /// <returns>El circuito creado.</returns>
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPost(Name = "CreateCircuit")]
         public async Task<ActionResult<APIResponse>> Post([FromBody] CircuitCreateDTO circuitCreateDto)
         {
@@ -478,6 +475,10 @@ namespace DatalexionBackend.UI.Controllers.V1
             }
             return _response;
         }
+
+        #endregion
+
+        #region Endpoints específicos
 
         #endregion
 

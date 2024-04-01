@@ -14,7 +14,6 @@ using System.Net;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
-    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/wings")]
@@ -99,14 +98,14 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await GetById<Wing, WingDTO>(id, includes: includes);
         }
 
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Wing>(id);
         }
 
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] WingCreateDTO dto)
         {
@@ -178,10 +177,72 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<WingPatchDTO> dto)
         {
             return await Patch<Wing, WingPatchDTO>(id, dto);
+        }
+
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPost(Name = "CreateWing")]
+        public async Task<ActionResult<APIResponse>> Post([FromBody] WingCreateDTO dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    _logger.LogError($"Ocurrió un error en el servidor.");
+                    _response.ErrorMessages = new() { $"Ocurrió un error en el servidor." };
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(ModelState);
+                }
+                if (await _wingRepository.Get(v => v.Name.ToLower() == dto.Name.ToLower()) != null)
+                {
+                    _logger.LogError($"El nombre {dto.Name} ya existe en el sistema");
+                    _response.ErrorMessages = new() { $"El nombre {dto.Name} ya existe en el sistema." };
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {dto.Name} ya existe en el sistema.");
+                    return BadRequest(ModelState);
+                }
+
+                dto.Name = Utils.ToCamelCase(dto.Name);
+                dto.Comments = Utils.ToCamelCase(dto.Comments);
+
+                Wing wing = _mapper.Map<Wing>(dto);
+                wing.Creation = DateTime.Now;
+                wing.Update = DateTime.Now;
+
+                wing.ListSlates = _mapper.Map<List<Slate>>(dto.ListSlates);
+
+                await _wingRepository.Create(wing);
+
+                // Manejar carga de fotos
+                if (dto.Photo != null)
+                {
+                    await HandlePhotoUpload(dto.Photo, wing);
+                }
+
+                _logger.LogInformation(_message.Created(wing.Id, wing.Name));
+                await _logService.LogAction("Wing", "Create", $"Id:{wing.Id}, Nombre: {wing.Name}.", User.Identity.Name, null);
+
+                _response.Result = _mapper.Map<WingDTO>(wing);
+                _response.StatusCode = HttpStatusCode.Created;
+
+                // CreatedAtRoute -> Nombre de la ruta (del método): GetCountryDSById
+                // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/13816172#notes
+                return CreatedAtAction(nameof(Get), new { id = wing.Id }, _response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.InternalServerError;
+                _response.ErrorMessages = [ex.ToString()];
+            }
+            return _response;
         }
 
         #endregion
@@ -250,67 +311,6 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _response.ErrorMessages = [ex.ToString()];
                 return BadRequest(_response);
             }
-        }
-
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
-        [HttpPost(Name = "CreateWing")]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] WingCreateDTO dto)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    _logger.LogError($"Ocurrió un error en el servidor.");
-                    _response.ErrorMessages = new() { $"Ocurrió un error en el servidor." };
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.BadRequest;
-                    return BadRequest(ModelState);
-                }
-                if (await _wingRepository.Get(v => v.Name.ToLower() == dto.Name.ToLower()) != null)
-                {
-                    _logger.LogError($"El nombre {dto.Name} ya existe en el sistema");
-                    _response.ErrorMessages = new() { $"El nombre {dto.Name} ya existe en el sistema." };
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.BadRequest;
-                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {dto.Name} ya existe en el sistema.");
-                    return BadRequest(ModelState);
-                }
-
-                dto.Name = Utils.ToCamelCase(dto.Name);
-                dto.Comments = Utils.ToCamelCase(dto.Comments);
-
-                Wing wing = _mapper.Map<Wing>(dto);
-                wing.Creation = DateTime.Now;
-                wing.Update = DateTime.Now;
-
-                wing.ListSlates = _mapper.Map<List<Slate>>(dto.ListSlates);
-
-                await _wingRepository.Create(wing);
-
-                // Manejar carga de fotos
-                if (dto.Photo != null)
-                {
-                    await HandlePhotoUpload(dto.Photo, wing);
-                }
-
-                _logger.LogInformation(_message.Created(wing.Id, wing.Name));
-                await _logService.LogAction("Wing", "Create", $"Id:{wing.Id}, Nombre: {wing.Name}.", User.Identity.Name, null);
-
-                _response.Result = _mapper.Map<WingDTO>(wing);
-                _response.StatusCode = HttpStatusCode.Created;
-
-                // CreatedAtRoute -> Nombre de la ruta (del método): GetCountryDSById
-                // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/13816172#notes
-                return CreatedAtAction(nameof(Get), new { id = wing.Id }, _response);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.ToString());
-                _response.IsSuccess = false;
-                _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = [ex.ToString()];
-            }
-            return _response;
         }
 
         #endregion

@@ -15,8 +15,6 @@ using DatalexionBackend.Infrastructure.Services;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
-    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/parties")]
@@ -129,14 +127,14 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await GetById<Party, PartyDTO>(id, includes: includes, thenIncludes: thenIncludes);
         }
 
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Party>(id);
         }
 
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] PartyCreateDTO dto)
         {
@@ -188,11 +186,78 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<PartyPatchDTO> dto)
         {
             return await Patch<Party, PartyPatchDTO>(id, dto);
+        }
+
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [HttpPost(Name = "CreateParty")]
+        public async Task<ActionResult<APIResponse>> Post([FromBody] PartyCreateDTO dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    _logger.LogError($"Ocurrió un error en el servidor.");
+                    _response.ErrorMessages = new() { $"Ocurrió un error en el servidor." };
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(ModelState);
+                }
+                if (await _partyRepository.Get(v => v.Name.ToLower() == dto.Name.ToLower()) != null)
+                {
+                    _logger.LogError($"El nombre {dto.Name} ya existe en el sistema");
+                    _response.ErrorMessages = new() { $"El nombre {dto.Name} ya existe en el sistema." };
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {dto.Name} ya existe en el sistema.");
+                    return BadRequest(ModelState);
+                }
+
+                dto.Name = Utils.ToCamelCase(dto.Name);
+                dto.Comments = Utils.ToCamelCase(dto.Comments);
+
+                Party party = _mapper.Map<Party>(dto);
+                party.Creation = DateTime.Now;
+                party.Update = DateTime.Now;
+
+                party.ListCircuitParties = _mapper.Map<List<CircuitParty>>(dto.ListCircuitParties);
+                party.ListWings = _mapper.Map<List<Wing>>(dto.ListWings);
+
+                await _partyRepository.Create(party);
+
+                // Para PhotoLong
+                if (dto.PhotoLong != null)
+                {
+                    await HandlePhotoUpload(dto.PhotoLong, party, "partiesLong", (photo, p) => photo.PartyLong = p);
+                }
+                // Para PhotoShort
+                if (dto.PhotoShort != null)
+                {
+                    await HandlePhotoUpload(dto.PhotoShort, party, "partiesShort", (photo, p) => photo.PartyShort = p);
+                }
+
+                _logger.LogInformation(_message.Created(party.Id, party.Name));
+                await _logService.LogAction("Party", "Create", $"Id:{party.Id}, Nombre: {party.Name}.", User.Identity.Name, null);
+
+                _response.Result = _mapper.Map<PartyDTO>(party);
+                _response.StatusCode = HttpStatusCode.Created;
+
+                // CreatedAtRoute -> Nombre de la ruta (del método): GetCountryDSById
+                // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/13816172#notes
+                return CreatedAtAction(nameof(Get), new { id = party.Id }, _response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.InternalServerError;
+                _response.ErrorMessages = [ex.ToString()];
+            }
+            return _response;
         }
 
         #endregion
@@ -259,73 +324,6 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _response.ErrorMessages = [ex.ToString()];
             }
             return BadRequest(_response);
-        }
-
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
-        [HttpPost(Name = "CreateParty")]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] PartyCreateDTO dto)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    _logger.LogError($"Ocurrió un error en el servidor.");
-                    _response.ErrorMessages = new() { $"Ocurrió un error en el servidor." };
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.BadRequest;
-                    return BadRequest(ModelState);
-                }
-                if (await _partyRepository.Get(v => v.Name.ToLower() == dto.Name.ToLower()) != null)
-                {
-                    _logger.LogError($"El nombre {dto.Name} ya existe en el sistema");
-                    _response.ErrorMessages = new() { $"El nombre {dto.Name} ya existe en el sistema." };
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.BadRequest;
-                    ModelState.AddModelError("NameAlreadyExists", $"El nombre {dto.Name} ya existe en el sistema.");
-                    return BadRequest(ModelState);
-                }
-
-                dto.Name = Utils.ToCamelCase(dto.Name);
-                dto.Comments = Utils.ToCamelCase(dto.Comments);
-
-                Party party = _mapper.Map<Party>(dto);
-                party.Creation = DateTime.Now;
-                party.Update = DateTime.Now;
-
-                party.ListCircuitParties = _mapper.Map<List<CircuitParty>>(dto.ListCircuitParties);
-                party.ListWings = _mapper.Map<List<Wing>>(dto.ListWings);
-
-                await _partyRepository.Create(party);
-
-                // Para PhotoLong
-                if (dto.PhotoLong != null)
-                {
-                    await HandlePhotoUpload(dto.PhotoLong, party, "partiesLong", (photo, p) => photo.PartyLong = p);
-                }
-                // Para PhotoShort
-                if (dto.PhotoShort != null)
-                {
-                    await HandlePhotoUpload(dto.PhotoShort, party, "partiesShort", (photo, p) => photo.PartyShort = p);
-                }
-
-                _logger.LogInformation(_message.Created(party.Id, party.Name));
-                await _logService.LogAction("Party", "Create", $"Id:{party.Id}, Nombre: {party.Name}.", User.Identity.Name, null);
-
-                _response.Result = _mapper.Map<PartyDTO>(party);
-                _response.StatusCode = HttpStatusCode.Created;
-
-                // CreatedAtRoute -> Nombre de la ruta (del método): GetCountryDSById
-                // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/13816172#notes
-                return CreatedAtAction(nameof(Get), new { id = party.Id }, _response);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.ToString());
-                _response.IsSuccess = false;
-                _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = [ex.ToString()];
-            }
-            return _response;
         }
 
         #endregion

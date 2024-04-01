@@ -14,7 +14,6 @@ using System.Net;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
-    // //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/municipalities")]
@@ -99,14 +98,14 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await GetById<Municipality, MunicipalityDTO>(id, includes: includes);
         }
 
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Municipality>(id);
         }
 
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] MunicipalityCreateDTO dto)
         {
@@ -178,6 +177,7 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<MunicipalityPatchDTO> dto)
         {
@@ -188,7 +188,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         #region Endpoints específicos
 
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPost(Name = "CreateMunicipality")]
         public async Task<ActionResult<APIResponse>> Post([FromBody] MunicipalityCreateDTO dto)
         {

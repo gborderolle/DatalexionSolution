@@ -14,7 +14,6 @@ using System.Net;
 
 namespace DatalexionBackend.UI.Controllers.V1
 {
-    //[Authorize(Roles = nameof(UserTypeOptions.Admin) + "," + nameof(UserTypeOptions.Analyst))]
     [ApiController]
     [HasHeader("x-version", "1")]
     [Route("api/delegados")]
@@ -99,14 +98,14 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await GetById<Delegate, DelegadoDTO>(id, includes: includes, thenIncludes: thenIncludes);
         }
 
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<APIResponse>> Delete([FromRoute] int id)
         {
             return await Delete<Delegado>(id);
         }
 
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPut("{id:int}")]
         public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] DelegadoCreateDTO dto)
         {
@@ -156,67 +155,14 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<DelegadoPatchDTO> dto)
         {
             return await Patch<Delegado, DelegadoPatchDTO>(id, dto);
         }
 
-        #endregion
-
-        #region Endpoints específicos
-
-        [HttpGet("GetDelegadosByClient")]
-        public async Task<ActionResult<APIResponse>> GetDelegadosByClient([FromQuery] int clientId)
-        {
-            try
-            {
-                var client = await _clientRepository.Get(v => v.Id == clientId);
-                if (client == null)
-                {
-                    _logger.LogError(((ClientMessage)_message).NotFound(clientId), clientId);
-                    _response.ErrorMessages = new() { ((ClientMessage)_message).NotFound(clientId) };
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.NotFound;
-                    return NotFound(_response);
-                }
-
-                // 1..n
-                var includes = new List<IncludePropertyConfiguration<Delegado>>
-                {
-                        new IncludePropertyConfiguration<Delegado>
-                        {
-                            IncludeExpression = b => b.ListMunicipalities
-                        }
-                    };
-                // n..n
-                //var thenIncludes = new List<ThenIncludePropertyConfiguration<Delegado>>
-                //{
-                //    // circuitos
-                //    new ThenIncludePropertyConfiguration<Delegado>
-                //    {
-                //        IncludeExpression = b => b.ListCircuitDelegados,
-                //        ThenIncludeExpression = ab => ((CircuitDelegado)ab).Delegado
-                //    },
-                //};
-                //var delegadoList = await _delegadoRepository.GetAll(v => v.ClientId == clientId, includes: includes, thenIncludes: thenIncludes);
-                var delegadoList = await _delegadoRepository.GetAll(v => v.ClientId == clientId, includes: includes);
-
-                _response.Result = _mapper.Map<List<DelegadoDTO>>(delegadoList);
-                _response.StatusCode = HttpStatusCode.Created;
-                return Ok(_response);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.ToString());
-                _response.IsSuccess = false;
-                _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.ErrorMessages = [ex.ToString()];
-            }
-            return BadRequest(_response);
-        }
-
-        //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPost(Name = "CreateDelegado")]
         public async Task<ActionResult<APIResponse>> Post([FromBody] DelegadoCreateDTO dto)
         {
@@ -284,6 +230,60 @@ namespace DatalexionBackend.UI.Controllers.V1
                 _response.ErrorMessages = [ex.ToString()];
             }
             return _response;
+        }
+
+        #endregion
+
+        #region Endpoints específicos
+
+        [HttpGet("GetDelegadosByClient")]
+        public async Task<ActionResult<APIResponse>> GetDelegadosByClient([FromQuery] int clientId)
+        {
+            try
+            {
+                var client = await _clientRepository.Get(v => v.Id == clientId);
+                if (client == null)
+                {
+                    _logger.LogError(((ClientMessage)_message).NotFound(clientId), clientId);
+                    _response.ErrorMessages = new() { ((ClientMessage)_message).NotFound(clientId) };
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    return NotFound(_response);
+                }
+
+                // 1..n
+                var includes = new List<IncludePropertyConfiguration<Delegado>>
+                {
+                        new IncludePropertyConfiguration<Delegado>
+                        {
+                            IncludeExpression = b => b.ListMunicipalities
+                        }
+                    };
+                // n..n
+                //var thenIncludes = new List<ThenIncludePropertyConfiguration<Delegado>>
+                //{
+                //    // circuitos
+                //    new ThenIncludePropertyConfiguration<Delegado>
+                //    {
+                //        IncludeExpression = b => b.ListCircuitDelegados,
+                //        ThenIncludeExpression = ab => ((CircuitDelegado)ab).Delegado
+                //    },
+                //};
+                //var delegadoList = await _delegadoRepository.GetAll(v => v.ClientId == clientId, includes: includes, thenIncludes: thenIncludes);
+                var delegadoList = await _delegadoRepository.GetAll(v => v.ClientId == clientId, includes: includes);
+
+                _response.Result = _mapper.Map<List<DelegadoDTO>>(delegadoList);
+                _response.StatusCode = HttpStatusCode.Created;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.InternalServerError;
+                _response.ErrorMessages = [ex.ToString()];
+            }
+            return BadRequest(_response);
         }
 
         [HttpGet("IsCIAlreadyRegistered")]
