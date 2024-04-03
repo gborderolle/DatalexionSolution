@@ -27,3 +27,4 @@ DatalexionFrontend/node_modules/
 
 DatalexionBackend/DatalexionBackend.UI/appsettings.Development.json
 DatalexionBackend/DatalexionBackend.UI/logs/
+DatalexionBackend/DatalexionBackend.UI/logs/*
