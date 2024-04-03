@@ -22,7 +22,7 @@ export const fetchPartyList = () => {
   return async (dispatch) => {
     try {
       const data = await fetchApi(urlParty + "/GetParty");
-      if (data.result) {
+      if (data && data.result) {
         dispatch(generalDataActions.setPartyList(data.result));
       } else {
         console.error("Fetch error:", data.errorMessages);
@@ -71,7 +71,7 @@ export const fetchWingList = () => {
   return async (dispatch) => {
     try {
       const data = await fetchApi(urlWing + "/GetWing");
-      if (data.result) {
+      if (data && data.result) {
         dispatch(generalDataActions.setWingList(data.result));
       } else {
         console.error("Fetch error:", data.errorMessages);
@@ -120,7 +120,7 @@ export const fetchSlateList = () => {
   return async (dispatch) => {
     try {
       const data = await fetchApi(urlSlate + "/GetSlate");
-      if (data.result) {
+      if (data && data.result) {
         dispatch(generalDataActions.setSlateList(data.result));
       } else {
         console.error("Fetch error:", data.errorMessages);
@@ -169,7 +169,7 @@ export const fetchProvinceList = () => {
   return async (dispatch) => {
     try {
       const data = await fetchApi(urlProvince + "/GetProvince");
-      if (data.result) {
+      if (data && data.result) {
         dispatch(generalDataActions.setProvinceList(data.result));
       } else {
         console.error("Fetch error:", data.errorMessages);
@@ -184,7 +184,7 @@ export const fetchMunicipalityList = () => {
   return async (dispatch) => {
     try {
       const data = await fetchApi(urlMunicipality + "/GetMunicipality");
-      if (data.result) {
+      if (data && data.result) {
         dispatch(generalDataActions.setMunicipalityList(data.result));
       }
     } catch (error) {
@@ -197,7 +197,7 @@ export const fetchCircuitList = () => {
   return async (dispatch) => {
     try {
       const data = await fetchApi(urlCircuit + "/GetCircuit");
-      if (data.result) {
+      if (data && data.result) {
         dispatch(generalDataActions.setCircuitList(data.result));
       } else {
         console.error("Fetch error:", data.errorMessages);
@@ -212,7 +212,7 @@ export const fetchCandidateList = () => {
   return async (dispatch) => {
     try {
       const data = await fetchApi(urlCandidate + "/GetCandidate");
-      if (data.result) {
+      if (data && data.result) {
         dispatch(generalDataActions.setCandidateList(data.result));
       } else {
         console.error("Fetch error:", data.errorMessages);
@@ -261,7 +261,7 @@ export const fetchDelegadoList = () => {
   return async (dispatch) => {
     try {
       const data = await fetchApi(urlDelegado + "/GetDelegado");
-      if (data.result) {
+      if (data && data.result) {
         dispatch(generalDataActions.setDelegadoList(data.result));
       } else {
         console.error("Fetch error:", data.errorMessages);
@@ -345,7 +345,7 @@ export const fetchClient = () => {
   return async (dispatch) => {
     try {
       const data = await fetchApi(urlClient + "/GetClient");
-      if (data.result) {
+      if (data && data.result) {
         dispatch(generalDataActions.setClient(data.result[0]));
       } else {
         console.error("Fetch error:", data.errorMessages);
@@ -388,7 +388,7 @@ export const fetchUserList = () => {
   return async (dispatch) => {
     try {
       const data = await fetchApi(urlAccount + "/GetUsers");
-      if (data.result) {
+      if (data && data.result) {
         dispatch(generalDataActions.setUserList(data.result));
       } else {
         console.error("Fetch error:", data.errorMessages);
@@ -416,7 +416,9 @@ export const fetchUserListByClient = () => {
         return; // Termina la ejecución si clientId no es un número
       }
 
-      const urlWithParam = `${urlAccount}/GetUsersByClient?clientId=${clientId}`;
+      const urlWithParam = `${urlAccount}/GetUsersByClient?clientId=${encodeURIComponent(
+        clientId
+      )}`;
       const data = await fetchApi(urlWithParam);
 
       // Procesa los datos recibidos
@@ -437,7 +439,7 @@ export const fetchUserRoleList = () => {
   return async (dispatch) => {
     try {
       const data = await fetchApi(urlAccount + "/GetRoles");
-      if (data.result) {
+      if (data && data.result) {
         dispatch(generalDataActions.setUserRoleList(data.result));
       } else {
         console.error("Fetch error:", data.errorMessages);
@@ -452,7 +454,7 @@ export const fetchUserRole = (id) => {
   return async () => {
     try {
       const data = await fetchApi(`${urlAccount}/GetUserRole/${id}`);
-      if (data.result) {
+      if (data && data.result) {
         return data.result;
       } else {
         console.error("Fetch error:", data.errorMessages);
@@ -467,7 +469,7 @@ export const fetchLogsList = () => {
   return async (dispatch) => {
     try {
       const data = await fetchApi(urlAccount + "/GetLogs");
-      if (data.result) {
+      if (data && data.result) {
         dispatch(generalDataActions.setLogsList(data.result));
       } else {
         console.error("Fetch error:", data.errorMessages);

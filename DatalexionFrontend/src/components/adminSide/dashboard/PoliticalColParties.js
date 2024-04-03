@@ -154,33 +154,33 @@ const PoliticalColParties = ({
                           circuitParty.votes,
                           totalPartyVotes
                         );
-                        const partyColor = getPartyById(
-                          circuitParty.partyId
-                        ).color;
-                        setDynamicBorderStyle(partyColor, index, "idParty");
+                        const party = getPartyById(circuitParty.partyId);
+                        if (party) {
+                          setDynamicBorderStyle(party.color, index, "idParty");
 
-                        // Usar tanto partyId como slateId para formar una key compuesta
-                        const key = `${circuitParty.circuitId}-${circuitParty.partyId}-${index}`;
+                          // Usar tanto partyId como slateId para formar una key compuesta
+                          const key = `${circuitParty.circuitId}-${circuitParty.partyId}-${index}`;
 
-                        return (
-                          <CCol xs={6} key={key}>
-                            <div
-                              id={`idParty-` + index}
-                              className={`border-start border-start-5 py-1 px-3 mb-3`}
-                            >
+                          return (
+                            <CCol xs={6} key={key}>
                               <div
-                                className={`fs-5 fw-semibold ${classesMobile.label}`}
+                                id={`idParty-` + index}
+                                className={`border-start border-start-5 py-1 px-3 mb-3`}
                               >
-                                {getPartyById(circuitParty.partyId).name}
+                                <div
+                                  className={`fs-5 fw-semibold ${classesMobile.label}`}
+                                >
+                                  {party.name}
+                                </div>
+                                <div
+                                  className={`text-medium-emphasis small ${classesMobile.value}`}
+                                >
+                                  {`Votos: ${circuitParty.votes} (${votePercentage}%)`}
+                                </div>
                               </div>
-                              <div
-                                className={`text-medium-emphasis small ${classesMobile.value}`}
-                              >
-                                {`Votos: ${circuitParty.votes} (${votePercentage}%)`}
-                              </div>
-                            </div>
-                          </CCol>
-                        );
+                            </CCol>
+                          );
+                        }
                       })}
                   </CRow>
 
@@ -192,61 +192,62 @@ const PoliticalColParties = ({
                         circuitParty.votes,
                         totalPartyVotes
                       );
-                      const partyColor = getPartyById(
-                        circuitParty.partyId
-                      ).color;
-                      const progressBarClass = getDynamicClassName(partyColor);
+                      const party = getPartyById(circuitParty.partyId);
+                      if (party) {
+                        const progressBarClass = getDynamicClassName(
+                          party.color
+                        );
 
-                      // Usar tanto partyId como slateId para formar una key compuesta
-                      const key = `${circuitParty.circuitId}-${circuitParty.partyId}-${index}`;
+                        // Usar tanto partyId como slateId para formar una key compuesta
+                        const key = `${circuitParty.circuitId}-${circuitParty.partyId}-${index}`;
 
-                      return (
-                        <div className="progress-group mb-4" key={key}>
-                          <div className="progress-group-header">
-                            <span>
-                              {getPartyById(circuitParty.partyId).name}
-                            </span>
-                            <span className="ms-auto">{`Votos: ${circuitParty.votes} (${votePercentage}%)`}</span>
+                        return (
+                          <div className="progress-group mb-4" key={key}>
+                            <div className="progress-group-header">
+                              <span>{party.name}</span>
+                              <span className="ms-auto">{`Votos: ${circuitParty.votes} (${votePercentage}%)`}</span>
+                            </div>
+                            <div className="progress-group-bars">
+                              <StyledProgress
+                                value={votePercentage}
+                                progressBarClassName={progressBarClass}
+                                variant="striped"
+                                animated
+                              />
+                            </div>
                           </div>
-                          <div className="progress-group-bars">
-                            <StyledProgress
-                              value={votePercentage}
-                              progressBarClassName={progressBarClass}
-                              variant="striped"
-                              animated
-                            />
-                          </div>
-                        </div>
-                      );
+                        );
+                      }
                     })}
-
-                  <CAccordion activeItemKey={1}>
-                    <CAccordionItem itemKey={1}>
-                      <CAccordionHeader className="custom-accordion-header">
-                        Distribución
-                      </CAccordionHeader>
-                      <CAccordionBody>
-                        {partyChartData && totalVotes > 0 ? (
-                          <CChartPie data={partyChartData} />
-                        ) : (
-                          <span
-                            style={{
-                              color: "blue",
-                              fontStyle: "italic",
-                            }}
-                          >
-                            No hay votos aún.
-                          </span>
-                        )}
-                      </CAccordionBody>
-                    </CAccordionItem>
-                  </CAccordion>
                 </>
               ) : (
                 <span style={{ color: "blue", fontStyle: "italic" }}>
                   No hay votos aún.
                 </span>
               )}
+              <CAccordion activeItemKey={1}>
+                <CAccordionItem itemKey={1}>
+                  <CAccordionHeader className="custom-accordion-header">
+                    Distribución
+                  </CAccordionHeader>
+                  <CAccordionBody>
+                    {partyChartData &&
+                    partyChartData.datasets[0] &&
+                    partyChartData.datasets[0].data.length > 0 ? (
+                      <CChartPie data={partyChartData} />
+                    ) : (
+                      <span
+                        style={{
+                          color: "blue",
+                          fontStyle: "italic",
+                        }}
+                      >
+                        No hay votos aún.
+                      </span>
+                    )}
+                  </CAccordionBody>
+                </CAccordionItem>
+              </CAccordion>
             </CAccordionBody>
           </CAccordionItem>
         </motion.div>

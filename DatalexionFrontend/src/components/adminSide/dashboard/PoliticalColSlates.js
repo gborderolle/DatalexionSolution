@@ -245,15 +245,13 @@ const PoliticalColSlates = ({
 
                       // Usar tanto partyId como slateId para formar una key compuesta
                       const key = `${circuitSlate.circuitId}-${circuitSlate.slateId}-${index}`;
+                      const wing = getWingBySlateId(circuitSlate.slateId);
+                      const slate = getSlateById(circuitSlate.slateId);
 
                       return (
                         <div className="progress-group mb-4" key={key}>
                           <div className="progress-group-header">
-                            <span>
-                              {`${
-                                getWingBySlateId(circuitSlate.slateId)?.name
-                              }: ${getSlateById(circuitSlate.slateId)?.name}`}
-                            </span>
+                            <span>{`${wing?.name}: ${slate?.name}`}</span>
                             <span className="ms-auto">{`Votos: ${circuitSlate.votes} (${votePercentage}%)`}</span>
                           </div>
                           <div className="progress-group-bars">

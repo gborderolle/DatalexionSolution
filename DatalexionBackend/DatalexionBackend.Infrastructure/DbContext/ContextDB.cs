@@ -51,7 +51,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 .HasOne(c => c.Municipality)
                 .WithMany(m => m.ListCircuits)
                 .HasForeignKey(c => c.MunicipalityId)
-                .OnDelete(DeleteBehavior.Restrict); // Eliminación en cascada
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Candidate -> Photos
             modelBuilder.Entity<Candidate>()
@@ -851,8 +851,59 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 ProvinceId = 1
             };
 
+            // Province 2 - Canelones
+            var slate16 = new Slate()
+            {
+                Id = 16,
+                Name = "500",
+                Color = "#abcdef",
+                WingId = 1,
+                CandidateId = 5,
+                ProvinceId = 2
+            };
+
+            var slate17 = new Slate()
+            {
+                Id = 17,
+                Name = "123",
+                Color = "#fedcba",
+                WingId = 1,
+                CandidateId = 5,
+                ProvinceId = 2
+            };
+
+            var slate18 = new Slate()
+            {
+                Id = 18,
+                Name = "999",
+                Color = "#012345",
+                WingId = 1,
+                CandidateId = 5,
+                ProvinceId = 2
+            };
+
+            var slate19 = new Slate()
+            {
+                Id = 19,
+                Name = "777",
+                Color = "#abcdef",
+                WingId = 1,
+                CandidateId = 5,
+                ProvinceId = 2
+            };
+
+            var slate20 = new Slate()
+            {
+                Id = 20,
+                Name = "333",
+                Color = "#fedcba",
+                WingId = 2,
+                CandidateId = 1,
+                ProvinceId = 2
+            };
+
             modelBuilder.Entity<Slate>()
-                    .HasData(slate1, slate2, slate3, slate4, slate5, slate6, slate7, slate8, slate9, slate10, slate11, slate12, slate13, slate14, slate15);
+                    .HasData(slate1, slate2, slate3, slate4, slate5, slate6, slate7, slate8, slate9, slate10, slate11, slate12, slate13, slate14, slate15, slate16, slate17, slate18, slate19, slate20);
 
             #endregion Slates
 

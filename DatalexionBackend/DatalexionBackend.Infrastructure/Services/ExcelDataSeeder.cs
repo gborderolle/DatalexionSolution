@@ -45,10 +45,10 @@ namespace DatalexionBackend.Infrastructure.Services
                         int nameIndex = headers.IndexOf("NOMBRE") + 1;
                         int municipalityIndex = headers.IndexOf("MUNICIPIO") + 1;
                         int addressIndex = headers.IndexOf("DIRECCIÓN") + 1;
-                        int provinceIndex = headers.IndexOf("PROVINCIA") + 1; // Asegúrate de que esta es la columna correcta
+                        int provinceIndex = headers.IndexOf("DEPARTAMENTO") + 1;
 
                         // ToDo: Hardcodeado
-                        var provinceId = 1; // Asumiendo que el provinceId es 1 para este ejemplo
+                        int provinceId = 1; //provinceIndex; // Asumiendo que el provinceId es 1 para este ejemplo
                         var delegadoId = 1; // Asumiendo que el delegadoId es 1 para este ejemplo
 
                         var delegado = await context.Delegado.FirstOrDefaultAsync(p => p.Id == delegadoId);
@@ -58,6 +58,7 @@ namespace DatalexionBackend.Infrastructure.Services
                         foreach (var row in rows.Skip(1))
                         {
                             var municipalityName = row.Cell(municipalityIndex).Value.ToString().Trim();
+                            provinceId = int.TryParse(row.Cell(provinceIndex).Value.ToString().Trim(), out int result) ? result : 0;
 
                             var province = await context.Province.FirstOrDefaultAsync(p => p.Id == provinceId);
                             if (province != null && !municipalitiesToAdd.Any(m => m.Name == municipalityName))
@@ -186,11 +187,11 @@ namespace DatalexionBackend.Infrastructure.Services
                         return;
                     }
 
-                    var firstThreeCircuits = context.Circuit
+                    var allCircuits = context.Circuit
                         .Include(c => c.ListCircuitSlates)
                         .Include(c => c.ListCircuitParties)
                         .OrderBy(c => c.Number)
-                        .Take(3)
+                        // .Take(3)
                         .ToList();
 
                     var wingsOfClientParty = context.Wing
@@ -198,9 +199,9 @@ namespace DatalexionBackend.Infrastructure.Services
                         .Select(wing => wing.Id)
                         .ToList();
 
-                    if (firstThreeCircuits.Any())
+                    if (allCircuits.Any())
                     {
-                        foreach (var circuit in firstThreeCircuits)
+                        foreach (var circuit in allCircuits)
                         {
                             int slateTotalVotes = 0;
 

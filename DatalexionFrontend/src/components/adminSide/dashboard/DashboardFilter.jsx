@@ -75,7 +75,7 @@ const DashboardFilter = ({
   const filteredMunicipalityList = selectedProvince
     ? reduxMunicipalityList?.filter(
         (municipality) =>
-          municipality.id === selectedProvince.id &&
+          municipality.provinceId === selectedProvince.id &&
           (municipality.name
             ? municipality.name
                 .toLowerCase()
@@ -281,9 +281,9 @@ const DashboardFilter = ({
     return color;
   }
 
-  const getTotalVotesByProvince = (id) => {
+  const getTotalVotesByProvince = (provinceId) => {
     const municipalitiesInProvince = reduxMunicipalityList?.filter(
-      (municipality) => municipality.id === id
+      (municipality) => municipality.provinceId === provinceId
     );
 
     let totalVotes = 0;
@@ -318,7 +318,7 @@ const DashboardFilter = ({
 
     if (selectedProvince) {
       const municipalityInProvince = reduxMunicipalityList?.filter(
-        (municipality) => municipality.id === selectedProvince.id
+        (municipality) => municipality.provinceId === selectedProvince.id
       );
 
       municipalityInProvince.forEach((municipality) => {

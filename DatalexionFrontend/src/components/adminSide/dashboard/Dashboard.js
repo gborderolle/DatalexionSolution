@@ -154,10 +154,11 @@ const Dashboard = () => {
     return totalVotes;
   };
 
-  const calculateTotalPartyVotes = () => {
+  const calculateTotalPartyVotes = (sortedFilteredCircuitParties) => {
     let totalVotes = 0;
-    filteredCircuitParties.forEach((party) => {
-      totalVotes += party.votes;
+    // filteredCircuitParties.forEach((circuitParty) => {
+    sortedFilteredCircuitParties.forEach((circuitParty) => {
+      totalVotes += circuitParty.votes;
     });
     return totalVotes;
   };
@@ -307,8 +308,8 @@ const Dashboard = () => {
     return reduxSlateList?.find((p) => p.id === slateId);
   };
 
-  const updatePartyChartData = () => {
-    const chartData = filteredCircuitParties?.reduce(
+  const updatePartyChartData = (sortedFilteredCircuitParties) => {
+    const chartData = sortedFilteredCircuitParties?.reduce(
       (acc, circuitParty) => {
         const party = getPartyById(circuitParty.partyId);
         const partyColor = party?.color || getRandomColor();
@@ -352,7 +353,7 @@ const Dashboard = () => {
       filteredPartyVotes1 = sumPartyVotes(circuitsInMunicipality);
     } else if (selectedProvince) {
       const municipalitiesInProvince = reduxMunicipalityList?.filter(
-        (municipality) => municipality.id === selectedProvince.id
+        (municipality) => municipality.provinceId === selectedProvince.id
       );
       const circuitsInProvince = reduxCircuitList?.filter((circuit) =>
         municipalitiesInProvince?.some(
@@ -372,8 +373,9 @@ const Dashboard = () => {
     // Actualizar el estado de los datos del gráfico
     if (sortedFilteredCircuitParties) {
       setFilteredCircuitParties(sortedFilteredCircuitParties);
-      updatePartyChartData();
-      setTotalPartyVotes(calculateTotalPartyVotes());
+      updatePartyChartData(sortedFilteredCircuitParties);
+      const totalVotes = calculateTotalPartyVotes(sortedFilteredCircuitParties);
+      setTotalPartyVotes(totalVotes);
     }
   };
 

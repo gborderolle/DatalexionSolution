@@ -366,7 +366,7 @@ const MapsDashboardFilter = ({
 
   const getTotalVotesByProvince = (id) => {
     const municipalitiesInProvince = reduxMunicipalityList?.filter(
-      (municipality) => municipality.id === id
+      (municipality) => municipality.provinceId === id
     );
 
     let totalVotes = 0;
@@ -401,7 +401,7 @@ const MapsDashboardFilter = ({
 
     if (selectedProvince) {
       const municipalityInProvince = municipalityList?.filter(
-        (municipality) => municipality.id === selectedProvince.id
+        (municipality) => municipality.provinceId === selectedProvince.id
       );
 
       municipalityInProvince.forEach((municipality) => {
