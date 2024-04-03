@@ -407,6 +407,21 @@ const DashboardFilter = ({
 
   //#endregion Pagination ***********************************
 
+  const handleResetFilters = () => {
+    setSelectedProvince(null);
+    setSelectedMunicipality(null);
+    setSelectedCircuit(null);
+  };
+
+  const handleResetMunicipalitySelection = () => {
+    setSelectedMunicipality(null);
+    setSelectedCircuit(null);
+  };
+
+  const handleResetCircuitSelection = () => {
+    setSelectedCircuit(null);
+  };
+
   const handleProvinceClick = (province) => {
     setSelectedProvince(province);
     setSelectedMunicipality(null);
@@ -598,7 +613,11 @@ const DashboardFilter = ({
                         size="sm"
                       />
                     </CInputGroup>
-                    <CListGroupItem active>
+                    <CListGroupItem
+                      active
+                      component="button"
+                      onClick={handleResetFilters}
+                    >
                       Departamentos ({getTotalVotesAllProvinces()} votos)
                     </CListGroupItem>
                     {renderProvinceList()}
@@ -657,7 +676,11 @@ const DashboardFilter = ({
                         size="sm"
                       />
                     </CInputGroup>
-                    <CListGroupItem active>
+                    <CListGroupItem
+                      active
+                      component="button"
+                      onClick={handleResetMunicipalitySelection}
+                    >
                       Municipios ({getTotalVotesAllMunicipalities()} votos)
                     </CListGroupItem>
                     {renderMunicipalityList()}
@@ -721,7 +744,11 @@ const DashboardFilter = ({
                         size="sm"
                       />
                     </CInputGroup>
-                    <CListGroupItem active>
+                    <CListGroupItem
+                      active
+                      component="button"
+                      onClick={handleResetCircuitSelection}
+                    >
                       Sólo circuitos cerrados ({getTotalVotesAllCircuits()}{" "}
                       votos)
                     </CListGroupItem>

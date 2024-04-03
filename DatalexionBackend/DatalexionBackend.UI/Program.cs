@@ -71,6 +71,11 @@ if (SeedVotesOnStartup)
     ExcelDataSeeder.SeedVotes(app.Services, logger);
 }
 
+// https://www.youtube.com/watch?v=QENOe4EMIQ0&list=PLvc5Pp3SAqmoZGMATJWNF3Oyqr0WW_s0i&ab_channel=DimitrijeP
+// https://www.youtube.com/watch?v=pvi_ZS_PrSc&ab_channel=MohamadLawand
+// app.MapControllers();
+// app.MapHub<NotifyHub>("/toastr");
+
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {

@@ -491,6 +491,12 @@ const MapsDashboardFilter = ({
 
   //#endregion Pagination ***********************************
 
+  const handleResetFilters = () => {
+    setSelectedProvince(null);
+    setSelectedMunicipality(null);
+    setSelectedCircuit(null);
+  };
+
   const handleFilterChange = (event) => {
     setFilterType(event.target.value);
   };
@@ -683,7 +689,12 @@ const MapsDashboardFilter = ({
                         size="sm"
                       />
                     </CInputGroup>
-                    <CListGroupItem active>
+                    <CListGroupItem
+                      active
+                      component="button"
+                      onClick={handleResetFilters}
+                      className="reset-filters-item"
+                    >
                       Departamentos ({getTotalVotesAllProvinces()} votos)
                     </CListGroupItem>
                     {renderProvinceList()}
