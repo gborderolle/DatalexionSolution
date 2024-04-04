@@ -6,11 +6,17 @@ import {
   CCard,
   CCardBody,
   CCardHeader,
+  CButton,
   CRow,
   CFormInput,
   CTable,
   CPagination,
   CPaginationItem,
+  CModal,
+  CModalBody,
+  CModalHeader,
+  CModalTitle,
+  CModalFooter,
 } from "@coreui/react";
 
 import { USER_ROLE_ADMIN, USER_ROLE_ANALYST } from "../../../userRoles";
@@ -19,6 +25,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faRefresh,
   faMobileScreenButton,
+  faBullhorn,
 } from "@fortawesome/free-solid-svg-icons";
 
 import useBumpEffect from "../../../utils/useBumpEffect";
@@ -40,6 +47,11 @@ const DelegadosMenu = () => {
 
   const [isBumped, triggerBump] = useBumpEffect();
   const [searchTerm, setSearchTerm] = useState("");
+
+  const [showModal, setShowModal] = useState(false);
+  const [diffusionMessages, setDiffusionMessages] = useState([]);
+  const [diffusionValue, setDiffusionValue] = useState("");
+  const [ws, setWs] = useState(null);
 
   // redux init
   const dispatch = useDispatch();
@@ -86,6 +98,22 @@ const DelegadosMenu = () => {
   //#endregion Consts ***********************************
 
   //#region Hooks ***********************************
+
+  useEffect(() => {
+    const newWs = new WebSocket("wss://localhost:8015/ws");
+
+    newWs.onmessage = (event) => {
+      // Directamente maneja el mensaje como texto en lugar de parsearlo como JSON
+      const message = event.data;
+      setDiffusionMessages((prevMessages) => [...prevMessages, message]);
+    };
+
+    setWs(newWs);
+
+    return () => {
+      newWs.close();
+    };
+  }, [showModal]);
 
   //#endregion Hooks ***********************************
 
@@ -238,6 +266,13 @@ const DelegadosMenu = () => {
     return phoneStr.length === 8 || phoneStr.length === 9;
   };
 
+  const sendDiffusion = () => {
+    if (ws && diffusionValue.trim()) {
+      ws.send(JSON.stringify(diffusionValue));
+      setDiffusionValue("");
+    }
+  };
+
   //#endregion Functions ***********************************
 
   //#region Events ***********************************
@@ -264,6 +299,14 @@ const DelegadosMenu = () => {
       });
     };
     fetchGeneralData();
+  };
+
+  const diffusionHandler = () => {
+    setShowModal(true);
+  };
+
+  const handleClose = () => {
+    setShowModal(false);
   };
 
   //#endregion Events ***********************************
@@ -330,6 +373,12 @@ const DelegadosMenu = () => {
           >
             Panel general
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <button
+                onClick={diffusionHandler}
+                style={{ border: "none", background: "none", margin: "2px" }}
+              >
+                <FontAwesomeIcon icon={faBullhorn} color="#697588" />
+              </button>
               <CFormInput
                 type="text"
                 placeholder="Buscar..."
@@ -401,6 +450,33 @@ const DelegadosMenu = () => {
           </CPagination>
         </CCardBody>
       </CCard>
+
+      <CModal visible={showModal} onClose={handleClose}>
+        <CModalHeader>
+          <CModalTitle>Mensajes de difusión</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          {diffusionMessages.map((msg, index) => (
+            <div key={index}>{msg}</div>
+          ))}
+          <CFormInput
+            type="text"
+            value={diffusionValue}
+            onChange={(e) => setDiffusionValue(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && sendDiffusion()}
+            placeholder="Escribe un mensaje..."
+          />
+          <br />
+          <CButton color="primary" onClick={sendDiffusion}>
+            Enviar
+          </CButton>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={handleClose}>
+            Cerrar
+          </CButton>
+        </CModalFooter>
+      </CModal>
     </>
   );
 };
