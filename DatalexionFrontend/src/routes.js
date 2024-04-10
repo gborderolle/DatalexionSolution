@@ -1,23 +1,8 @@
 import React from "react";
 
-const LoginDelegados = React.lazy(() =>
-  import("./views/pages/login/LoginDelegados")
-);
-const FormStart = React.lazy(() =>
-  import("./components/delegadosSide/steps/FormStart")
-);
-const FormParty1 = React.lazy(() =>
-  import("./components/delegadosSide/steps/FormParty1")
-);
-const FormSlate1 = React.lazy(() =>
-  import("./components/delegadosSide/steps/FormSlate1")
-);
-const FormExtras1 = React.lazy(() =>
-  import("./components/delegadosSide/steps/FormExtras1")
-);
-const FormSummary = React.lazy(() =>
-  import("./components/delegadosSide/steps/FormSummary")
-);
+const RedirectHome = React.lazy(() => import("./utils/RedirectHome"));
+
+// Admin side
 const MenuData = React.lazy(() =>
   import("./components/adminSide/menu/MenuData")
 );
@@ -40,8 +25,27 @@ const LogsTable = React.lazy(() =>
   import("./components/adminSide/logs/LogsMenu")
 );
 
+// Delegados side
+const LoginDelegados = React.lazy(() =>
+  import("./views/pages/login/LoginDelegados")
+);
+const FormStart = React.lazy(() =>
+  import("./components/delegadosSide/steps/FormStart")
+);
+const FormParty1 = React.lazy(() =>
+  import("./components/delegadosSide/steps/FormParty1")
+);
+const FormSlate1 = React.lazy(() =>
+  import("./components/delegadosSide/steps/FormSlate1")
+);
+const FormExtras1 = React.lazy(() =>
+  import("./components/delegadosSide/steps/FormExtras1")
+);
+const FormSummary = React.lazy(() =>
+  import("./components/delegadosSide/steps/FormSummary")
+);
+
 const routes = [
-  { path: "/", exact: true, name: "Home" },
   {
     path: "/login-delegados",
     name: "Login delegados",
@@ -59,6 +63,9 @@ const routes = [
   { path: "/maps", name: "Distribución", element: MapsDashboard },
   { path: "/delegates", name: "Delegados", element: DelegatesMenu },
   { path: "/logs", name: "Logs", element: LogsTable },
+
+  { path: "/", exact: true, element: RedirectHome },
+  { path: "*", element: RedirectHome },
 ];
 
 export default routes;
