@@ -254,30 +254,6 @@ const FormExtras2 = ({
 
   //#region Functions ***********************************
 
-  const handleUpload = async () => {
-    if (!imageFile) return;
-
-    const formData = new FormData();
-    formData.append("file", imageFile);
-
-    try {
-      const response = await fetch(urlCircuit, {
-        method: "POST",
-        body: formData,
-        // Agrega cualquier cabecera adicional que necesites, como tokens de autenticación.
-      });
-
-      if (!response.ok) throw new Error("Error al subir el archivo");
-
-      // Procesamiento adicional basado en la respuesta del servidor.
-      console.log("Archivo subido con éxito");
-
-      // Actualiza tu estado o realiza acciones adicionales aquí.
-    } catch (error) {
-      console.error("Error al subir el archivo:", error);
-    }
-  };
-
   const cardList = fixedCards?.map((card, index) => {
     return (
       <motion.div

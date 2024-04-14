@@ -24,6 +24,7 @@ import {
   CAlert,
   CPagination,
   CPaginationItem,
+  CContainer,
 } from "@coreui/react";
 import useInput from "../../../../hooks/use-input";
 import useAPI from "../../../../hooks/use-API";
@@ -240,173 +241,177 @@ const CandidateTable = (props) => {
 
   return (
     <div>
-      <CButton color="dark" size="sm" onClick={() => openModal()}>
-        Agregar
-      </CButton>
-      <CTable striped>
-        <CTableHead>
-          <CTableRow>
-            <CTableHeaderCell>#</CTableHeaderCell>
-            <CTableHeaderCell onClick={() => requestSort("name")}>
-              Nombre completo
-            </CTableHeaderCell>
-            <CTableHeaderCell>Acciones</CTableHeaderCell>
-          </CTableRow>
-        </CTableHead>
-        <CTableBody>
-          {currentList.map((candidate, index) => {
-            return (
-              <CTableRow key={candidate.id}>
-                <CTableDataCell>{index + 1}</CTableDataCell>
-                <CTableDataCell>{candidate.name}</CTableDataCell>
-                <CTableDataCell>
-                  <CButton
-                    color="dark"
-                    size="sm"
-                    onClick={() => openModal(candidate)}
-                  >
-                    Editar
-                  </CButton>
-                  <CButton
-                    color="danger"
-                    size="sm"
-                    onClick={() => openDeleteModal(candidate.id)}
-                    style={{ marginLeft: 10 }}
-                  >
-                    Eliminar
-                  </CButton>
-                </CTableDataCell>
+      <CContainer fluid>
+        <CButton color="dark" size="sm" onClick={() => openModal()}>
+          Agregar
+        </CButton>
+        <div className="table-responsive">
+          <CTable striped>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell>#</CTableHeaderCell>
+                <CTableHeaderCell onClick={() => requestSort("name")}>
+                  Nombre completo
+                </CTableHeaderCell>
+                <CTableHeaderCell>Acciones</CTableHeaderCell>
               </CTableRow>
-            );
-          })}
-        </CTableBody>
-      </CTable>
+            </CTableHead>
+            <CTableBody>
+              {currentList.map((candidate, index) => {
+                return (
+                  <CTableRow key={candidate.id}>
+                    <CTableDataCell>{index + 1}</CTableDataCell>
+                    <CTableDataCell>{candidate.name}</CTableDataCell>
+                    <CTableDataCell>
+                      <CButton
+                        color="dark"
+                        size="sm"
+                        onClick={() => openModal(candidate)}
+                      >
+                        Editar
+                      </CButton>
+                      <CButton
+                        color="danger"
+                        size="sm"
+                        onClick={() => openDeleteModal(candidate.id)}
+                        style={{ marginLeft: 10 }}
+                      >
+                        Eliminar
+                      </CButton>
+                    </CTableDataCell>
+                  </CTableRow>
+                );
+              })}
+            </CTableBody>
+          </CTable>
+        </div>
 
-      <CPagination align="center">
-        {currentPage > 1 && (
-          <CPaginationItem onClick={() => handlePageChange(currentPage - 1)}>
-            Anterior
-          </CPaginationItem>
-        )}
-        {[...Array(pageCount)].map((_, i) => (
-          <CPaginationItem
-            key={i + 1}
-            active={i + 1 === currentPage}
-            onClick={() => handlePageChange(i + 1)}
-          >
-            {i + 1}
-          </CPaginationItem>
-        ))}
-        {currentPage < pageCount && (
-          <CPaginationItem onClick={() => handlePageChange(currentPage + 1)}>
-            Siguiente
-          </CPaginationItem>
-        )}
-      </CPagination>
+        <CPagination align="center">
+          {currentPage > 1 && (
+            <CPaginationItem onClick={() => handlePageChange(currentPage - 1)}>
+              Anterior
+            </CPaginationItem>
+          )}
+          {[...Array(pageCount)].map((_, i) => (
+            <CPaginationItem
+              key={i + 1}
+              active={i + 1 === currentPage}
+              onClick={() => handlePageChange(i + 1)}
+            >
+              {i + 1}
+            </CPaginationItem>
+          ))}
+          {currentPage < pageCount && (
+            <CPaginationItem onClick={() => handlePageChange(currentPage + 1)}>
+              Siguiente
+            </CPaginationItem>
+          )}
+        </CPagination>
 
-      <CModal visible={isModalVisible} onClose={closeModal}>
-        <CModalHeader>
-          <CModalTitle>
-            {currentUser ? "Editar entidad" : "Agregar entidad"}
-          </CModalTitle>
-        </CModalHeader>
-        <CForm onSubmit={formSubmitHandler}>
+        <CModal visible={isModalVisible} onClose={closeModal}>
+          <CModalHeader>
+            <CModalTitle>
+              {currentUser ? "Editar entidad" : "Agregar entidad"}
+            </CModalTitle>
+          </CModalHeader>
+          <CForm onSubmit={formSubmitHandler}>
+            <CModalBody>
+              <CCard>
+                <CCardBody>
+                  <CInputGroup>
+                    <CInputGroupText className="cardItem custom-input-group-text">
+                      {props.name}
+                    </CInputGroupText>
+                    <CFormInput
+                      type="text"
+                      className="cardItem"
+                      onChange={inputChangeHandler1}
+                      onBlur={inputBlurHandler1}
+                      value={name}
+                    />
+                    {inputHasError1 && (
+                      <CAlert color="danger" className="w-100">
+                        Entrada inválida
+                      </CAlert>
+                    )}
+                  </CInputGroup>
+                  <br />
+                  <CInputGroup>
+                    <CInputGroupText>Imagen</CInputGroupText>
+                    <CFormInput
+                      type="file"
+                      onChange={handleImageChange}
+                      name="file"
+                    />
+                  </CInputGroup>
+                  {imagePreview || currentImage ? (
+                    <img
+                      src={imagePreview || currentImage}
+                      alt="preview"
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        marginTop: "10px",
+                      }}
+                    />
+                  ) : null}
+
+                  <CRow className="justify-content-center">
+                    {isLoading && (
+                      <div className="text-center">
+                        <CSpinner />
+                      </div>
+                    )}
+                  </CRow>
+                  <br />
+                  <CCardFooter className="text-medium-emphasis">
+                    {!isValidForm && (
+                      <CAlert color="danger" className="w-100">
+                        El formulario no es válido
+                      </CAlert>
+                    )}
+                    {isSuccess && (
+                      <CAlert color="success" className="w-100">
+                        Datos ingresados correctamente
+                      </CAlert>
+                    )}
+                    {error && (
+                      <CAlert color="danger" className="w-100">
+                        {error}
+                      </CAlert>
+                    )}
+                  </CCardFooter>
+                </CCardBody>
+              </CCard>
+            </CModalBody>
+            <CModalFooter>
+              <CButton type="submit" color="dark" size="sm">
+                {currentUser ? "Actualizar" : "Guardar"}
+              </CButton>
+              <CButton color="secondary" size="sm" onClick={closeModal}>
+                Cancelar
+              </CButton>
+            </CModalFooter>
+          </CForm>
+        </CModal>
+
+        <CModal visible={isDeleteModalVisible} onClose={closeDeleteModal}>
+          <CModalHeader>
+            <CModalTitle>Confirmar</CModalTitle>
+          </CModalHeader>
           <CModalBody>
-            <CCard>
-              <CCardBody>
-                <CInputGroup>
-                  <CInputGroupText className="cardItem custom-input-group-text">
-                    {props.name}
-                  </CInputGroupText>
-                  <CFormInput
-                    type="text"
-                    className="cardItem"
-                    onChange={inputChangeHandler1}
-                    onBlur={inputBlurHandler1}
-                    value={name}
-                  />
-                  {inputHasError1 && (
-                    <CAlert color="danger" className="w-100">
-                      Entrada inválida
-                    </CAlert>
-                  )}
-                </CInputGroup>
-                <br />
-                <CInputGroup>
-                  <CInputGroupText>Imagen</CInputGroupText>
-                  <CFormInput
-                    type="file"
-                    onChange={handleImageChange}
-                    name="file"
-                  />
-                </CInputGroup>
-                {imagePreview || currentImage ? (
-                  <img
-                    src={imagePreview || currentImage}
-                    alt="preview"
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      marginTop: "10px",
-                    }}
-                  />
-                ) : null}
-
-                <CRow className="justify-content-center">
-                  {isLoading && (
-                    <div className="text-center">
-                      <CSpinner />
-                    </div>
-                  )}
-                </CRow>
-                <br />
-                <CCardFooter className="text-medium-emphasis">
-                  {!isValidForm && (
-                    <CAlert color="danger" className="w-100">
-                      El formulario no es válido
-                    </CAlert>
-                  )}
-                  {isSuccess && (
-                    <CAlert color="success" className="w-100">
-                      Datos ingresados correctamente
-                    </CAlert>
-                  )}
-                  {error && (
-                    <CAlert color="danger" className="w-100">
-                      {error}
-                    </CAlert>
-                  )}
-                </CCardFooter>
-              </CCardBody>
-            </CCard>
+            ¿Estás seguro de que deseas eliminar este elemento?
           </CModalBody>
           <CModalFooter>
-            <CButton type="submit" color="dark" size="sm">
-              {currentUser ? "Actualizar" : "Guardar"}
+            <CButton color="danger" size="sm" onClick={confirmDelete}>
+              Eliminar
             </CButton>
-            <CButton color="secondary" size="sm" onClick={closeModal}>
+            <CButton color="secondary" size="sm" onClick={closeDeleteModal}>
               Cancelar
             </CButton>
           </CModalFooter>
-        </CForm>
-      </CModal>
-
-      <CModal visible={isDeleteModalVisible} onClose={closeDeleteModal}>
-        <CModalHeader>
-          <CModalTitle>Confirmar</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          ¿Estás seguro de que deseas eliminar este elemento?
-        </CModalBody>
-        <CModalFooter>
-          <CButton color="danger" size="sm" onClick={confirmDelete}>
-            Eliminar
-          </CButton>
-          <CButton color="secondary" size="sm" onClick={closeDeleteModal}>
-            Cancelar
-          </CButton>
-        </CModalFooter>
-      </CModal>
+        </CModal>
+      </CContainer>
     </div>
   );
 };

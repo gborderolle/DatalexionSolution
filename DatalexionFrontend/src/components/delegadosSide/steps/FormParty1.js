@@ -112,6 +112,7 @@ const FormParty1 = () => {
     const updatedCircuitPayload = preparePayload(updatedPartyVotesList);
 
     try {
+      // HTTP Put a Circuits
       await uploadData(
         JSON.stringify(updatedCircuitPayload),
         urlCircuit,

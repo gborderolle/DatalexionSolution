@@ -15,6 +15,7 @@ import {
   CPagination,
   CPaginationItem,
   CFormInput,
+  CContainer,
 } from "@coreui/react";
 
 // redux imports
@@ -144,7 +145,7 @@ const LogsMenu = () => {
   //#endregion Events ***********************************
 
   return (
-    <>
+    <CContainer fluid>
       <CCard className="mb-4">
         <CCardHeader>
           <div
@@ -174,57 +175,63 @@ const LogsMenu = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                <CTable striped>
-                  <CTableHead>
-                    <CTableRow>
-                      <CTableHeaderCell>#</CTableHeaderCell>
-                      <CTableHeaderCell onClick={() => requestSort("entity")}>
-                        Entidad
-                      </CTableHeaderCell>
-                      <CTableHeaderCell onClick={() => requestSort("action")}>
-                        Acción
-                      </CTableHeaderCell>
-                      <CTableHeaderCell onClick={() => requestSort("data")}>
-                        Datos
-                      </CTableHeaderCell>
-                      <CTableHeaderCell onClick={() => requestSort("username")}>
-                        Usuario
-                      </CTableHeaderCell>
-                      <CTableHeaderCell onClick={() => requestSort("creation")}>
-                        Creación
-                      </CTableHeaderCell>
-                    </CTableRow>
-                  </CTableHead>
-                  <CTableBody>
-                    {currentList.map((log, index) => {
-                      const isLogToday = isToday(log.creation);
-                      const rowClass = isLogToday ? "log-text-warning" : "";
+                <div className="table-responsive">
+                  <CTable striped>
+                    <CTableHead>
+                      <CTableRow>
+                        <CTableHeaderCell>#</CTableHeaderCell>
+                        <CTableHeaderCell onClick={() => requestSort("entity")}>
+                          Entidad
+                        </CTableHeaderCell>
+                        <CTableHeaderCell onClick={() => requestSort("action")}>
+                          Acción
+                        </CTableHeaderCell>
+                        <CTableHeaderCell onClick={() => requestSort("data")}>
+                          Datos
+                        </CTableHeaderCell>
+                        <CTableHeaderCell
+                          onClick={() => requestSort("username")}
+                        >
+                          Usuario
+                        </CTableHeaderCell>
+                        <CTableHeaderCell
+                          onClick={() => requestSort("creation")}
+                        >
+                          Creación
+                        </CTableHeaderCell>
+                      </CTableRow>
+                    </CTableHead>
+                    <CTableBody>
+                      {currentList.map((log, index) => {
+                        const isLogToday = isToday(log.creation);
+                        const rowClass = isLogToday ? "log-text-warning" : "";
 
-                      return (
-                        <CTableRow key={log.id}>
-                          <CTableDataCell className={rowClass}>
-                            {indexOfFirstLog + index + 1}
-                          </CTableDataCell>
-                          <CTableDataCell className={rowClass}>
-                            {log.entity}
-                          </CTableDataCell>
-                          <CTableDataCell className={rowClass}>
-                            {log.action}
-                          </CTableDataCell>
-                          <CTableDataCell className={rowClass}>
-                            {log.username}
-                          </CTableDataCell>
-                          <CTableDataCell className={rowClass}>
-                            {log.data}
-                          </CTableDataCell>
-                          <CTableDataCell className={rowClass}>
-                            {formatUruguayDate(log.creation)}
-                          </CTableDataCell>
-                        </CTableRow>
-                      );
-                    })}
-                  </CTableBody>
-                </CTable>
+                        return (
+                          <CTableRow key={log.id}>
+                            <CTableDataCell className={rowClass}>
+                              {indexOfFirstLog + index + 1}
+                            </CTableDataCell>
+                            <CTableDataCell className={rowClass}>
+                              {log.entity}
+                            </CTableDataCell>
+                            <CTableDataCell className={rowClass}>
+                              {log.action}
+                            </CTableDataCell>
+                            <CTableDataCell className={rowClass}>
+                              {log.username}
+                            </CTableDataCell>
+                            <CTableDataCell className={rowClass}>
+                              {log.data}
+                            </CTableDataCell>
+                            <CTableDataCell className={rowClass}>
+                              {formatUruguayDate(log.creation)}
+                            </CTableDataCell>
+                          </CTableRow>
+                        );
+                      })}
+                    </CTableBody>
+                  </CTable>
+                </div>
               </motion.div>
             </div>
           </CRow>
@@ -241,7 +248,7 @@ const LogsMenu = () => {
           </CPagination>
         </CCardBody>
       </CCard>
-    </>
+    </CContainer>
   );
 };
 

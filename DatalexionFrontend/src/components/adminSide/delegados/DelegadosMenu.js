@@ -17,6 +17,7 @@ import {
   CModalHeader,
   CModalTitle,
   CModalFooter,
+  CContainer,
 } from "@coreui/react";
 
 import { USER_ROLE_ADMIN, USER_ROLE_ANALYST } from "../../../userRoles";
@@ -361,7 +362,7 @@ const DelegadosMenu = () => {
   //#endregion JSX ***********************************
 
   return (
-    <>
+    <CContainer fluid>
       <CCard className="mb-4">
         <CCardHeader>
           <div
@@ -405,23 +406,25 @@ const DelegadosMenu = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                <CTable striped>
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      {/* <th>Cédula</th> */}
-                      <th>Nombre</th>
-                      <th>Departamento</th>
-                      <th>Municipios</th>
-                      <th>C.Cerrados</th>
-                      <th>C.Asignados</th>
-                      <th>Email</th>
-                      <th>Celular</th>
-                      <th>Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>{renderDelegadoRows()}</tbody>
-                </CTable>
+                <div className="table-responsive">
+                  <CTable striped>
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        {/* <th>Cédula</th> */}
+                        <th>Nombre</th>
+                        <th>Departamento</th>
+                        <th>Municipios</th>
+                        <th>C.Cerrados</th>
+                        <th>C.Asignados</th>
+                        <th>Email</th>
+                        <th>Celular</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>{renderDelegadoRows()}</tbody>
+                  </CTable>
+                </div>
               </motion.div>
             </div>
           </CRow>
@@ -477,7 +480,7 @@ const DelegadosMenu = () => {
           </CButton>
         </CModalFooter>
       </CModal>
-    </>
+    </CContainer>
   );
 };
 

@@ -206,14 +206,16 @@
         <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.Put(System.Int32,DatalexionBackend.Core.DTO.CircuitCreateDTO)">
             <summary>
             Actualiza los datos de un circuito existente, incluyendo las partes y votos asociados.
+            Origen Frontend: FormParty1.js y FormSlate1.js
             </summary>
             <param name="id">ID del circuito a actualizar.</param>
             <param name="dto">Datos actualizados del circuito.</param>
             <returns>El circuito actualizado.</returns>
         </member>
-        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.UpdateCircuit(System.Int32,DatalexionBackend.Core.DTO.CircuitCreateDTO)">
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.CircuitUpdate(System.Int32,DatalexionBackend.Core.DTO.CircuitCreateDTO)">
             <summary>
             Actualiza un circuito existente, aplicando los cambios especificados en el DTO de creación.
+            Origen Frontend: CircuitTable.js
             </summary>
             <param name="id">ID del circuito a actualizar.</param>
             <param name="dto">DTO de creación con los datos para actualizar el circuito.</param>
@@ -222,6 +224,7 @@
         <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.Patch(System.Int32,DatalexionBackend.Core.DTO.CircuitPatchDTO,System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile})">
             <summary>
             Aplica actualizaciones parciales a un circuito existente, específicamente dirigido a los votos y la carga de fotos.
+            Origen Frontend: FormExtras1.js
             </summary>
             <param name="id">ID del circuito a actualizar.</param>
             <param name="dto">DTO para aplicar actualizaciones parciales.</param>
@@ -231,6 +234,7 @@
         <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.Post(DatalexionBackend.Core.DTO.CircuitCreateDTO)">
             <summary>
             Crea un nuevo circuito en el sistema.
+            Origen Frontend: FormParty1.js y FormSlate1.js
             </summary>
             <param name="circuitCreateDto">Datos del nuevo circuito.</param>
             <returns>El circuito creado.</returns>

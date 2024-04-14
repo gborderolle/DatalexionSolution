@@ -26,6 +26,7 @@ import {
   CCardBody,
   CCardFooter,
   CAlert,
+  CContainer,
 } from "@coreui/react";
 import useInput from "../../../../hooks/use-input";
 import useAPI from "../../../../hooks/use-API";
@@ -177,134 +178,140 @@ const ClientTable = (props) => {
 
   return (
     <div>
-      <CTable striped>
-        <CTableHead>
-          <CTableRow>
-            <CTableHeaderCell onClick={() => requestSort("name")}>
-              Nombre
-            </CTableHeaderCell>
-            <CTableHeaderCell onClick={() => requestSort("party")}>
-              Partido
-            </CTableHeaderCell>
-            <CTableHeaderCell>Acciones</CTableHeaderCell>
-          </CTableRow>
-        </CTableHead>
-        <CTableBody>
-          <CTableRow>
-            <CTableDataCell>{clientRedux.name}</CTableDataCell>
-            <CTableDataCell>
-              {ClientGetParty(clientRedux, partyList)?.name}
-            </CTableDataCell>
-            <CTableDataCell>
-              <CButton
-                color="dark"
-                size="sm"
-                onClick={() => openModal(clientRedux)}
-              >
-                Editar
+      <CContainer fluid>
+        <div className="table-responsive">
+          <CTable striped>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell onClick={() => requestSort("name")}>
+                  Nombre
+                </CTableHeaderCell>
+                <CTableHeaderCell onClick={() => requestSort("party")}>
+                  Partido
+                </CTableHeaderCell>
+                <CTableHeaderCell>Acciones</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              <CTableRow>
+                <CTableDataCell>{clientRedux.name}</CTableDataCell>
+                <CTableDataCell>
+                  {ClientGetParty(clientRedux, partyList)?.name}
+                </CTableDataCell>
+                <CTableDataCell>
+                  <CButton
+                    color="dark"
+                    size="sm"
+                    onClick={() => openModal(clientRedux)}
+                  >
+                    Editar
+                  </CButton>
+                </CTableDataCell>
+              </CTableRow>
+            </CTableBody>
+          </CTable>
+        </div>
+
+        <CModal visible={isModalVisible} onClose={closeModal}>
+          <CModalHeader>
+            <CModalTitle>
+              {currentUser ? "Editar entidad" : "Agregar entidad"}
+            </CModalTitle>
+          </CModalHeader>
+          <CForm onSubmit={formSubmitHandler}>
+            <CModalBody>
+              <CCard>
+                <CCardBody>
+                  <CInputGroup>
+                    <CInputGroupText className="cardItem custom-input-group-text">
+                      {props.name}
+                    </CInputGroupText>
+                    <CFormInput
+                      type="text"
+                      className="cardItem"
+                      onChange={inputChangeHandler1}
+                      onBlur={inputBlurHandler1}
+                      value={name}
+                    />
+                    {inputHasError1 && (
+                      <CAlert color="danger" className="w-100">
+                        Entrada inválida
+                      </CAlert>
+                    )}
+                  </CInputGroup>
+                  <br />
+                  <CInputGroup>
+                    <CInputGroupText className="cardItem custom-input-group-text">
+                      {props.party}
+                    </CInputGroupText>
+                    <CDropdown>
+                      <CDropdownToggle id="ddlParty" color="secondary">
+                        {ddlSelectedParty
+                          ? ddlSelectedParty.name
+                          : "Seleccionar"}
+                      </CDropdownToggle>
+                      <CDropdownMenu>
+                        {partyList &&
+                          partyList.length > 0 &&
+                          partyList.map((party) => (
+                            <CDropdownItem
+                              key={party.id}
+                              onClick={() => handleSelectDdlParty(party)}
+                              style={{ cursor: "pointer" }}
+                              value={party.id}
+                            >
+                              {`${party.id}: ${party.name}`}
+                            </CDropdownItem>
+                          ))}
+                      </CDropdownMenu>
+                    </CDropdown>
+                    {inputHasErrorParty && (
+                      <CAlert color="danger" className="w-100">
+                        Entrada inválida
+                      </CAlert>
+                    )}
+                  </CInputGroup>
+                  <br />
+
+                  <CRow className="justify-content-center">
+                    {isLoading && (
+                      <div className="text-center">
+                        <CSpinner />
+                      </div>
+                    )}
+                  </CRow>
+                  <br />
+                  <CCardFooter className="text-medium-emphasis">
+                    {!isValidForm && (
+                      <CAlert color="danger" className="w-100">
+                        El formulario no es válido
+                      </CAlert>
+                    )}
+                    {isSuccess && (
+                      <CAlert color="success" className="w-100">
+                        Datos ingresados correctamente
+                      </CAlert>
+                    )}
+                    {error && (
+                      <CAlert color="danger" className="w-100">
+                        {error}
+                      </CAlert>
+                    )}
+                  </CCardFooter>
+                </CCardBody>
+              </CCard>
+            </CModalBody>
+            <CModalFooter>
+              <CButton type="submit" color="dark" size="sm">
+                {currentUser ? "Actualizar" : "Guardar"}
               </CButton>
-            </CTableDataCell>
-          </CTableRow>
-        </CTableBody>
-      </CTable>
-
-      <CModal visible={isModalVisible} onClose={closeModal}>
-        <CModalHeader>
-          <CModalTitle>
-            {currentUser ? "Editar entidad" : "Agregar entidad"}
-          </CModalTitle>
-        </CModalHeader>
-        <CForm onSubmit={formSubmitHandler}>
-          <CModalBody>
-            <CCard>
-              <CCardBody>
-                <CInputGroup>
-                  <CInputGroupText className="cardItem custom-input-group-text">
-                    {props.name}
-                  </CInputGroupText>
-                  <CFormInput
-                    type="text"
-                    className="cardItem"
-                    onChange={inputChangeHandler1}
-                    onBlur={inputBlurHandler1}
-                    value={name}
-                  />
-                  {inputHasError1 && (
-                    <CAlert color="danger" className="w-100">
-                      Entrada inválida
-                    </CAlert>
-                  )}
-                </CInputGroup>
-                <br />
-                <CInputGroup>
-                  <CInputGroupText className="cardItem custom-input-group-text">
-                    {props.party}
-                  </CInputGroupText>
-                  <CDropdown>
-                    <CDropdownToggle id="ddlParty" color="secondary">
-                      {ddlSelectedParty ? ddlSelectedParty.name : "Seleccionar"}
-                    </CDropdownToggle>
-                    <CDropdownMenu>
-                      {partyList &&
-                        partyList.length > 0 &&
-                        partyList.map((party) => (
-                          <CDropdownItem
-                            key={party.id}
-                            onClick={() => handleSelectDdlParty(party)}
-                            style={{ cursor: "pointer" }}
-                            value={party.id}
-                          >
-                            {`${party.id}: ${party.name}`}
-                          </CDropdownItem>
-                        ))}
-                    </CDropdownMenu>
-                  </CDropdown>
-                  {inputHasErrorParty && (
-                    <CAlert color="danger" className="w-100">
-                      Entrada inválida
-                    </CAlert>
-                  )}
-                </CInputGroup>
-                <br />
-
-                <CRow className="justify-content-center">
-                  {isLoading && (
-                    <div className="text-center">
-                      <CSpinner />
-                    </div>
-                  )}
-                </CRow>
-                <br />
-                <CCardFooter className="text-medium-emphasis">
-                  {!isValidForm && (
-                    <CAlert color="danger" className="w-100">
-                      El formulario no es válido
-                    </CAlert>
-                  )}
-                  {isSuccess && (
-                    <CAlert color="success" className="w-100">
-                      Datos ingresados correctamente
-                    </CAlert>
-                  )}
-                  {error && (
-                    <CAlert color="danger" className="w-100">
-                      {error}
-                    </CAlert>
-                  )}
-                </CCardFooter>
-              </CCardBody>
-            </CCard>
-          </CModalBody>
-          <CModalFooter>
-            <CButton type="submit" color="dark" size="sm">
-              {currentUser ? "Actualizar" : "Guardar"}
-            </CButton>
-            <CButton color="secondary" size="sm" onClick={closeModal}>
-              Cancelar
-            </CButton>
-          </CModalFooter>
-        </CForm>
-      </CModal>
+              <CButton color="secondary" size="sm" onClick={closeModal}>
+                Cancelar
+              </CButton>
+            </CModalFooter>
+          </CForm>
+        </CModal>
+      </CContainer>
     </div>
   );
 };

@@ -28,6 +28,7 @@ import {
   CAlert,
   CPagination,
   CPaginationItem,
+  CContainer,
 } from "@coreui/react";
 import useInput from "../../../../hooks/use-input";
 import useAPI from "../../../../hooks/use-API";
@@ -312,271 +313,277 @@ const SlateTable = (props) => {
 
   return (
     <div>
-      <CButton color="dark" size="sm" onClick={() => openModal()}>
-        Agregar
-      </CButton>
-      <CTable striped>
-        <CTableHead>
-          <CTableRow>
-            <CTableHeaderCell>#</CTableHeaderCell>
-            <CTableHeaderCell onClick={() => requestSort("name")}>
-              Nombre
-            </CTableHeaderCell>
-            <CTableHeaderCell onClick={() => requestSort("wing")}>
-              Candidato
-            </CTableHeaderCell>
-            <CTableHeaderCell onClick={() => requestSort("wing")}>
-              Agrupación
-            </CTableHeaderCell>
-            <CTableHeaderCell onClick={() => requestSort("party")}>
-              Partido
-            </CTableHeaderCell>
-            <CTableHeaderCell onClick={() => requestSort("province")}>
-              Departamento
-            </CTableHeaderCell>
-            <CTableHeaderCell>Acciones</CTableHeaderCell>
-          </CTableRow>
-        </CTableHead>
-        <CTableBody>
-          {currentList.map((slate, index) => {
-            return (
-              <CTableRow key={slate.id}>
-                <CTableDataCell>{index + 1}</CTableDataCell>
-                <CTableDataCell>{slate.name}</CTableDataCell>
-                <CTableDataCell>
-                  {SlateGetCandidate(slate, candidateList)?.name}
-                </CTableDataCell>
-                <CTableDataCell>
-                  {SlateGetWing(slate, wingList)?.name}
-                </CTableDataCell>
-                <CTableDataCell>
-                  {SlateGetParty(slate, wingList, partyList)?.name}
-                </CTableDataCell>
-                <CTableDataCell>
-                  {SlateGetProvince(slate, provinceList)?.name}
-                </CTableDataCell>
-                <CTableDataCell>
-                  <CButton
-                    color="dark"
-                    size="sm"
-                    onClick={() => openModal(slate)}
-                  >
-                    Editar
-                  </CButton>
-                  <CButton
-                    color="danger"
-                    size="sm"
-                    onClick={() => openDeleteModal(slate.id)}
-                    style={{ marginLeft: 10 }}
-                  >
-                    Eliminar
-                  </CButton>
-                </CTableDataCell>
+      <CContainer fluid>
+        <CButton color="dark" size="sm" onClick={() => openModal()}>
+          Agregar
+        </CButton>
+        <div className="table-responsive">
+          <CTable striped>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell>#</CTableHeaderCell>
+                <CTableHeaderCell onClick={() => requestSort("name")}>
+                  Nombre
+                </CTableHeaderCell>
+                <CTableHeaderCell onClick={() => requestSort("wing")}>
+                  Candidato
+                </CTableHeaderCell>
+                <CTableHeaderCell onClick={() => requestSort("wing")}>
+                  Agrupación
+                </CTableHeaderCell>
+                <CTableHeaderCell onClick={() => requestSort("party")}>
+                  Partido
+                </CTableHeaderCell>
+                <CTableHeaderCell onClick={() => requestSort("province")}>
+                  Departamento
+                </CTableHeaderCell>
+                <CTableHeaderCell>Acciones</CTableHeaderCell>
               </CTableRow>
-            );
-          })}
-        </CTableBody>
-      </CTable>
+            </CTableHead>
+            <CTableBody>
+              {currentList.map((slate, index) => {
+                return (
+                  <CTableRow key={slate.id}>
+                    <CTableDataCell>{index + 1}</CTableDataCell>
+                    <CTableDataCell>{slate.name}</CTableDataCell>
+                    <CTableDataCell>
+                      {SlateGetCandidate(slate, candidateList)?.name}
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      {SlateGetWing(slate, wingList)?.name}
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      {SlateGetParty(slate, wingList, partyList)?.name}
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      {SlateGetProvince(slate, provinceList)?.name}
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <CButton
+                        color="dark"
+                        size="sm"
+                        onClick={() => openModal(slate)}
+                      >
+                        Editar
+                      </CButton>
+                      <CButton
+                        color="danger"
+                        size="sm"
+                        onClick={() => openDeleteModal(slate.id)}
+                        style={{ marginLeft: 10 }}
+                      >
+                        Eliminar
+                      </CButton>
+                    </CTableDataCell>
+                  </CTableRow>
+                );
+              })}
+            </CTableBody>
+          </CTable>
+        </div>
 
-      <CPagination align="center">
-        {currentPage > 1 && (
-          <CPaginationItem onClick={() => handlePageChange(currentPage - 1)}>
-            Anterior
-          </CPaginationItem>
-        )}
-        {[...Array(pageCount)].map((_, i) => (
-          <CPaginationItem
-            key={i + 1}
-            active={i + 1 === currentPage}
-            onClick={() => handlePageChange(i + 1)}
-          >
-            {i + 1}
-          </CPaginationItem>
-        ))}
-        {currentPage < pageCount && (
-          <CPaginationItem onClick={() => handlePageChange(currentPage + 1)}>
-            Siguiente
-          </CPaginationItem>
-        )}
-      </CPagination>
+        <CPagination align="center">
+          {currentPage > 1 && (
+            <CPaginationItem onClick={() => handlePageChange(currentPage - 1)}>
+              Anterior
+            </CPaginationItem>
+          )}
+          {[...Array(pageCount)].map((_, i) => (
+            <CPaginationItem
+              key={i + 1}
+              active={i + 1 === currentPage}
+              onClick={() => handlePageChange(i + 1)}
+            >
+              {i + 1}
+            </CPaginationItem>
+          ))}
+          {currentPage < pageCount && (
+            <CPaginationItem onClick={() => handlePageChange(currentPage + 1)}>
+              Siguiente
+            </CPaginationItem>
+          )}
+        </CPagination>
 
-      <CModal visible={isModalVisible} onClose={closeModal}>
-        <CModalHeader>
-          <CModalTitle>
-            {currentUser ? "Editar entidad" : "Agregar entidad"}
-          </CModalTitle>
-        </CModalHeader>
-        <CForm onSubmit={formSubmitHandler}>
+        <CModal visible={isModalVisible} onClose={closeModal}>
+          <CModalHeader>
+            <CModalTitle>
+              {currentUser ? "Editar entidad" : "Agregar entidad"}
+            </CModalTitle>
+          </CModalHeader>
+          <CForm onSubmit={formSubmitHandler}>
+            <CModalBody>
+              <CCard>
+                <CCardBody>
+                  <CInputGroup>
+                    <CInputGroupText className="cardItem custom-input-group-text">
+                      {props.name}
+                    </CInputGroupText>
+                    <CFormInput
+                      type="text"
+                      className="cardItem"
+                      onChange={inputChangeHandler1}
+                      onBlur={inputBlurHandler1}
+                      value={name}
+                    />
+                    {inputHasError1 && (
+                      <CAlert color="danger" className="w-100">
+                        Entrada inválida
+                      </CAlert>
+                    )}
+                  </CInputGroup>
+                  <br />
+                  <CInputGroup>
+                    <CInputGroupText className="cardItem custom-input-group-text">
+                      {props.candidate}
+                    </CInputGroupText>
+                    <CDropdown>
+                      <CDropdownToggle id="ddlCandidate" color="secondary">
+                        {ddlSelectedWing
+                          ? ddlSelectedCandidate.name
+                          : "Seleccionar"}
+                      </CDropdownToggle>
+                      <CDropdownMenu>
+                        {candidateList &&
+                          candidateList.length > 0 &&
+                          candidateList.map((candidate) => (
+                            <CDropdownItem
+                              key={candidate.id}
+                              onClick={() =>
+                                handleSelectDdlCandidate(candidate)
+                              }
+                              style={{ cursor: "pointer" }}
+                              value={candidate.id}
+                            >
+                              {`${candidate.id}: ${candidate.name}`}
+                            </CDropdownItem>
+                          ))}
+                      </CDropdownMenu>
+                    </CDropdown>
+                    {inputHasErrordCandidate && (
+                      <CAlert color="danger" className="w-100">
+                        Entrada inválida
+                      </CAlert>
+                    )}
+                  </CInputGroup>
+                  <br />
+                  <CInputGroup>
+                    <CInputGroupText className="cardItem custom-input-group-text">
+                      {props.wing}
+                    </CInputGroupText>
+                    <CDropdown>
+                      <CDropdownToggle id="ddlWing" color="secondary">
+                        {ddlSelectedWing ? ddlSelectedWing.name : "Seleccionar"}
+                      </CDropdownToggle>
+                      <CDropdownMenu>
+                        {wingList &&
+                          wingList.length > 0 &&
+                          wingList.map((wing) => (
+                            <CDropdownItem
+                              key={wing.id}
+                              onClick={() => handleSelectDdlWing(wing)}
+                              style={{ cursor: "pointer" }}
+                              value={wing.id}
+                            >
+                              {`${wing.id}: ${wing.name}`}
+                            </CDropdownItem>
+                          ))}
+                      </CDropdownMenu>
+                    </CDropdown>
+                    {inputHasErrordWing && (
+                      <CAlert color="danger" className="w-100">
+                        Entrada inválida
+                      </CAlert>
+                    )}
+                  </CInputGroup>
+                  <br />
+                  <CInputGroup>
+                    <CInputGroupText className="cardItem custom-input-group-text">
+                      {props.province}
+                    </CInputGroupText>
+                    <CDropdown>
+                      <CDropdownToggle id="ddlProvince" color="secondary">
+                        {ddlSelectedProvince
+                          ? ddlSelectedProvince.name
+                          : "Seleccionar"}
+                      </CDropdownToggle>
+                      <CDropdownMenu>
+                        {provinceList &&
+                          provinceList.length > 0 &&
+                          provinceList.map((province) => (
+                            <CDropdownItem
+                              key={province.id}
+                              onClick={() => handleSelectDdlProvince(province)}
+                              style={{ cursor: "pointer" }}
+                              value={province.id}
+                            >
+                              {`${province.id}: ${province.name}`}
+                            </CDropdownItem>
+                          ))}
+                      </CDropdownMenu>
+                    </CDropdown>
+                    {inputHasErrordProvince && (
+                      <CAlert color="danger" className="w-100">
+                        Entrada inválida
+                      </CAlert>
+                    )}
+                  </CInputGroup>
+                  <br />
+                  <CRow className="justify-content-center">
+                    {isLoading && (
+                      <div className="text-center">
+                        <CSpinner />
+                      </div>
+                    )}
+                  </CRow>
+                  <br />
+                  <CCardFooter className="text-medium-emphasis">
+                    {!isValidForm && (
+                      <CAlert color="danger" className="w-100">
+                        El formulario no es válido
+                      </CAlert>
+                    )}
+                    {isSuccess && (
+                      <CAlert color="success" className="w-100">
+                        Datos ingresados correctamente
+                      </CAlert>
+                    )}
+                    {error && (
+                      <CAlert color="danger" className="w-100">
+                        {error}
+                      </CAlert>
+                    )}
+                  </CCardFooter>
+                </CCardBody>
+              </CCard>
+            </CModalBody>
+            <CModalFooter>
+              <CButton type="submit" color="dark" size="sm">
+                {currentUser ? "Actualizar" : "Guardar"}
+              </CButton>
+              <CButton color="secondary" size="sm" onClick={closeModal}>
+                Cancelar
+              </CButton>
+            </CModalFooter>
+          </CForm>
+        </CModal>
+
+        <CModal visible={isDeleteModalVisible} onClose={closeDeleteModal}>
+          <CModalHeader>
+            <CModalTitle>Confirmar</CModalTitle>
+          </CModalHeader>
           <CModalBody>
-            <CCard>
-              <CCardBody>
-                <CInputGroup>
-                  <CInputGroupText className="cardItem custom-input-group-text">
-                    {props.name}
-                  </CInputGroupText>
-                  <CFormInput
-                    type="text"
-                    className="cardItem"
-                    onChange={inputChangeHandler1}
-                    onBlur={inputBlurHandler1}
-                    value={name}
-                  />
-                  {inputHasError1 && (
-                    <CAlert color="danger" className="w-100">
-                      Entrada inválida
-                    </CAlert>
-                  )}
-                </CInputGroup>
-                <br />
-                <CInputGroup>
-                  <CInputGroupText className="cardItem custom-input-group-text">
-                    {props.candidate}
-                  </CInputGroupText>
-                  <CDropdown>
-                    <CDropdownToggle id="ddlCandidate" color="secondary">
-                      {ddlSelectedWing
-                        ? ddlSelectedCandidate.name
-                        : "Seleccionar"}
-                    </CDropdownToggle>
-                    <CDropdownMenu>
-                      {candidateList &&
-                        candidateList.length > 0 &&
-                        candidateList.map((candidate) => (
-                          <CDropdownItem
-                            key={candidate.id}
-                            onClick={() => handleSelectDdlCandidate(candidate)}
-                            style={{ cursor: "pointer" }}
-                            value={candidate.id}
-                          >
-                            {`${candidate.id}: ${candidate.name}`}
-                          </CDropdownItem>
-                        ))}
-                    </CDropdownMenu>
-                  </CDropdown>
-                  {inputHasErrordCandidate && (
-                    <CAlert color="danger" className="w-100">
-                      Entrada inválida
-                    </CAlert>
-                  )}
-                </CInputGroup>
-                <br />
-                <CInputGroup>
-                  <CInputGroupText className="cardItem custom-input-group-text">
-                    {props.wing}
-                  </CInputGroupText>
-                  <CDropdown>
-                    <CDropdownToggle id="ddlWing" color="secondary">
-                      {ddlSelectedWing ? ddlSelectedWing.name : "Seleccionar"}
-                    </CDropdownToggle>
-                    <CDropdownMenu>
-                      {wingList &&
-                        wingList.length > 0 &&
-                        wingList.map((wing) => (
-                          <CDropdownItem
-                            key={wing.id}
-                            onClick={() => handleSelectDdlWing(wing)}
-                            style={{ cursor: "pointer" }}
-                            value={wing.id}
-                          >
-                            {`${wing.id}: ${wing.name}`}
-                          </CDropdownItem>
-                        ))}
-                    </CDropdownMenu>
-                  </CDropdown>
-                  {inputHasErrordWing && (
-                    <CAlert color="danger" className="w-100">
-                      Entrada inválida
-                    </CAlert>
-                  )}
-                </CInputGroup>
-                <br />
-                <CInputGroup>
-                  <CInputGroupText className="cardItem custom-input-group-text">
-                    {props.province}
-                  </CInputGroupText>
-                  <CDropdown>
-                    <CDropdownToggle id="ddlProvince" color="secondary">
-                      {ddlSelectedProvince
-                        ? ddlSelectedProvince.name
-                        : "Seleccionar"}
-                    </CDropdownToggle>
-                    <CDropdownMenu>
-                      {provinceList &&
-                        provinceList.length > 0 &&
-                        provinceList.map((province) => (
-                          <CDropdownItem
-                            key={province.id}
-                            onClick={() => handleSelectDdlProvince(province)}
-                            style={{ cursor: "pointer" }}
-                            value={province.id}
-                          >
-                            {`${province.id}: ${province.name}`}
-                          </CDropdownItem>
-                        ))}
-                    </CDropdownMenu>
-                  </CDropdown>
-                  {inputHasErrordProvince && (
-                    <CAlert color="danger" className="w-100">
-                      Entrada inválida
-                    </CAlert>
-                  )}
-                </CInputGroup>
-                <br />
-                <CRow className="justify-content-center">
-                  {isLoading && (
-                    <div className="text-center">
-                      <CSpinner />
-                    </div>
-                  )}
-                </CRow>
-                <br />
-                <CCardFooter className="text-medium-emphasis">
-                  {!isValidForm && (
-                    <CAlert color="danger" className="w-100">
-                      El formulario no es válido
-                    </CAlert>
-                  )}
-                  {isSuccess && (
-                    <CAlert color="success" className="w-100">
-                      Datos ingresados correctamente
-                    </CAlert>
-                  )}
-                  {error && (
-                    <CAlert color="danger" className="w-100">
-                      {error}
-                    </CAlert>
-                  )}
-                </CCardFooter>
-              </CCardBody>
-            </CCard>
+            ¿Estás seguro de que deseas eliminar este elemento?
           </CModalBody>
           <CModalFooter>
-            <CButton type="submit" color="dark" size="sm">
-              {currentUser ? "Actualizar" : "Guardar"}
+            <CButton color="danger" size="sm" onClick={confirmDelete}>
+              Eliminar
             </CButton>
-            <CButton color="secondary" size="sm" onClick={closeModal}>
+            <CButton color="secondary" size="sm" onClick={closeDeleteModal}>
               Cancelar
             </CButton>
           </CModalFooter>
-        </CForm>
-      </CModal>
-
-      <CModal visible={isDeleteModalVisible} onClose={closeDeleteModal}>
-        <CModalHeader>
-          <CModalTitle>Confirmar</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          ¿Estás seguro de que deseas eliminar este elemento?
-        </CModalBody>
-        <CModalFooter>
-          <CButton color="danger" size="sm" onClick={confirmDelete}>
-            Eliminar
-          </CButton>
-          <CButton color="secondary" size="sm" onClick={closeDeleteModal}>
-            Cancelar
-          </CButton>
-        </CModalFooter>
-      </CModal>
+        </CModal>
+      </CContainer>
     </div>
   );
 };

@@ -159,7 +159,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<DelegadoPatchDTO> dto)
         {
-            return await Patch<Delegado, DelegadoPatchDTO>(id, dto);
+            return StatusCode((int)HttpStatusCode.NotImplemented, _response);
         }
 
         [Authorize(Roles = nameof(UserTypeOptions.Admin))]
@@ -254,11 +254,11 @@ namespace DatalexionBackend.UI.Controllers.V1
                 // 1..n
                 var includes = new List<IncludePropertyConfiguration<Delegado>>
                 {
-                        new IncludePropertyConfiguration<Delegado>
-                        {
-                            IncludeExpression = b => b.ListMunicipalities
-                        }
-                    };
+                    new IncludePropertyConfiguration<Delegado>
+                    {
+                        IncludeExpression = b => b.ListMunicipalities
+                    }
+                };
                 // n..n
                 //var thenIncludes = new List<ThenIncludePropertyConfiguration<Delegado>>
                 //{

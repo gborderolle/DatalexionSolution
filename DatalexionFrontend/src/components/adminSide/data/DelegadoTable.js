@@ -28,6 +28,7 @@ import {
   CAlert,
   CPagination,
   CPaginationItem,
+  CContainer,
 } from "@coreui/react";
 import useInput from "../../../hooks/use-input";
 import useAPI from "../../../hooks/use-API";
@@ -76,7 +77,7 @@ const DelegadoTable = (props) => {
   const { isLoading, isSuccess, error, uploadData, removeData } = useAPI();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentModel, setCurrentModel] = useState(null);
 
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
@@ -97,9 +98,15 @@ const DelegadoTable = (props) => {
     isValid: false,
   });
 
-  // Define la función para llamar al endpoint de validación
-  const validateCI = async (ci) => {
-    if (ci && ci.length > 0) {
+  // Asegúrate de ajustar la función validateCI para no realizar la verificación si isEditing es true
+  const validateCI = async (ci, isEditing = false) => {
+    if (isEditing) {
+      // Si estamos editando, asumimos que la cédula es válida porque ya estaba registrada
+      dispatchCI({
+        type: "SET_ERROR",
+        errorMessage: "",
+      });
+    } else if (ci && ci.length > 0) {
       const requestOptions = {
         method: "GET",
         headers: {
@@ -291,19 +298,29 @@ const DelegadoTable = (props) => {
   };
 
   // Si la entidad es nula, se asume que se está creando una nueva, sino se está editando
-  const openModal = (delegado = null) => {
-    if (delegado) {
+  const openModal = (model = null) => {
+    if (model) {
       // Caso para editar un delegado existente
-      setCurrentUser(delegado);
-      inputReset1(delegado.name);
-      inputReset4(delegado.email);
+      setCurrentModel(model);
+      inputReset1(model.name);
+      inputReset4(model.email);
+
+      // Agregar el guión al formato correcto de la CI
+      const formattedCI =
+        model.ci.substring(0, 7) + "-" + model.ci.substring(7);
+
+      dispatchCI({ type: "USER_INPUT", val: formattedCI }); // Initialize ciReducer with model.ci
+      validateCI(model.ci, true); // Pasa true para indicar que se está editando
+
+      dispatchPhone({ type: "USER_INPUT", val: model.phone }); // Initialize phoneReducer with model.phone
+
       // Suponiendo que delegado.municipalityIds es un arreglo de los IDs de los municipios asignados
-      setSelectedMunicipalities(delegado.listMunicipalities || []);
+      setSelectedMunicipalities(model.listMunicipalities || []);
 
       // Suponiendo que tienes una manera de obtener el departamento basado en los municipios
       // y que delegado tiene una propiedad departmentId
-      if (delegado.listMunicipalities?.length > 0) {
-        const firstMunicipality = delegado.listMunicipalities[0];
+      if (model.listMunicipalities?.length > 0) {
+        const firstMunicipality = model.listMunicipalities[0];
         if (firstMunicipality) {
           const province = MunicipalityGetProvince(
             firstMunicipality,
@@ -315,7 +332,7 @@ const DelegadoTable = (props) => {
       }
     } else {
       // Caso para agregar un nuevo delegado
-      setCurrentUser(null);
+      setCurrentModel(null);
       inputReset1();
       inputReset4();
       setSelectedMunicipalities([]);
@@ -327,7 +344,7 @@ const DelegadoTable = (props) => {
 
   const closeModal = () => {
     setIsModalVisible(false);
-    setCurrentUser(null);
+    setCurrentModel(null);
   };
 
   const closeDeleteModal = () => {
@@ -410,12 +427,12 @@ const DelegadoTable = (props) => {
 
     try {
       let response;
-      if (currentUser) {
+      if (currentModel) {
         response = await uploadData(
           dataToUpload,
           urlDelegado,
           true,
-          currentUser.id
+          currentModel.id
         );
       } else {
         response = await uploadData(dataToUpload, urlDelegado);
@@ -454,314 +471,319 @@ const DelegadoTable = (props) => {
 
   return (
     <div>
-      <CButton color="dark" size="sm" onClick={() => openModal()}>
-        Agregar
-      </CButton>
-      <CTable striped>
-        <CTableHead>
-          <CTableRow>
-            <CTableHeaderCell>#</CTableHeaderCell>
-            <CTableHeaderCell onClick={() => requestSort("name")}>
-              Nombre completo
-            </CTableHeaderCell>
-            <CTableHeaderCell onClick={() => requestSort("ci")}>
-              CI
-            </CTableHeaderCell>
-            <CTableHeaderCell onClick={() => requestSort("phone")}>
-              Celular
-            </CTableHeaderCell>
-            <CTableHeaderCell onClick={() => requestSort("email")}>
-              Email
-            </CTableHeaderCell>
-            <CTableHeaderCell onClick={() => requestSort("province")}>
-              Departamento
-            </CTableHeaderCell>
-            <CTableHeaderCell onClick={() => requestSort("municipality")}>
-              Municipios
-            </CTableHeaderCell>
-            <CTableHeaderCell>Acciones</CTableHeaderCell>
-          </CTableRow>
-        </CTableHead>
-        <CTableBody>
-          {currentList.map((delegado, index) => {
-            const firstMunicipality =
-              delegado.listMunicipalities &&
-              delegado.listMunicipalities.length > 0
-                ? delegado.listMunicipalities[0]
-                : null;
-            const provinceName = firstMunicipality
-              ? MunicipalityGetProvince(firstMunicipality, provinceList)?.name
-              : "N/A";
-            return (
-              <CTableRow key={delegado.id}>
-                <CTableDataCell>{index + 1}</CTableDataCell>
-                <CTableDataCell>{delegado.name}</CTableDataCell>
-                <CTableDataCell>{delegado.ci}</CTableDataCell>
-                <CTableDataCell>{delegado.phone}</CTableDataCell>
-                <CTableDataCell>{delegado.email}</CTableDataCell>
-                <CTableDataCell>{provinceName}</CTableDataCell>
-                <CTableDataCell>
-                  {delegado.listMunicipalities &&
-                  delegado.listMunicipalities.length > 0
-                    ? delegado.listMunicipalities
-                        .map((municipality) => municipality.name)
-                        .join(", ") // Ajusta 'Name' al nombre correcto de tu propiedad
-                    : "N/A"}
-                </CTableDataCell>
-                <CTableDataCell>
-                  <CButton
-                    color="dark"
-                    size="sm"
-                    onClick={() => openModal(delegado)}
-                  >
-                    Editar
-                  </CButton>
-                  <CButton
-                    color="danger"
-                    size="sm"
-                    onClick={() => openDeleteModal(delegado.id)}
-                    style={{ marginLeft: 10 }}
-                  >
-                    Eliminar
-                  </CButton>
-                </CTableDataCell>
+      <CContainer fluid>
+        <CButton color="dark" size="sm" onClick={() => openModal()}>
+          Agregar
+        </CButton>
+        <div className="table-responsive">
+          <CTable striped>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell>#</CTableHeaderCell>
+                <CTableHeaderCell onClick={() => requestSort("name")}>
+                  Nombre completo
+                </CTableHeaderCell>
+                <CTableHeaderCell onClick={() => requestSort("ci")}>
+                  CI
+                </CTableHeaderCell>
+                <CTableHeaderCell onClick={() => requestSort("phone")}>
+                  Celular
+                </CTableHeaderCell>
+                <CTableHeaderCell onClick={() => requestSort("email")}>
+                  Email
+                </CTableHeaderCell>
+                <CTableHeaderCell onClick={() => requestSort("province")}>
+                  Departamento
+                </CTableHeaderCell>
+                <CTableHeaderCell onClick={() => requestSort("municipality")}>
+                  Municipios
+                </CTableHeaderCell>
+                <CTableHeaderCell>Acciones</CTableHeaderCell>
               </CTableRow>
-            );
-          })}
-        </CTableBody>
-      </CTable>
+            </CTableHead>
+            <CTableBody>
+              {currentList.map((delegado, index) => {
+                const firstMunicipality =
+                  delegado.listMunicipalities &&
+                  delegado.listMunicipalities.length > 0
+                    ? delegado.listMunicipalities[0]
+                    : null;
+                const provinceName = firstMunicipality
+                  ? MunicipalityGetProvince(firstMunicipality, provinceList)
+                      ?.name
+                  : "N/A";
+                return (
+                  <CTableRow key={delegado.id}>
+                    <CTableDataCell>{index + 1}</CTableDataCell>
+                    <CTableDataCell>{delegado.name}</CTableDataCell>
+                    <CTableDataCell>{delegado.ci}</CTableDataCell>
+                    <CTableDataCell>{delegado.phone}</CTableDataCell>
+                    <CTableDataCell>{delegado.email}</CTableDataCell>
+                    <CTableDataCell>{provinceName}</CTableDataCell>
+                    <CTableDataCell>
+                      {delegado.listMunicipalities &&
+                      delegado.listMunicipalities.length > 0
+                        ? delegado.listMunicipalities
+                            .map((municipality) => municipality.name)
+                            .join(", ") // Ajusta 'Name' al nombre correcto de tu propiedad
+                        : "N/A"}
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <CButton
+                        color="dark"
+                        size="sm"
+                        onClick={() => openModal(delegado)}
+                      >
+                        Editar
+                      </CButton>
+                      <CButton
+                        color="danger"
+                        size="sm"
+                        onClick={() => openDeleteModal(delegado.id)}
+                        style={{ marginLeft: 10 }}
+                      >
+                        Eliminar
+                      </CButton>
+                    </CTableDataCell>
+                  </CTableRow>
+                );
+              })}
+            </CTableBody>
+          </CTable>
+        </div>
 
-      <CPagination align="center">
-        {currentPage > 1 && (
-          <CPaginationItem onClick={() => handlePageChange(currentPage - 1)}>
-            Anterior
-          </CPaginationItem>
-        )}
-        {[...Array(pageCount)].map((_, i) => (
-          <CPaginationItem
-            key={i + 1}
-            active={i + 1 === currentPage}
-            onClick={() => handlePageChange(i + 1)}
-          >
-            {i + 1}
-          </CPaginationItem>
-        ))}
-        {currentPage < pageCount && (
-          <CPaginationItem onClick={() => handlePageChange(currentPage + 1)}>
-            Siguiente
-          </CPaginationItem>
-        )}
-      </CPagination>
+        <CPagination align="center">
+          {currentPage > 1 && (
+            <CPaginationItem onClick={() => handlePageChange(currentPage - 1)}>
+              Anterior
+            </CPaginationItem>
+          )}
+          {[...Array(pageCount)].map((_, i) => (
+            <CPaginationItem
+              key={i + 1}
+              active={i + 1 === currentPage}
+              onClick={() => handlePageChange(i + 1)}
+            >
+              {i + 1}
+            </CPaginationItem>
+          ))}
+          {currentPage < pageCount && (
+            <CPaginationItem onClick={() => handlePageChange(currentPage + 1)}>
+              Siguiente
+            </CPaginationItem>
+          )}
+        </CPagination>
 
-      <CModal visible={isModalVisible} onClose={closeModal}>
-        <CModalHeader>
-          <CModalTitle>
-            {currentUser ? "Editar entidad" : "Agregar entidad"}
-          </CModalTitle>
-        </CModalHeader>
-        <CForm onSubmit={formSubmitHandler}>
-          <CModalBody>
-            <CCard>
-              <CCardBody>
-                <CInputGroup>
-                  <CInputGroupText className="cardItem custom-input-group-text">
-                    {props.name}
-                  </CInputGroupText>
-                  <CFormInput
-                    type="text"
-                    className="cardItem"
-                    onChange={inputChangeHandler1}
-                    onBlur={inputBlurHandler1}
-                    value={name}
-                  />
-                  {inputHasError1 && (
-                    <CAlert color="danger" className="w-100">
-                      Entrada inválida
-                    </CAlert>
-                  )}
-                </CInputGroup>
-                <br />
-                <CInputGroup>
-                  <CInputGroupText className="cardItem custom-input-group-text">
-                    {props.CI}
-                  </CInputGroupText>
-                  <CFormInput
-                    placeholder="1234567-8"
-                    onBlur={validateCIHandler}
-                    onChange={ciChangeHandler}
-                    value={ciState.value}
-                    valid={ciState.isValid}
-                    invalid={!ciState.isValid || ciState.errorMessage !== ""}
-                    feedback={
-                      ciState.isValid && !ciState.errorMessage
-                        ? "El formato es correcto"
-                        : ciState.errorMessage || "El formato es incorrecto"
-                    }
-                    required
-                  />
-                  {/* {inputHasError2 && (
+        <CModal visible={isModalVisible} onClose={closeModal}>
+          <CModalHeader>
+            <CModalTitle>
+              {currentModel ? "Editar entidad" : "Agregar entidad"}
+            </CModalTitle>
+          </CModalHeader>
+          <CForm onSubmit={formSubmitHandler}>
+            <CModalBody>
+              <CCard>
+                <CCardBody>
+                  <CInputGroup>
+                    <CInputGroupText className="cardItem custom-input-group-text">
+                      {props.name}
+                    </CInputGroupText>
+                    <CFormInput
+                      type="text"
+                      className="cardItem"
+                      onChange={inputChangeHandler1}
+                      onBlur={inputBlurHandler1}
+                      value={name}
+                    />
+                    {inputHasError1 && (
+                      <CAlert color="danger" className="w-100">
+                        Entrada inválida
+                      </CAlert>
+                    )}
+                  </CInputGroup>
+                  <br />
+                  <CInputGroup>
+                    <CInputGroupText className="cardItem custom-input-group-text">
+                      {props.CI}
+                    </CInputGroupText>
+                    <CFormInput
+                      placeholder="1234567-8"
+                      onBlur={validateCIHandler}
+                      onChange={ciChangeHandler}
+                      value={ciState.value}
+                      valid={ciState.isValid}
+                      invalid={!ciState.isValid || ciState.errorMessage !== ""}
+                      feedback={
+                        ciState.isValid && !ciState.errorMessage
+                          ? "El formato es correcto"
+                          : ciState.errorMessage || "El formato es incorrecto"
+                      }
+                      required
+                    />
+                    {/* {inputHasError2 && (
                     <CAlert color="danger" className="w-100">
                       Entrada inválida
                     </CAlert>
                   )} */}
-                </CInputGroup>
-                <br />
-                <CInputGroup>
-                  <CInputGroupText className="cardItem custom-input-group-text">
-                    {props.phone}
-                  </CInputGroupText>
-                  {/* <CFormInput
+                  </CInputGroup>
+                  <br />
+                  <CInputGroup>
+                    <CInputGroupText className="cardItem custom-input-group-text">
+                      {props.phone}
+                    </CInputGroupText>
+                    {/* <CFormInput
                     type="number"
                     className="cardItem"
                     onChange={inputChangeHandler3}
                     onBlur={inputBlurHandler3}
                     value={phone}
                   /> */}
-                  <CFormInput
-                    placeholder="099000000"
-                    onBlur={validatePhoneHandler}
-                    onChange={phoneChangeHandler}
-                    value={phoneState.value}
-                    valid={phoneState.isValid}
-                    invalid={!phoneState.isValid && phoneState.value !== ""}
-                    feedback={
-                      phoneState.isValid
-                        ? "El formato es correcto"
-                        : "El formato es incorrecto"
-                    }
-                    required
-                  />
-                  {/* {inputHasError3 && (
+                    <CFormInput
+                      placeholder="099000000"
+                      onBlur={validatePhoneHandler}
+                      onChange={phoneChangeHandler}
+                      value={phoneState.value}
+                      valid={phoneState.isValid}
+                      invalid={!phoneState.isValid && phoneState.value !== ""}
+                      feedback={
+                        phoneState.isValid
+                          ? "El formato es correcto"
+                          : "El formato es incorrecto"
+                      }
+                      required
+                    />
+                    {/* {inputHasError3 && (
                     <CAlert color="danger" className="w-100">
                       Entrada inválida
                     </CAlert>
                   )} */}
-                </CInputGroup>
-                <br />
-                <CInputGroup>
-                  <CInputGroupText className="cardItem custom-input-group-text">
-                    {props.email}
-                  </CInputGroupText>
-                  <CFormInput
-                    type="email"
-                    className="cardItem"
-                    onChange={inputChangeHandler4}
-                    onBlur={inputBlurHandler4}
-                    value={email}
-                  />
-                  {inputHasError4 && (
-                    <CAlert color="danger" className="w-100">
-                      Entrada inválida
-                    </CAlert>
-                  )}
-                </CInputGroup>
-                <br />
-                <CInputGroup>
-                  <CInputGroupText className="cardItem custom-input-group-text">
-                    {props.province}
-                  </CInputGroupText>
-                  <CDropdown>
-                    <CDropdownToggle color="secondary">
-                      {ddlSelectedProvince
-                        ? ddlSelectedProvince.name
-                        : "Seleccionar"}
-                    </CDropdownToggle>
-                    <CDropdownMenu>
-                      {provinceList.map((province) => (
-                        <CDropdownItem
-                          key={province.id}
-                          onClick={() => handleSelectProvince(province)}
-                        >
-                          {`${province.id}: ${province.name}`}
-                        </CDropdownItem>
+                  </CInputGroup>
+                  <br />
+                  <CInputGroup>
+                    <CInputGroupText className="cardItem custom-input-group-text">
+                      {props.email}
+                    </CInputGroupText>
+                    <CFormInput
+                      type="email"
+                      className="cardItem"
+                      onChange={inputChangeHandler4}
+                      onBlur={inputBlurHandler4}
+                      value={email}
+                    />
+                    {inputHasError4 && (
+                      <CAlert color="danger" className="w-100">
+                        Entrada inválida
+                      </CAlert>
+                    )}
+                  </CInputGroup>
+                  <br />
+                  <CInputGroup>
+                    <CInputGroupText className="cardItem custom-input-group-text">
+                      {props.province}
+                    </CInputGroupText>
+                    <CDropdown>
+                      <CDropdownToggle color="secondary">
+                        {ddlSelectedProvince
+                          ? ddlSelectedProvince.name
+                          : "Seleccionar"}
+                      </CDropdownToggle>
+                      <CDropdownMenu>
+                        {provinceList.map((province) => (
+                          <CDropdownItem
+                            key={province.id}
+                            onClick={() => handleSelectProvince(province)}
+                          >
+                            {`${province.id}: ${province.name}`}
+                          </CDropdownItem>
+                        ))}
+                      </CDropdownMenu>
+                    </CDropdown>
+                  </CInputGroup>
+                  <br />
+                  <CInputGroup>
+                    <CInputGroupText>{props.municipality}</CInputGroupText>
+                    <div>
+                      {filteredMunicipalities.map((municipality) => (
+                        <div key={municipality.id} style={{ padding: "5px" }}>
+                          <input
+                            type="checkbox"
+                            id={`municipality-${municipality.id}`}
+                            name="selectedMunicipalities"
+                            value={municipality.id}
+                            checked={selectedMunicipalities.includes(
+                              municipality.id
+                            )}
+                            onChange={(e) =>
+                              handleMunicipalityChange(
+                                municipality.id,
+                                e.target.checked
+                              )
+                            }
+                          />
+                          <label htmlFor={`municipality-${municipality.id}`}>
+                            {municipality.name}
+                          </label>
+                        </div>
                       ))}
-                    </CDropdownMenu>
-                  </CDropdown>
-                </CInputGroup>
-                <br />
-                <CInputGroup>
-                  <CInputGroupText>{props.municipality}</CInputGroupText>
-                  <div>
-                    {filteredMunicipalities.map((municipality) => (
-                      <div key={municipality.id} style={{ padding: "5px" }}>
-                        <input
-                          type="checkbox"
-                          id={`municipality-${municipality.id}`}
-                          name="selectedMunicipalities"
-                          value={municipality.id}
-                          checked={selectedMunicipalities.includes(
-                            municipality.id
-                          )}
-                          onChange={(e) =>
-                            handleMunicipalityChange(
-                              municipality.id,
-                              e.target.checked
-                            )
-                          }
-                        />
-                        <label htmlFor={`municipality-${municipality.id}`}>
-                          {municipality.name}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </CInputGroup>
-                <br />
-                <CRow className="justify-content-center">
-                  {isLoading && (
-                    <div className="text-center">
-                      <CSpinner />
                     </div>
-                  )}
-                </CRow>
-                <br />
-                <CCardFooter className="text-medium-emphasis">
-                  {!isValidForm && (
-                    <CAlert color="danger" className="w-100">
-                      El formulario no es válido
-                    </CAlert>
-                  )}
-                  {isSuccess && (
-                    <CAlert color="success" className="w-100">
-                      Datos ingresados correctamente
-                    </CAlert>
-                  )}
-                  {error && (
-                    <CAlert color="danger" className="w-100">
-                      {error}
-                    </CAlert>
-                  )}
-                </CCardFooter>
-              </CCardBody>
-            </CCard>
+                  </CInputGroup>
+                  <br />
+                  <CRow className="justify-content-center">
+                    {isLoading && (
+                      <div className="text-center">
+                        <CSpinner />
+                      </div>
+                    )}
+                  </CRow>
+                  <br />
+                  <CCardFooter className="text-medium-emphasis">
+                    {!isValidForm && (
+                      <CAlert color="danger" className="w-100">
+                        El formulario no es válido
+                      </CAlert>
+                    )}
+                    {isSuccess && (
+                      <CAlert color="success" className="w-100">
+                        Datos ingresados correctamente
+                      </CAlert>
+                    )}
+                    {error && (
+                      <CAlert color="danger" className="w-100">
+                        {error}
+                      </CAlert>
+                    )}
+                  </CCardFooter>
+                </CCardBody>
+              </CCard>
+            </CModalBody>
+            <CModalFooter>
+              <CButton type="submit" color="dark" size="sm">
+                {currentModel ? "Actualizar" : "Guardar"}
+              </CButton>
+              <CButton color="secondary" size="sm" onClick={closeModal}>
+                Cancelar
+              </CButton>
+            </CModalFooter>
+          </CForm>
+        </CModal>
+
+        <CModal visible={isDeleteModalVisible} onClose={closeDeleteModal}>
+          <CModalHeader>
+            <CModalTitle>Confirmar</CModalTitle>
+          </CModalHeader>
+          <CModalBody>
+            ¿Estás seguro de que deseas eliminar este elemento?
           </CModalBody>
           <CModalFooter>
-            <CButton type="submit" color="dark" size="sm">
-              {currentUser ? "Actualizar" : "Guardar"}
+            <CButton color="danger" size="sm" onClick={confirmDelete}>
+              Eliminar
             </CButton>
-            <CButton color="secondary" size="sm" onClick={closeModal}>
+            <CButton color="secondary" size="sm" onClick={closeDeleteModal}>
               Cancelar
             </CButton>
           </CModalFooter>
-        </CForm>
-      </CModal>
-
-      <CModal visible={isDeleteModalVisible} onClose={closeDeleteModal}>
-        <CModalHeader>
-          <CModalTitle>Confirmar</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          ¿Estás seguro de que deseas eliminar este elemento?
-        </CModalBody>
-        <CModalFooter>
-          <CButton color="danger" size="sm" onClick={confirmDelete}>
-            Eliminar
-          </CButton>
-          <CButton color="secondary" size="sm" onClick={closeDeleteModal}>
-            Cancelar
-          </CButton>
-        </CModalFooter>
-      </CModal>
+        </CModal>
+      </CContainer>
     </div>
   );
 };

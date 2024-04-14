@@ -164,6 +164,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         /// <summary>
         /// Actualiza los datos de un circuito existente, incluyendo las partes y votos asociados.
+        /// Origen Frontend: FormParty1.js y FormSlate1.js
         /// </summary>
         /// <param name="id">ID del circuito a actualizar.</param>
         /// <param name="dto">Datos actualizados del circuito.</param>
@@ -296,13 +297,14 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         /// <summary>
         /// Actualiza un circuito existente, aplicando los cambios especificados en el DTO de creación.
+        /// Origen Frontend: CircuitTable.js
         /// </summary>
         /// <param name="id">ID del circuito a actualizar.</param>
         /// <param name="dto">DTO de creación con los datos para actualizar el circuito.</param>
         /// <returns>Respuesta indicando el resultado de la operación de actualización.</returns>
         [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPut("{id:int}/update")]
-        public async Task<ActionResult<APIResponse>> UpdateCircuit(int id, [FromBody] CircuitCreateDTO dto)
+        public async Task<ActionResult<APIResponse>> CircuitUpdate(int id, [FromBody] CircuitCreateDTO dto)
         {
             try
             {
@@ -352,6 +354,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         /// <summary>
         /// Aplica actualizaciones parciales a un circuito existente, específicamente dirigido a los votos y la carga de fotos.
+        /// Origen Frontend: FormExtras1.js
         /// </summary>
         /// <param name="id">ID del circuito a actualizar.</param>
         /// <param name="dto">DTO para aplicar actualizaciones parciales.</param>
@@ -359,7 +362,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <returns>Respuesta indicando el resultado de la operación de actualización parcial.</returns>
         [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPatch("{id:int}")]
-        [Consumes("multipart/form-data")] // Indicar que el método aceptará multipart/form-data
+        [Consumes("multipart/form-data")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromForm] CircuitPatchDTO dto, [FromForm] List<IFormFile> photos)
         {
             try
@@ -414,6 +417,7 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         /// <summary>
         /// Crea un nuevo circuito en el sistema.
+        /// Origen Frontend: FormParty1.js y FormSlate1.js
         /// </summary>
         /// <param name="circuitCreateDto">Datos del nuevo circuito.</param>
         /// <returns>El circuito creado.</returns>

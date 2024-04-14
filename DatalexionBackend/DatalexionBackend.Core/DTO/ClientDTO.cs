@@ -23,7 +23,7 @@ namespace DatalexionBackend.Core.DTO
 
         #region External
 
-        public Party Party { get; set; } = new();
+        public Party Party { get; set; } = new Party { Name = "" };
 
         /// <summary>
         /// 0-N

@@ -134,6 +134,7 @@ const FormSlate1 = () => {
     const updatedCircuitPayload = preparePayload(updatedSlateVotesList);
 
     try {
+      // HTTP Put a Circuits
       await uploadData(
         JSON.stringify(updatedCircuitPayload),
         urlCircuit,
