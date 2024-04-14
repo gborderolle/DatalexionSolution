@@ -23,7 +23,7 @@ namespace DatalexionBackend.Core.Domain.Entities
         public string CI { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
-        public string Name { get; set; }
+        public required string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
 

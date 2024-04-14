@@ -27,9 +27,9 @@ namespace DatalexionBackend.Core.DTO
         public int Number { get; set; }
         [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
         [StringLength(maximumLength: 100, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
-        public string Name { get; set; }
+        public required string Name { get; set; }
         [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
-        public string Address { get; set; }
+        public required string Address { get; set; }
         public string? LatLong { get; set; }
         public int BlankVotes { get; set; }
         public int NullVotes { get; set; }
@@ -64,7 +64,7 @@ namespace DatalexionBackend.Core.DTO
 
         [FileSizeValidation(maxSizeMB: 5)]
         [FileTypeValidation(fileTypeGroup: FileTypeGroup.Image)]
-        public List<IFormFile> ListPhotos { get; set; } // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/19983788#notes
+        public List<IFormFile>? ListPhotos { get; set; } // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/19983788#notes
 
         // -- Vueltas --
 

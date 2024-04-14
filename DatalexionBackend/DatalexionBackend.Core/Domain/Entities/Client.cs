@@ -20,7 +20,7 @@ namespace DatalexionBackend.Core.Domain.Entities
 
         // Uniques
 
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         #endregion
 

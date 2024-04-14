@@ -16,7 +16,7 @@ namespace DatalexionBackend.Core.DTO
 
         // Uniques
 
-        public string Name { get; set; }
+        public required string Name { get; set; }
         public string ShortName { get; set; }
         public string Color { get; set; }
         public int? Votes { get; set; }

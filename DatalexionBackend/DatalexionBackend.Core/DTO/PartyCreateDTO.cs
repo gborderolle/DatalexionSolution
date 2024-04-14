@@ -25,11 +25,11 @@ namespace DatalexionBackend.Core.DTO
 
         [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
         [StringLength(maximumLength: 100, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
-        public string Name { get; set; }
+        public required string Name { get; set; }
         [StringLength(maximumLength: 6, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
-        public string ShortName { get; set; }
-        public string Color { get; set; }
-        public int? Votes { get; set; }
+        public required string ShortName { get; set; }
+        public required string Color { get; set; }
+        public int? Votes { get; set; } = 0;
 
         #endregion
 
@@ -38,21 +38,21 @@ namespace DatalexionBackend.Core.DTO
         /// <summary>
         /// 0-N
         /// </summary>
-        public List<WingDTO> ListWings { get; set; } = new();
+        public List<WingDTO>? ListWings { get; set; } = new();
 
         /// <summary>
         /// N-N Usar TypeBinder.cs, s: https://www.udemy.com/course/desarrollando-aplicaciones-en-react-y-aspnet-core/learn/lecture/26047194#overview
         /// </summary>
         [ModelBinder(BinderType = typeof(TypeBinder<List<CircuitPartyCreateDTO>>))]
-        public List<CircuitPartyCreateDTO> ListCircuitParties { get; set; }
+        public List<CircuitPartyCreateDTO>? ListCircuitParties { get; set; } = new();
 
         [FileSizeValidation(maxSizeMB: 4)]
         [FileTypeValidation(fileTypeGroup: FileTypeGroup.Image)]
-        public IFormFile PhotoLong { get; set; } // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/19983788#notes
+        public IFormFile? PhotoLong { get; set; } // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/19983788#notes
 
         [FileSizeValidation(maxSizeMB: 4)]
         [FileTypeValidation(fileTypeGroup: FileTypeGroup.Image)]
-        public IFormFile PhotoShort { get; set; } // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/19983788#notes
+        public IFormFile? PhotoShort { get; set; } // Clase: https://www.udemy.com/course/construyendo-web-apis-restful-con-aspnet-core/learn/lecture/19983788#notes
 
         // -- Vueltas --
 

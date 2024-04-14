@@ -45,6 +45,12 @@ const PartyTable = (props) => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
 
+  const [currentImageLong, setCurrentImageLong] = useState(null);
+  const [imagePreviewLong, setImagePreviewLong] = useState(null);
+
+  const [currentImageShort, setCurrentImageShort] = useState(null);
+  const [imagePreviewShort, setImagePreviewShort] = useState(null);
+
   // redux
   const dispatch = useDispatch();
 
@@ -147,6 +153,17 @@ const PartyTable = (props) => {
     setSortConfig({ key, direction });
   };
 
+  // Manejo de la imagen
+  const handleImageChange = (e, setImage, setCurrentImage) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const fileUrl = URL.createObjectURL(file);
+      setImage(fileUrl);
+      setCurrentImage(file);
+    }
+  };
+
+  // Si la entidad es nula, se asume que se está creando una nueva, sino se está editando
   const openModal = (party = null) => {
     setCurrentUser(party);
     if (party) {
@@ -154,11 +171,21 @@ const PartyTable = (props) => {
       inputReset1(party.name ?? "");
       inputReset2(party.shortName ?? "");
       inputReset3(party.color ?? "");
+
+      setCurrentImageLong(party.photoLong);
+      setImagePreviewLong(null);
+      setCurrentImageShort(party.photoShort);
+      setImagePreviewShort(null);
     } else {
       // Resetea los campos si es un nuevo usuario
       inputReset1();
       inputReset2();
       inputReset3();
+
+      setCurrentImageLong(null);
+      setImagePreviewLong(null);
+      setCurrentImageShort(null);
+      setImagePreviewShort(null);
     }
     setIsModalVisible(true);
   };
@@ -166,6 +193,11 @@ const PartyTable = (props) => {
   const closeModal = () => {
     setIsModalVisible(false);
     setCurrentUser(null);
+
+    setCurrentImageLong(null);
+    setImagePreviewLong(null);
+    setCurrentImageShort(null);
+    setImagePreviewShort(null);
   };
 
   const closeDeleteModal = () => {
@@ -199,11 +231,22 @@ const PartyTable = (props) => {
       return;
     }
 
-    const dataToUpload = {
-      Name: name,
-      ShortName: shortName,
-      Color: color,
-    };
+    const dataToUpload = new FormData();
+    dataToUpload.append("Name", name);
+    dataToUpload.append("ShortName", shortName);
+    dataToUpload.append("Color", color);
+
+    // Asegurar que el input de imagen larga contiene un archivo
+    const fileLongInput = event.target.elements.fileLong;
+    if (fileLongInput && fileLongInput.files.length > 0) {
+      dataToUpload.append("fileLong", fileLongInput.files[0]);
+    }
+
+    // Asegurar que el input de imagen corta contiene un archivo
+    const fileShortInput = event.target.elements.fileShort;
+    if (fileShortInput && fileShortInput.files.length > 0) {
+      dataToUpload.append("fileShort", fileShortInput.files[0]);
+    }
 
     try {
       let response;
@@ -268,25 +311,25 @@ const PartyTable = (props) => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {currentList.map((candidate, index) => {
+          {currentList.map((party, index) => {
             return (
-              <CTableRow key={candidate.id}>
+              <CTableRow key={party.id}>
                 <CTableDataCell>{index + 1}</CTableDataCell>
-                <CTableDataCell>{candidate.name}</CTableDataCell>
-                <CTableDataCell>{candidate.shortName}</CTableDataCell>
-                <CTableDataCell>{candidate.color}</CTableDataCell>
+                <CTableDataCell>{party.name}</CTableDataCell>
+                <CTableDataCell>{party.shortName}</CTableDataCell>
+                <CTableDataCell>{party.color}</CTableDataCell>
                 <CTableDataCell>
                   <CButton
                     color="dark"
                     size="sm"
-                    onClick={() => openModal(candidate)}
+                    onClick={() => openModal(party)}
                   >
                     Editar
                   </CButton>
                   <CButton
                     color="danger"
                     size="sm"
-                    onClick={() => openDeleteModal(candidate.id)}
+                    onClick={() => openDeleteModal(party.id)}
                     style={{ marginLeft: 10 }}
                   >
                     Eliminar
@@ -384,6 +427,57 @@ const PartyTable = (props) => {
                   )}
                 </CInputGroup>
                 <br />
+                <CInputGroup>
+                  <CInputGroupText>Imagen Larga</CInputGroupText>
+                  <CFormInput
+                    type="file"
+                    onChange={(e) =>
+                      handleImageChange(
+                        e,
+                        setImagePreviewLong,
+                        setCurrentImageLong
+                      )
+                    }
+                    name="fileLong"
+                  />
+                </CInputGroup>
+                {imagePreviewLong || currentImageLong ? (
+                  <img
+                    src={imagePreviewLong || currentImageLong}
+                    alt="preview"
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      marginTop: "10px",
+                    }}
+                  />
+                ) : null}
+                <br />
+                <CInputGroup>
+                  <CInputGroupText>Imagen Corta</CInputGroupText>
+                  <CFormInput
+                    type="file"
+                    onChange={(e) =>
+                      handleImageChange(
+                        e,
+                        setImagePreviewShort,
+                        setCurrentImageShort
+                      )
+                    }
+                    name="fileShort"
+                  />
+                </CInputGroup>
+                {imagePreviewShort || currentImageShort ? (
+                  <img
+                    src={imagePreviewShort || currentImageShort}
+                    alt="preview"
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      marginTop: "10px",
+                    }}
+                  />
+                ) : null}
                 <CRow className="justify-content-center">
                   {isLoading && (
                     <div className="text-center">

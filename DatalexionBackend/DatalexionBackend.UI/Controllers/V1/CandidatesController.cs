@@ -49,7 +49,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// </summary>
         /// <param name="paginationDTO">Datos de paginación.</param>
         /// <returns>Lista paginada de candidatos.</returns>
-        [HttpGet("GetCandidate")]
+        [HttpGet("GetCandidate")] // url completa: https://localhost:7003/api/Candidates/GetCandidate
         public async Task<ActionResult<APIResponse>> Get([FromQuery] PaginationDTO paginationDTO)
         {
             var includes = new List<IncludePropertyConfiguration<Candidate>>
@@ -66,7 +66,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// Obtiene todos los candidatos sin aplicar paginación.
         /// </summary>
         /// <returns>Todos los candidatos.</returns>
-        [HttpGet("all")]
+        [HttpGet("all")] // url completa: https://localhost:7003/api/Candidates/all
         [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> All()
         {
@@ -179,7 +179,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<CandidatePatchDTO> dto)
         {
-            return await Patch<Candidate, CandidatePatchDTO>(id, dto);
+            return new APIResponse { StatusCode = HttpStatusCode.NotImplemented };
         }
 
         #endregion
@@ -191,7 +191,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// </summary>
         /// <param name="clientId">ID del cliente.</param>
         /// <returns>Lista de candidatos asociados al cliente especificado.</returns>
-        [HttpGet("GetCandidatesByClient")]
+        [HttpGet("GetCandidatesByClient")] // url completa: https://localhost:7003/api/Candidates/GetCandidatesByClient?clientId=1
         public async Task<ActionResult<APIResponse>> GetCandidatesByClient([FromQuery] int clientId)
         {
             try
@@ -272,8 +272,9 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="dto">Datos del nuevo candidato.</param>
         /// <returns>El candidato creado.</returns>
         //[Authorize(Roles = nameof(UserTypeOptions.Admin))]
-        [HttpPost(Name = "CreateCandidate")]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] CandidateCreateDTO dto)
+        [HttpPost] // url completa: https://localhost:7003/api/Candidates
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<APIResponse>> Post([FromForm] CandidateCreateDTO dto, IFormFile file)
         {
             return Ok();
         }
@@ -313,4 +314,3 @@ namespace DatalexionBackend.UI.Controllers.V1
 
     }
 }
-

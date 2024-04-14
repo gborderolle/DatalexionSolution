@@ -17,7 +17,7 @@ namespace DatalexionBackend.Core.DTO
 
         // Uniques
 
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         #endregion
 

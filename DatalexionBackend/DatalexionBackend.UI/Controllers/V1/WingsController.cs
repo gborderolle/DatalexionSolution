@@ -181,11 +181,11 @@ namespace DatalexionBackend.UI.Controllers.V1
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<WingPatchDTO> dto)
         {
-            return await Patch<Wing, WingPatchDTO>(id, dto);
+            return new APIResponse { StatusCode = HttpStatusCode.NotImplemented };
         }
 
         [Authorize(Roles = nameof(UserTypeOptions.Admin))]
-        [HttpPost(Name = "CreateWing")]
+        [HttpPost]
         public async Task<ActionResult<APIResponse>> Post([FromBody] WingCreateDTO dto)
         {
             try

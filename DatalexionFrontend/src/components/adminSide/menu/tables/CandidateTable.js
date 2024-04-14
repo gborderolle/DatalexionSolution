@@ -140,6 +140,7 @@ const CandidateTable = (props) => {
     }
   };
 
+  // Si la entidad es nula, se asume que se está creando una nueva, sino se está editando
   const openModal = (user = null) => {
     setCurrentUser(user);
     if (user) {
@@ -195,7 +196,6 @@ const CandidateTable = (props) => {
     const dataToUpload = new FormData();
     dataToUpload.append("Name", name);
     if (imagePreview) {
-      // Supongamos que el input de archivo tiene el "name" file
       dataToUpload.append("file", event.target.file.files[0]);
     }
 

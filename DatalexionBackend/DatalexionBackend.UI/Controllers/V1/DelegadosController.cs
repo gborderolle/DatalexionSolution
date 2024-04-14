@@ -163,7 +163,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [Authorize(Roles = nameof(UserTypeOptions.Admin))]
-        [HttpPost(Name = "CreateDelegado")]
+        [HttpPost]
         public async Task<ActionResult<APIResponse>> Post([FromBody] DelegadoCreateDTO dto)
         {
             try

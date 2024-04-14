@@ -140,6 +140,7 @@ const WingTable = (props) => {
     setSortConfig({ key, direction });
   };
 
+  // Si la entidad es nula, se asume que se está creando una nueva, sino se está editando
   const openModal = (wing = null) => {
     setCurrentWing(wing);
     if (wing) {

@@ -197,11 +197,11 @@ namespace DatalexionBackend.UI.Controllers.V1
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<ClientPatchDTO> dto)
         {
-            return await Patch<Client, ClientPatchDTO>(id, dto);
+            return new APIResponse { StatusCode = HttpStatusCode.NotImplemented };
         }
 
         [Authorize(Roles = nameof(UserTypeOptions.Admin))]
-        [HttpPost(Name = "CreateClient")]
+        [HttpPost]
         public async Task<ActionResult<APIResponse>> Post([FromBody] ClientCreateDTO dto)
         {
             return Ok();

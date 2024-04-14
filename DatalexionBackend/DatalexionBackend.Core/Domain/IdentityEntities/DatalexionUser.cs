@@ -6,7 +6,7 @@ namespace DatalexionBackend.Core.Domain.IdentityEntities;
 
 public class DatalexionUser : IdentityUser
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     public DateTime Creation { get; set; } = DateTime.Now;
 

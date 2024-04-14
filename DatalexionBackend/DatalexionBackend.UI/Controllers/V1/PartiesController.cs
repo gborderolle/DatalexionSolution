@@ -134,9 +134,10 @@ namespace DatalexionBackend.UI.Controllers.V1
             return await Delete<Party>(id);
         }
 
-        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        // [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<APIResponse>> Put(int id, [FromBody] PartyCreateDTO dto)
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<APIResponse>> Put(int id, [FromForm] PartyCreateDTO dto, IFormFile fileLong, IFormFile fileShort)
         {
             try
             {
@@ -186,16 +187,17 @@ namespace DatalexionBackend.UI.Controllers.V1
             return BadRequest(_response);
         }
 
-        [Authorize(Roles = nameof(UserTypeOptions.Admin))]
+        // [Authorize(Roles = nameof(UserTypeOptions.Admin))]
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<PartyPatchDTO> dto)
         {
-            return await Patch<Party, PartyPatchDTO>(id, dto);
+            return new APIResponse { StatusCode = HttpStatusCode.NotImplemented };
         }
 
         [Authorize(Roles = nameof(UserTypeOptions.Admin))]
-        [HttpPost(Name = "CreateParty")]
-        public async Task<ActionResult<APIResponse>> Post([FromBody] PartyCreateDTO dto)
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<APIResponse>> Post([FromForm] PartyCreateDTO dto, IFormFile fileLong, IFormFile fileShort)
         {
             try
             {

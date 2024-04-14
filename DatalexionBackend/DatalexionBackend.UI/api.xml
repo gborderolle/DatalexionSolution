@@ -161,7 +161,7 @@
             <param name="clientId">ID del cliente.</param>
             <returns>Lista de candidatos asociados al cliente especificado.</returns>
         </member>
-        <member name="M:DatalexionBackend.UI.Controllers.V1.CandidatesController.Post(DatalexionBackend.Core.DTO.CandidateCreateDTO)">
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CandidatesController.Post(DatalexionBackend.Core.DTO.CandidateCreateDTO,Microsoft.AspNetCore.Http.IFormFile)">
             <summary>
             Crea un nuevo candidato en el sistema.
             </summary>

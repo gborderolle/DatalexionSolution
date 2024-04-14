@@ -267,11 +267,11 @@ namespace DatalexionBackend.UI.Controllers.V1
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<SlatePatchDTO> dto)
         {
-            return await Patch<Slate, SlatePatchDTO>(id, dto);
+            return new APIResponse { StatusCode = HttpStatusCode.NotImplemented };
         }
 
         [Authorize(Roles = nameof(UserTypeOptions.Admin))]
-        [HttpPost(Name = "CreateSlate")]
+        [HttpPost]
         public async Task<ActionResult<APIResponse>> Post([FromBody] SlateCreateDTO dto)
         {
             try

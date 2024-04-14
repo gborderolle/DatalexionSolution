@@ -17,7 +17,7 @@ namespace DatalexionBackend.Core.DTO
         // Uniques
 
         public int Number { get; set; }
-        public string Name { get; set; }
+        public required string Name { get; set; }
         public string Address { get; set; }
         public string? LatLong { get; set; }
         public int BlankVotes { get; set; }

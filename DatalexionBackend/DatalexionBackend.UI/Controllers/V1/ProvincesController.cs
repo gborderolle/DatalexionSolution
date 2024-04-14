@@ -143,11 +143,11 @@ namespace DatalexionBackend.UI.Controllers.V1
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<ProvincePatchDTO> dto)
         {
-            return await Patch<Province, ProvincePatchDTO>(id, dto);
+            return new APIResponse { StatusCode = HttpStatusCode.NotImplemented };
         }
 
         [Authorize(Roles = nameof(UserTypeOptions.Admin))]
-        [HttpPost(Name = "CreateProvince")]
+        [HttpPost]
         public async Task<ActionResult<APIResponse>> Post([FromBody] ProvinceCreateDTO dto)
         {
             try

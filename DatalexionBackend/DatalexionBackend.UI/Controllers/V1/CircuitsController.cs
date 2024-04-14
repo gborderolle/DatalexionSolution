@@ -418,7 +418,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="circuitCreateDto">Datos del nuevo circuito.</param>
         /// <returns>El circuito creado.</returns>
         [Authorize(Roles = nameof(UserTypeOptions.Admin))]
-        [HttpPost(Name = "CreateCircuit")]
+        [HttpPost]
         public async Task<ActionResult<APIResponse>> Post([FromBody] CircuitCreateDTO circuitCreateDto)
         {
             try

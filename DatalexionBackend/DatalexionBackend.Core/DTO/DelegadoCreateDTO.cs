@@ -24,15 +24,15 @@ namespace DatalexionBackend.Core.DTO
 
         [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
         [StringLength(maximumLength: 8, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
-        public string CI { get; set; }
+        public required string CI { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
         [StringLength(maximumLength: 100, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         public string Email { get; set; }
 
-        public string Phone { get; set; }
+        public required string Phone { get; set; }
 
         #endregion
 

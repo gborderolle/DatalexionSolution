@@ -290,6 +290,7 @@ const DelegadoTable = (props) => {
     setSortConfig({ key, direction });
   };
 
+  // Si la entidad es nula, se asume que se está creando una nueva, sino se está editando
   const openModal = (delegado = null) => {
     if (delegado) {
       // Caso para editar un delegado existente

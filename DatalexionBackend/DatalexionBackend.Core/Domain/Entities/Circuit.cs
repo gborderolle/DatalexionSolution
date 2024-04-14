@@ -22,7 +22,7 @@ namespace DatalexionBackend.Core.Domain.Entities
         public int Number { get; set; }
         [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
         [StringLength(maximumLength: 100, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
-        public string Name { get; set; }
+        public required string Name { get; set; }
         [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
         public string Address { get; set; }
         public string? LatLong { get; set; }

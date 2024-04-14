@@ -14,7 +14,7 @@ public class CandidateDTO
 
     // Uniques
 
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     #endregion
 

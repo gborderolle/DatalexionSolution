@@ -9,7 +9,7 @@ const useAPI = () => {
     data: null,
   });
 
-  const uploadData = async (dataToUpload, apiUrl, editMode, id) => {
+  const uploadData = async (dataToUpload, apiUrl, editMode = false, id = 0) => {
     setState({ isLoading: true, isSuccess: false, error: null });
 
     // Determinar si dataToUpload es FormData o JSON

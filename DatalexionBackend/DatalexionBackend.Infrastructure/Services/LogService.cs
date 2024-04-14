@@ -19,7 +19,7 @@ public class LogService : ILogService
             Entity = entity,
             Action = action,
             Username = username,
-            Data = data,
+            Data = data ?? "", // Asegúrate de que no se inserte nulo
             Creation = GlobalServices.GetDatetimeUruguay(),
             ClientId = clientId
         };

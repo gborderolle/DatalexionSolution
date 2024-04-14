@@ -5,7 +5,7 @@ namespace DatalexionBackend.Core.DTO;
 
 public class DatalexionUserDTO : IdentityUser
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     public DateTime Creation { get; set; } = DateTime.Now;
 

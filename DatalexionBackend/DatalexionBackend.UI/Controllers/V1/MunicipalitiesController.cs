@@ -181,7 +181,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<APIResponse>> Patch(int id, [FromBody] JsonPatchDocument<MunicipalityPatchDTO> dto)
         {
-            return await Patch<Municipality, MunicipalityPatchDTO>(id, dto);
+            return new APIResponse { StatusCode = HttpStatusCode.NotImplemented };
         }
 
         #endregion
@@ -189,7 +189,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         #region Endpoints específicos
 
         [Authorize(Roles = nameof(UserTypeOptions.Admin))]
-        [HttpPost(Name = "CreateMunicipality")]
+        [HttpPost]
         public async Task<ActionResult<APIResponse>> Post([FromBody] MunicipalityCreateDTO dto)
         {
             try
