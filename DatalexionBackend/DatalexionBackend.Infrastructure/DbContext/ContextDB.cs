@@ -841,6 +841,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 CandidateId = 11,
                 ProvinceId = 1
             };
+            
             var slate15 = new Slate()
             {
                 Id = 15,

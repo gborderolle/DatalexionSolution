@@ -69,12 +69,16 @@ const FormSummary = () => {
   const navigate = useNavigate();
 
   const [filteredSlateList, setFilteredSlateList] = useState([]);
+  const [filteredPartyList, setFilteredPartyList] = useState([]);
   const [fixedCards, setFixedCards] = useState(initialFixedCards);
 
   // redux gets
   const reduxClient = useSelector((state) => state.generalData.client);
   const reduxSlateList = useSelector(
     (state) => state.generalData.slateList || []
+  );
+  const reduxPartyList = useSelector(
+    (state) => state.generalData.partyList || []
   );
   const reduxSelectedCircuit = useSelector(
     (state) => state.liveSettings.circuit
@@ -124,6 +128,9 @@ const FormSummary = () => {
   useEffect(() => {
     const filteredSlates = getFilteredSlates();
     setFilteredSlateList(filteredSlates);
+
+    const filteredParties = getFilteredParties();
+    setFilteredPartyList(filteredParties);
   }, []);
 
   useEffect(() => {
@@ -145,6 +152,34 @@ const FormSummary = () => {
   //#endregion Hooks ***********************************
 
   //#region Functions ***********************************
+
+  const getFilteredParties = () => {
+    if (
+      !reduxSelectedCircuit ||
+      !reduxSelectedCircuit.listCircuitParties ||
+      !reduxSlateList ||
+      !reduxClient ||
+      !reduxClient.party ||
+      !reduxWingList
+    )
+      return [];
+
+    // Filtrar primero basado en la presencia en listCircuitSlates
+    let filteredByCircuit = reduxSelectedCircuit.listCircuitParties
+      .map((circuitParty) => {
+        const partyDetail = reduxPartyList.find(
+          (party) => party.id === circuitParty?.partyId
+        );
+        if (!partyDetail) return null; // Si no se encuentra detalle, filtrar fuera
+        return {
+          ...partyDetail,
+          votes: circuitParty.votes || 0,
+        };
+      })
+      .filter(Boolean); // Eliminar cualquier elemento nulo resultante de no encontrar detalles
+
+    return filteredByCircuit;
+  };
 
   const getFilteredSlates = () => {
     if (
@@ -219,10 +254,13 @@ const FormSummary = () => {
   // ---------- Ordenamiento de listas
 
   // Ordena filteredPartyList por votos de mayor a menor
-  const sortedPartyList = [
-    ...(reduxSelectedCircuit?.listCircuitParties || []),
-  ].sort((a, b) => b.votes - a.votes);
+  // const sortedPartyList = [
+  //   ...(reduxSelectedCircuit?.listCircuitParties || []),
+  // ].sort((a, b) => b.votes - a.votes);
 
+  const sortedPartyList = [...(filteredPartyList || [])].sort(
+    (a, b) => b.partyVotes - a.partyVotes
+  );
   const sortedSlateList = [...(filteredSlateList || [])].sort(
     (a, b) => b.slateVotes - a.slateVotes
   );
