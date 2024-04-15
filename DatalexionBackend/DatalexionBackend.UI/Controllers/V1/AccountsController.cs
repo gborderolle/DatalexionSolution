@@ -603,6 +603,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="clientId">Identificador del cliente.</param>
         /// <returns>Respuesta API con la lista de usuarios asociados al cliente.</returns>
         [HttpGet("GetUsersByClient")]
+        [ResponseCache(Duration = 60)]
         public async Task<ActionResult<APIResponse>> GetUsersByClient([FromQuery] int clientId)
         {
             try
@@ -639,6 +640,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="clientId">Identificador del cliente.</param>
         /// <returns>Respuesta API con los registros de log del cliente.</returns>
         [HttpGet("GetLogsByClient")]
+        [ResponseCache(Duration = 60)]
         public async Task<ActionResult<APIResponse>> GetLogsByClient([FromQuery] int clientId)
         {
             try

@@ -50,6 +50,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="paginationDTO">Datos de paginación.</param>
         /// <returns>Lista paginada de candidatos.</returns>
         [HttpGet("GetCandidate")] // url completa: https://localhost:7003/api/Candidates/GetCandidate
+        [ResponseCache(Duration = 60)]
         public async Task<ActionResult<APIResponse>> Get([FromQuery] PaginationDTO paginationDTO)
         {
             var includes = new List<IncludePropertyConfiguration<Candidate>>
@@ -82,6 +83,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="id">ID del candidato.</param>
         /// <returns>Un candidato específico.</returns>
         [HttpGet("{id:int}")] // url completa: https://localhost:7003/api/Candidates/1
+        [ResponseCache(Duration = 60)]
         public async Task<ActionResult<APIResponse>> Get([FromRoute] int id)
         {
             var includes = new List<IncludePropertyConfiguration<Candidate>>
@@ -192,6 +194,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="clientId">ID del cliente.</param>
         /// <returns>Lista de candidatos asociados al cliente especificado.</returns>
         [HttpGet("GetCandidatesByClient")] // url completa: https://localhost:7003/api/Candidates/GetCandidatesByClient?clientId=1
+        [ResponseCache(Duration = 60)]
         public async Task<ActionResult<APIResponse>> GetCandidatesByClient([FromQuery] int clientId)
         {
             try

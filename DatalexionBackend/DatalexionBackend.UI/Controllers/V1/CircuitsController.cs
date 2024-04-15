@@ -48,6 +48,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="paginationDTO">Parámetros de paginación.</param>
         /// <returns>Una lista paginada de circuitos.</returns>
         [HttpGet("GetCircuit")]
+        [ResponseCache(Duration = 60)]
         public async Task<ActionResult<APIResponse>> Get([FromQuery] PaginationDTO paginationDTO)
         {
             // 1..n
@@ -109,6 +110,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="id">ID del circuito.</param>
         /// <returns>Un circuito específico.</returns>
         [HttpGet("{id:int}")] // url completa: https://localhost:7003/api/Circuits/1
+        [ResponseCache(Duration = 60)]
         public async Task<ActionResult<APIResponse>> Get([FromRoute] int id)
         {
             // 1..n
