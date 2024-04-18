@@ -85,7 +85,7 @@ namespace DatalexionBackend.Infrastructure.Services
                         }
 
                         // Creando el Dictionary de MunicipalityIds
-                        var municipalityIds = municipalitiesToAdd.ToDictionary(m => m.Name, m => m.Id);
+                        var municipalityNames = municipalitiesToAdd.ToDictionary(m => m.Name, m => m.Id);
 
                         // Agregando circuitos y asociando ListCircuitSlates y a ListCircuitParties
                         foreach (var row in rows.Skip(1))
@@ -96,9 +96,9 @@ namespace DatalexionBackend.Infrastructure.Services
                             var address = row.Cell(addressIndex).Value.ToString().Trim();
                             string latLong = await GetLatLongFromAddress(address);
 
-                            if (municipalityIds.ContainsKey(municipalityName))
+                            if (municipalityNames.ContainsKey(municipalityName))
                             {
-                                var municipality1 = await context.Municipality.FirstOrDefaultAsync(p => p.Id == municipalityIds[municipalityName]);
+                                var municipality1 = await context.Municipality.FirstOrDefaultAsync(p => p.Id == municipalityNames[municipalityName]);
                                 if (municipality1 != null)
                                 {
 

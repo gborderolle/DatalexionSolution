@@ -238,12 +238,24 @@ namespace DatalexionBackend.Infrastructure.DbContext
 
             //
             // Usuarios FA
-            // adminfa
-            // analystfa
+            // Administrador: adminfa / adminfa1234
+            // Analista: analystfa / analystfa1234
+            // Delegados:
+            //      Pablo CI: 22222222
 
             // Usuarios PN
-            // adminpn
-            // analystpn
+            // Administrador: adminpn / adminpn1234
+            // Analista: analystpn / analystpn1234
+            // Delegados:
+            //      Gonzalo CI: 11111111
+            //      Diego CI: 12345678
+
+            // Usuarios PC
+            // Administrador: adminpc / adminpc1234
+            // Analista: analystpc / analystpc1234
+            // Delegados:
+            //      Gabriel CI: 33333333
+
 
             #region Creación de roles - datos estáticos
 
@@ -841,7 +853,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 CandidateId = 11,
                 ProvinceId = 1
             };
-            
+
             var slate15 = new Slate()
             {
                 Id = 15,

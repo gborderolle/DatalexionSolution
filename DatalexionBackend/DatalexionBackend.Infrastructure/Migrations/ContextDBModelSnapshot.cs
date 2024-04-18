@@ -59,130 +59,130 @@ namespace DatalexionBackend.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4063),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1205),
                             Name = "Álvaro Delgado",
                             PhotoId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4064)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1206)
                         },
                         new
                         {
                             Id = 2,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4066),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1207),
                             Name = "Laura Raffo",
                             PhotoId = 2,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4066)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1207)
                         },
                         new
                         {
                             Id = 3,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4067),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1208),
                             Name = "Jorge Gandini",
                             PhotoId = 3,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4067)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1209)
                         },
                         new
                         {
                             Id = 4,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4068),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1210),
                             Name = "Juan Sartori",
                             PhotoId = 4,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4069)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1210)
                         },
                         new
                         {
                             Id = 5,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4070),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1211),
                             Name = "Yamandú Orsi",
                             PhotoId = 5,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4070)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1212)
                         },
                         new
                         {
                             Id = 6,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4073),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1213),
                             Name = "Carolina Cosse",
                             PhotoId = 6,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4073)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1213)
                         },
                         new
                         {
                             Id = 7,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4074),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1214),
                             Name = "Mario Bergara",
                             PhotoId = 7,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4074)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1214)
                         },
                         new
                         {
                             Id = 8,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4075),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1215),
                             Name = "Pablo Mieres",
                             PhotoId = 8,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4076)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1215)
                         },
                         new
                         {
                             Id = 9,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4076),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1217),
                             Name = "Edgardo Novick",
                             PhotoId = 9,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4077)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1217)
                         },
                         new
                         {
                             Id = 10,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4079),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1218),
                             Name = "Andrés Lima",
                             PhotoId = 10,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4079)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1218)
                         },
                         new
                         {
                             Id = 11,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4080),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1219),
                             Name = "Gabriel Gurméndez",
                             PhotoId = 11,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4080)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1219)
                         },
                         new
                         {
                             Id = 12,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4081),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1220),
                             Name = "Robert Silva",
                             PhotoId = 12,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4082)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1221)
                         },
                         new
                         {
                             Id = 13,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4082),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1222),
                             Name = "Andrés Ojeda",
                             PhotoId = 13,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4083)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1222)
                         },
                         new
                         {
                             Id = 14,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4084),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1223),
                             Name = "Gustavo Zubía",
                             PhotoId = 14,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4084)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1223)
                         },
                         new
                         {
                             Id = 15,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4085),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1224),
                             Name = "Guzmán Acosta y Lara",
                             PhotoId = 15,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4085)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1225)
                         },
                         new
                         {
                             Id = 16,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4086),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1225),
                             Name = "Tabaré Viera",
                             PhotoId = 16,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4087)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1226)
                         });
                 });
 
@@ -343,28 +343,28 @@ namespace DatalexionBackend.Infrastructure.Migrations
                         {
                             Id = 1,
                             Comments = "Frente Amplio",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4509),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1496),
                             Name = "Frente Amplio",
                             PartyId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4510)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1498)
                         },
                         new
                         {
                             Id = 2,
                             Comments = "Partido Nacional",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4513),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1501),
                             Name = "Partido Nacional",
                             PartyId = 2,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4513)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1501)
                         },
                         new
                         {
                             Id = 3,
                             Comments = "Partido Colorado",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4515),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1503),
                             Name = "Partido Colorado",
                             PartyId = 3,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4516)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1504)
                         });
                 });
 
@@ -416,44 +416,44 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 1,
                             CI = "11111111",
                             ClientId = 2,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4552),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1532),
                             Email = "gonzalo.delegado@datalexion.lat",
                             Name = "Gonzalo",
                             Phone = "099415831",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4553)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1533)
                         },
                         new
                         {
                             Id = 2,
                             CI = "12345678",
                             ClientId = 2,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4556),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1536),
                             Email = "diego.delegado@datalexion.lat",
                             Name = "Diego",
                             Phone = "099589896",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4557)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1536)
                         },
                         new
                         {
                             Id = 3,
                             CI = "22222222",
                             ClientId = 1,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4558),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1538),
                             Email = "pablo.delegado@datalexion.lat",
                             Name = "Pablo",
                             Phone = "099415831",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4559)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1539)
                         },
                         new
                         {
                             Id = 4,
                             CI = "33333333",
                             ClientId = 3,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4560),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1540),
                             Email = "gabriel.delegado@datalexion.lat",
                             Name = "Gabriel",
                             Phone = "099415831",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4560)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1540)
                         });
                 });
 
@@ -618,67 +618,67 @@ namespace DatalexionBackend.Infrastructure.Migrations
                         {
                             Id = 1,
                             Color = "#3153dd",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4398),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1442),
                             Name = "Frente Amplio",
                             PhotoLongId = 101,
                             PhotoShortId = 111,
                             ShortName = "FA",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4399)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1442)
                         },
                         new
                         {
                             Id = 2,
                             Color = "#3153dd",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4427),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1449),
                             Name = "Partido Nacional",
                             PhotoLongId = 102,
                             PhotoShortId = 112,
                             ShortName = "PN",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4428)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1449)
                         },
                         new
                         {
                             Id = 3,
                             Color = "#d62929",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4429),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1451),
                             Name = "Partido Colorado",
                             PhotoLongId = 103,
                             PhotoShortId = 113,
                             ShortName = "PC",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4430)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1451)
                         },
                         new
                         {
                             Id = 4,
                             Color = "#b929d6",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4431),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1453),
                             Name = "Partido Independiente",
                             PhotoLongId = 104,
                             PhotoShortId = 114,
                             ShortName = "PI",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4432)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1453)
                         },
                         new
                         {
                             Id = 5,
                             Color = "#f9bb28",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4433),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1454),
                             Name = "Cabildo Abierto",
                             PhotoLongId = 105,
                             PhotoShortId = 115,
                             ShortName = "CA",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4434)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1455)
                         },
                         new
                         {
                             Id = 6,
                             Color = "#009001",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4435),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1456),
                             Name = "PERI",
                             PhotoLongId = 106,
                             PhotoShortId = 116,
                             ShortName = "PERI",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4435)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1457)
                         });
                 });
 
@@ -747,198 +747,198 @@ namespace DatalexionBackend.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3672),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(968),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo1.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3684)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(977)
                         },
                         new
                         {
                             Id = 2,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3712),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(982),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo1.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3713)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(982)
                         },
                         new
                         {
                             Id = 3,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3715),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(984),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo3.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3716)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(984)
                         },
                         new
                         {
                             Id = 4,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3719),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(986),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo4.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3721)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(986)
                         },
                         new
                         {
                             Id = 5,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3722),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(987),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo5.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3731)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(987)
                         },
                         new
                         {
                             Id = 6,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3756),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(995),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo6.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3756)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(995)
                         },
                         new
                         {
                             Id = 7,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3758),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(996),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo7.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3758)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(997)
                         },
                         new
                         {
                             Id = 8,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3761),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(998),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo8.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3762)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(999)
                         },
                         new
                         {
                             Id = 9,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3766),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1000),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo9.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3766)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1000)
                         },
                         new
                         {
                             Id = 10,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3769),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1002),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo10.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3769)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1003)
                         },
                         new
                         {
                             Id = 11,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3771),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1145),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo11.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3771)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1146)
                         },
                         new
                         {
                             Id = 12,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3773),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1147),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo12.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3773)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1148)
                         },
                         new
                         {
                             Id = 13,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3774),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1149),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo13.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3775)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1149)
                         },
                         new
                         {
                             Id = 14,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3776),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1150),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo14.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3776)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1151)
                         },
                         new
                         {
                             Id = 15,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3777),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1152),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo15.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3778)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1153)
                         },
                         new
                         {
                             Id = 16,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3780),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1154),
                             URL = "https://cienciasdesofa.lat/uploads/candidates/photo16.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(3780)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1154)
                         },
                         new
                         {
                             Id = 101,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4270),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1397),
                             URL = "https://cienciasdesofa.lat/uploads/partiesLong/photo101.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4271)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1398)
                         },
                         new
                         {
                             Id = 102,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4274),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1400),
                             URL = "https://cienciasdesofa.lat/uploads/partiesLong/photo102.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4275)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1400)
                         },
                         new
                         {
                             Id = 103,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4276),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1402),
                             URL = "https://cienciasdesofa.lat/uploads/partiesLong/photo103.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4276)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1403)
                         },
                         new
                         {
                             Id = 104,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4280),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1404),
                             URL = "https://cienciasdesofa.lat/uploads/partiesLong/photo104.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4280)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1404)
                         },
                         new
                         {
                             Id = 105,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4282),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1405),
                             URL = "https://cienciasdesofa.lat/uploads/partiesLong/photo105.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4283)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1406)
                         },
                         new
                         {
                             Id = 106,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4287),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1408),
                             URL = "https://cienciasdesofa.lat/uploads/partiesLong/photo106.jpg",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4287)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1408)
                         },
                         new
                         {
                             Id = 111,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4353),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1409),
                             URL = "https://cienciasdesofa.lat/uploads/partiesShort/photo111.png",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4354)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1410)
                         },
                         new
                         {
                             Id = 112,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4356),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1411),
                             URL = "https://cienciasdesofa.lat/uploads/partiesShort/photo112.png",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4356)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1411)
                         },
                         new
                         {
                             Id = 113,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4358),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1412),
                             URL = "https://cienciasdesofa.lat/uploads/partiesShort/photo113.png",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4359)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1413)
                         },
                         new
                         {
                             Id = 114,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4361),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1415),
                             URL = "https://cienciasdesofa.lat/uploads/partiesShort/photo114.png",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4361)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1415)
                         },
                         new
                         {
                             Id = 115,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4365),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1417),
                             URL = "https://cienciasdesofa.lat/uploads/partiesShort/photo115.png",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4365)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1417)
                         },
                         new
                         {
                             Id = 116,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4367),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1418),
                             URL = "https://cienciasdesofa.lat/uploads/partiesShort/photo116.png",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4368)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1419)
                         });
                 });
 
@@ -978,135 +978,135 @@ namespace DatalexionBackend.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4661),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1662),
                             Name = "Montevideo",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4661)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1662)
                         },
                         new
                         {
                             Id = 2,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4662),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1663),
                             Name = "Canelones",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4662)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1664)
                         },
                         new
                         {
                             Id = 3,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4663),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1664),
                             Name = "Maldonado",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4663)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1665)
                         },
                         new
                         {
                             Id = 4,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4664),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1665),
                             Name = "Rocha",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4665)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1666)
                         },
                         new
                         {
                             Id = 5,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4665),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1666),
                             Name = "Colonia",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4666)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1667)
                         },
                         new
                         {
                             Id = 6,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4666),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1667),
                             Name = "Artigas",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4667)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1668)
                         },
                         new
                         {
                             Id = 7,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4667),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1668),
                             Name = "Salto",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4668)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1669)
                         },
                         new
                         {
                             Id = 8,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4668),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1669),
                             Name = "Paysandú",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4669)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1670)
                         },
                         new
                         {
                             Id = 9,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4669),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1670),
                             Name = "Tacuarembó",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4670)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1671)
                         },
                         new
                         {
                             Id = 10,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4670),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1671),
                             Name = "Rivera",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4671)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1672)
                         },
                         new
                         {
                             Id = 11,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4672),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1672),
                             Name = "San José",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4673)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1673)
                         },
                         new
                         {
                             Id = 12,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4673),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1673),
                             Name = "Durazno",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4674)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1674)
                         },
                         new
                         {
                             Id = 13,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4674),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1674),
                             Name = "Treinta y Tres",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4675)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1675)
                         },
                         new
                         {
                             Id = 14,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4675),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1675),
                             Name = "Cerro Largo",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4676)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1676)
                         },
                         new
                         {
                             Id = 15,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4676),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1676),
                             Name = "Rivera",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4677)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1677)
                         },
                         new
                         {
                             Id = 16,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4677),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1677),
                             Name = "Flores",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4678)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1678)
                         },
                         new
                         {
                             Id = 17,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4679),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1678),
                             Name = "Florida",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4679)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1679)
                         },
                         new
                         {
                             Id = 18,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4680),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1679),
                             Name = "Lavalleja",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4680)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1680)
                         },
                         new
                         {
                             Id = 19,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4726),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1680),
                             Name = "Soriano",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4727)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1681)
                         });
                 });
 
@@ -1171,10 +1171,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 1,
                             CandidateId = 6,
                             Color = "#3153dd",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4159),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1275),
                             Name = "5005",
                             ProvinceId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4159),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1276),
                             WingId = 1
                         },
                         new
@@ -1182,10 +1182,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 2,
                             CandidateId = 5,
                             Color = "#3153dd",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4181),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1281),
                             Name = "711",
                             ProvinceId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4182),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1281),
                             WingId = 1
                         },
                         new
@@ -1193,10 +1193,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 3,
                             CandidateId = 6,
                             Color = "#d62929",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4183),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1283),
                             Name = "90",
                             ProvinceId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4184),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1284),
                             WingId = 1
                         },
                         new
@@ -1204,10 +1204,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 4,
                             CandidateId = 5,
                             Color = "#b929d6",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4186),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1285),
                             Name = "609",
                             ProvinceId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4186),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1285),
                             WingId = 1
                         },
                         new
@@ -1215,10 +1215,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 5,
                             CandidateId = 1,
                             Color = "#bec11a",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4187),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1287),
                             Name = "71",
                             ProvinceId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4188),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1287),
                             WingId = 2
                         },
                         new
@@ -1226,10 +1226,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 6,
                             CandidateId = 1,
                             Color = "#3153dd",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4189),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1288),
                             Name = "404",
                             ProvinceId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4189),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1289),
                             WingId = 2
                         },
                         new
@@ -1237,10 +1237,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 7,
                             CandidateId = 2,
                             Color = "#ff0000",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4192),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1291),
                             Name = "40",
                             ProvinceId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4193),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1291),
                             WingId = 2
                         },
                         new
@@ -1248,10 +1248,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 8,
                             CandidateId = 2,
                             Color = "#00ff00",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4194),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1292),
                             Name = "250",
                             ProvinceId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4195),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1293),
                             WingId = 2
                         },
                         new
@@ -1259,10 +1259,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 9,
                             CandidateId = 2,
                             Color = "#0000ff",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4196),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1294),
                             Name = "880",
                             ProvinceId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4197),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1294),
                             WingId = 2
                         },
                         new
@@ -1270,10 +1270,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 10,
                             CandidateId = 11,
                             Color = "#ff00ff",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4198),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1296),
                             Name = "15",
                             ProvinceId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4198),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1296),
                             WingId = 3
                         },
                         new
@@ -1281,10 +1281,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 11,
                             CandidateId = 12,
                             Color = "#987654",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4199),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1298),
                             Name = "85",
                             ProvinceId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4200),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1298),
                             WingId = 3
                         },
                         new
@@ -1292,10 +1292,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 12,
                             CandidateId = 12,
                             Color = "#abcdef",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4201),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1300),
                             Name = "1",
                             ProvinceId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4202),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1300),
                             WingId = 3
                         },
                         new
@@ -1303,10 +1303,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 13,
                             CandidateId = 12,
                             Color = "#fedcba",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4203),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1301),
                             Name = "2000",
                             ProvinceId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4203),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1301),
                             WingId = 3
                         },
                         new
@@ -1314,10 +1314,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 14,
                             CandidateId = 11,
                             Color = "#012345",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4204),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1303),
                             Name = "1515",
                             ProvinceId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4205),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1303),
                             WingId = 3
                         },
                         new
@@ -1325,10 +1325,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 15,
                             CandidateId = 11,
                             Color = "#012345",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4206),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1305),
                             Name = "600",
                             ProvinceId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4206),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1305),
                             WingId = 3
                         },
                         new
@@ -1336,10 +1336,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 16,
                             CandidateId = 5,
                             Color = "#abcdef",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4208),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1306),
                             Name = "500",
                             ProvinceId = 2,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4208),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1307),
                             WingId = 1
                         },
                         new
@@ -1347,10 +1347,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 17,
                             CandidateId = 5,
                             Color = "#fedcba",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4210),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1308),
                             Name = "123",
                             ProvinceId = 2,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4210),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1308),
                             WingId = 1
                         },
                         new
@@ -1358,10 +1358,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 18,
                             CandidateId = 5,
                             Color = "#012345",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4211),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1310),
                             Name = "999",
                             ProvinceId = 2,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4212),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1310),
                             WingId = 1
                         },
                         new
@@ -1369,10 +1369,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 19,
                             CandidateId = 5,
                             Color = "#abcdef",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4213),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1312),
                             Name = "777",
                             ProvinceId = 2,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4213),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1312),
                             WingId = 1
                         },
                         new
@@ -1380,10 +1380,10 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = 20,
                             CandidateId = 1,
                             Color = "#fedcba",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4215),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1313),
                             Name = "333",
                             ProvinceId = 2,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4215),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1314),
                             WingId = 2
                         });
                 });
@@ -1430,50 +1430,50 @@ namespace DatalexionBackend.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4596),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1570),
                             Name = "FA",
                             PartyId = 1,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4597)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1571)
                         },
                         new
                         {
                             Id = 2,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4611),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1574),
                             Name = "PN",
                             PartyId = 2,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4611)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1575)
                         },
                         new
                         {
                             Id = 3,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4612),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1576),
                             Name = "PC",
                             PartyId = 3,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4613)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1576)
                         },
                         new
                         {
                             Id = 4,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4614),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1611),
                             Name = "PI",
                             PartyId = 4,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4614)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1611)
                         },
                         new
                         {
                             Id = 5,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4615),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1612),
                             Name = "CA",
                             PartyId = 5,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4615)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1613)
                         },
                         new
                         {
                             Id = 6,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4616),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1614),
                             Name = "PERI",
                             PartyId = 6,
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 474, DateTimeKind.Local).AddTicks(4617)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 775, DateTimeKind.Local).AddTicks(1614)
                         });
                 });
 
@@ -1787,16 +1787,16 @@ namespace DatalexionBackend.Infrastructure.Migrations
                             Id = "bef4cbd4-1f2b-472f-a1e2-e1a901f6808c",
                             Name = "Admin",
                             NormalizedName = "ADMIN",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 10, 832, DateTimeKind.Local).AddTicks(25),
-                            Update = new DateTime(2024, 4, 14, 15, 47, 10, 832, DateTimeKind.Local).AddTicks(26)
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 105, DateTimeKind.Local).AddTicks(7280),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 105, DateTimeKind.Local).AddTicks(7282)
                         },
                         new
                         {
                             Id = "bef4cbd4-1f2b-472f-a3f2-e1a901f6811c",
                             Name = "Analyst",
                             NormalizedName = "ANALYST",
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 10, 832, DateTimeKind.Local).AddTicks(39),
-                            Update = new DateTime(2024, 4, 14, 15, 47, 10, 832, DateTimeKind.Local).AddTicks(40)
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 105, DateTimeKind.Local).AddTicks(7297),
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 105, DateTimeKind.Local).AddTicks(7298)
                         });
                 });
 
@@ -1826,121 +1826,121 @@ namespace DatalexionBackend.Infrastructure.Migrations
                         {
                             Id = "2a765d8b-9204-4e0f-b4ce-453f6e1bb592",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e7efc327-2eb8-4396-99d4-b15d8b89a98e",
+                            ConcurrencyStamp = "bc552b2c-3b02-42b5-8ea7-497e99b0b7e7",
                             Email = "adminfa@datalexion.lat",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMINFA@DATALEXION.LAT",
                             NormalizedUserName = "ADMINFA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEC0fHADRFSrAgMoO3VWife2DPiXVeAeHU1KcHo9kmAmPKCEUA8/rg/ePnLcoN9VUdg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEnRhuBVXnCUA8HTm6K6NuIxmVFRZWC+uvUb/00Mgr8vI46http03SsfET7YtYPCMg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e611a866-7ee9-4584-9da0-68335740fc94",
+                            SecurityStamp = "1f6339f3-0949-4792-b979-899d9c568f9c",
                             TwoFactorEnabled = false,
                             UserName = "adminfa",
                             ClientId = 1,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 10, 832, DateTimeKind.Local).AddTicks(884),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 105, DateTimeKind.Local).AddTicks(7968),
                             Name = "Admin FA",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 10, 832, DateTimeKind.Local).AddTicks(885)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 105, DateTimeKind.Local).AddTicks(7970)
                         },
                         new
                         {
                             Id = "8498a3ff-ca69-4b93-9a37-49a73c8dec77",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1104efda-dad1-4971-91bc-52c93da143d5",
+                            ConcurrencyStamp = "ad2bd850-9019-4c5a-ae12-b39e38f10fb7",
                             Email = "adminpn@datalexion.lat",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMINPN@DATALEXION.LAT",
                             NormalizedUserName = "ADMINPN",
-                            PasswordHash = "AQAAAAIAAYagAAAAELkP88ctGBZ/nV4iyQGoQK7xfBaT1vwYe0E9a+lsm5cYDtBa/XLUpGXKTHui9mB7Zw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENwK80OaSBt0FTEyMurSE+8XO4onBD/PwhqDP5JaFfMYr+n1eZBu2vizcO/kokYZqQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5e3db2db-b063-49c1-ab40-11d1ed774269",
+                            SecurityStamp = "78133c67-44f2-416f-ac01-ef826a7aba40",
                             TwoFactorEnabled = false,
                             UserName = "adminpn",
                             ClientId = 2,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 10, 958, DateTimeKind.Local).AddTicks(8880),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 222, DateTimeKind.Local).AddTicks(7181),
                             Name = "Admin PN",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 10, 958, DateTimeKind.Local).AddTicks(8885)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 222, DateTimeKind.Local).AddTicks(7193)
                         },
                         new
                         {
                             Id = "6c762a89-a7b6-4ee3-96d0-105b219dcaa6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bdc5046e-47d5-4e6c-ab40-57635fd1d23b",
+                            ConcurrencyStamp = "ba1a7f51-2fb7-4ee0-ac68-543d29430f78",
                             Email = "adminpc@datalexion.lat",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMINPC@DATALEXION.LAT",
                             NormalizedUserName = "ADMINPC",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGs2ti5j18FcwNeti/HvmXCuAH1Xp0rmn6VAfKbuInj1pq/oShbZVRIU727msqMpeA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL1lvTu45CXqUZlu9pWMrdSovuNSic0g8UTACRP5NVWuv7jexmECkc4WY7GKCcRLjg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f2094ea3-5b48-4899-8110-994f9eb1dd98",
+                            SecurityStamp = "275e225b-0588-4d7e-bd1d-a8dec8f509aa",
                             TwoFactorEnabled = false,
                             UserName = "adminpc",
                             ClientId = 3,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 73, DateTimeKind.Local).AddTicks(2360),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 325, DateTimeKind.Local).AddTicks(7235),
                             Name = "Admin PC",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 73, DateTimeKind.Local).AddTicks(2367)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 325, DateTimeKind.Local).AddTicks(7243)
                         },
                         new
                         {
                             Id = "e15e9299-d3b5-42fc-b101-44da6ad799de",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a66a02d7-e84b-4d1b-9764-0b503df8217f",
+                            ConcurrencyStamp = "b3b8d6d8-470e-4b0c-b81e-d104697a1399",
                             Email = "normal@datalexion.lat",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "NORMAL@DATALEXION.LAT",
                             NormalizedUserName = "ANALYSTFA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEL1+izdFv4tcQaMCaFPx/zlvNnEsOZyeaiZfY6glmvuEDNvIcSW524t13K2UWFLs6w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKb31eFtTrYqMTC3ZuMGU/Cq/hBvwIwtmI6QH/DLTw9DaYKLagYMt0Za2SNuvmwfOA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "06622186-1fe4-4384-88c9-567c814960f2",
+                            SecurityStamp = "1e215527-6a38-4e9c-8b39-f38d7b0c7fbc",
                             TwoFactorEnabled = false,
                             UserName = "analystfa",
                             ClientId = 1,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 186, DateTimeKind.Local).AddTicks(9756),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 460, DateTimeKind.Local).AddTicks(4632),
                             Name = "Analista FA",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 186, DateTimeKind.Local).AddTicks(9764)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 460, DateTimeKind.Local).AddTicks(4645)
                         },
                         new
                         {
                             Id = "ddc18aa2-c5c7-40c9-9db3-246d2a05a06c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "885c2740-7304-4a6f-8998-28d24a39900d",
+                            ConcurrencyStamp = "e5cd84d9-6e08-47fa-93af-11dd49291a09",
                             Email = "normal@datalexion.lat",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "NORMAL@DATALEXION.LAT",
                             NormalizedUserName = "ANALYSTPN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKi3a72qlyVTVv7lvGagHBoouSOXLZ5T1aUGQNR8peptE6xUz/vAyY5iTqDVRrxJMQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKVt+cJHXZQICd8hsv4LpeDOn71dcNHRfsH/O1W4FX2YqemHCA98KlFc4G9HuUoXBg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7d6bbf7a-0390-40af-b6e9-6dc76c0137dd",
+                            SecurityStamp = "4a09143a-f7d4-44a4-a2f7-9d8f0fce15bf",
                             TwoFactorEnabled = false,
                             UserName = "analystpn",
                             ClientId = 2,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 282, DateTimeKind.Local).AddTicks(552),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 583, DateTimeKind.Local).AddTicks(683),
                             Name = "Analista PN",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 282, DateTimeKind.Local).AddTicks(557)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 583, DateTimeKind.Local).AddTicks(692)
                         },
                         new
                         {
                             Id = "b5172b14-f9e4-48f6-9634-2241c87f1719",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f42e51ad-f696-4151-8667-d41851cde435",
+                            ConcurrencyStamp = "ea4350c0-3d93-48c2-937f-b9fb7e1c6b96",
                             Email = "normal@datalexion.lat",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "NORMAL@DATALEXION.LAT",
                             NormalizedUserName = "ANALYSTPC",
-                            PasswordHash = "AQAAAAIAAYagAAAAEN+e8yg6D+F1iznuIu18GEcGRjHGCnQ6VZ4YJI7GjfQxhN57DKNK8uPEve3ZAINVXA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOeE0y+coIlS8S8wHaavomjsd57/Hz8RL6ySi0q7EHtd9g1RUFa/eMLG4TY8id6Z3Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "33d8e4be-e948-48cd-942c-62240747e7a6",
+                            SecurityStamp = "cfc189df-9ec5-4d21-b288-028768c11bb3",
                             TwoFactorEnabled = false,
                             UserName = "analystpc",
                             ClientId = 3,
-                            Creation = new DateTime(2024, 4, 14, 15, 47, 11, 389, DateTimeKind.Local).AddTicks(8275),
+                            Creation = new DateTime(2024, 4, 17, 20, 55, 3, 672, DateTimeKind.Local).AddTicks(9395),
                             Name = "Analista PC",
-                            Update = new DateTime(2024, 4, 14, 15, 47, 11, 389, DateTimeKind.Local).AddTicks(8281)
+                            Update = new DateTime(2024, 4, 17, 20, 55, 3, 672, DateTimeKind.Local).AddTicks(9405)
                         });
                 });
 
