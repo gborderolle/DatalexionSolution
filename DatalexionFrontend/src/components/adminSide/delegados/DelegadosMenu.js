@@ -428,7 +428,7 @@ const DelegadosMenu = () => {
               </motion.div>
             </div>
           </CRow>
-          <CPagination align="center" aria-label="Page navigation example">
+          <CPagination align="center" aria-label="Page navigation">
             {startPage > 1 && (
               <CPaginationItem onClick={() => handlePageChange(1)}>
                 1

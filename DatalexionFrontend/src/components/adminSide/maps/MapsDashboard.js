@@ -511,7 +511,7 @@ const MapsDashboard = () => {
                             <br />
                             <CPagination
                               align="center"
-                              aria-label="Page navigation example"
+                              aria-label="Page navigation"
                             >
                               {startPageProgressbar > 1 && (
                                 <CPaginationItem

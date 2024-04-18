@@ -1,0 +1,33 @@
+-- /////////////////////////////////////////////////////////////////////////////
+
+-- VACIAR LA VOTACIÓN EN TODAS LAS TABLAS Y LOS STEPS
+
+-- Inicializar votos a cero para todas las listas de circuitos
+UPDATE CircuitSlate
+SET Votes = 0;
+
+-- Inicializar votos a cero para todas las listas de partidos en los circuitos
+UPDATE CircuitParty
+SET Votes = 0;
+
+-- Inicializar votos a cero para todas las listas
+UPDATE Slate
+SET Votes = 0;
+
+-- Inicializar votos a cero para todos los partidos
+UPDATE Party
+SET Votes = 0;
+
+-- Inicializar conteo de votos en blanco, nulos, observados, recurridos y pasos en los circuitos
+UPDATE Circuit
+SET BlankVotes = 0,
+    NullVotes = 0,
+    ObservedVotes = 0,
+    RecurredVotes = 0,
+    Step1completed = 0,
+    Step2completed = 0,
+    Step3completed = 0;
+
+
+-- /////////////////////////////////////////////////////////////////////////////
+

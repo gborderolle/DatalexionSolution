@@ -286,7 +286,7 @@ const FormStart = (props) => {
   const bumpHandler = () => {
     triggerBump();
 
-    fetchCircuitList();
+    dispatch(fetchCircuitList());
   };
 
   //#endregion Events ***********************************
@@ -380,7 +380,7 @@ const FormStart = (props) => {
               </RadioGroup>
               <br />
 
-              <CPagination align="center" aria-label="Page navigation example">
+              <CPagination align="center" aria-label="Page navigation">
                 {startPage > 1 && (
                   <CPaginationItem onClick={() => handlePageChange(1)}>
                     1

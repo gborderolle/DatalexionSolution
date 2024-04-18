@@ -622,10 +622,7 @@ const DashboardFilter = ({
                     </CListGroupItem>
                     {renderProvinceList()}
                     <br />
-                    <CPagination
-                      align="center"
-                      aria-label="Page navigation example"
-                    >
+                    <CPagination align="center" aria-label="Page navigation">
                       {startPageProvinces > 1 && (
                         <CPaginationItem
                           onClick={() => handlePageChangeProvinces(1)}
@@ -685,10 +682,7 @@ const DashboardFilter = ({
                     </CListGroupItem>
                     {renderMunicipalityList()}
                     <br />
-                    <CPagination
-                      align="center"
-                      aria-label="Page navigation example"
-                    >
+                    <CPagination align="center" aria-label="Page navigation">
                       {startPageMunicipalities > 1 && (
                         <CPaginationItem
                           onClick={() => handlePageChangeMunicipalities(1)}
@@ -753,10 +747,7 @@ const DashboardFilter = ({
                       votos)
                     </CListGroupItem>
                     {renderCircuitList()} <br />
-                    <CPagination
-                      align="center"
-                      aria-label="Page navigation example"
-                    >
+                    <CPagination align="center" aria-label="Page navigation">
                       {startPageCircuits > 1 && (
                         <CPaginationItem
                           onClick={() => handlePageChangeCircuits(1)}
