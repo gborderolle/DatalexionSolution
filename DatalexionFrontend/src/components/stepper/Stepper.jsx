@@ -4,6 +4,13 @@ import { useSelector } from "react-redux";
 
 import StepComponent from "./StepComponent";
 
+import {
+  FormSlate,
+  FormParty,
+  FormExtras,
+  FormSummary,
+} from "../../utils/navigationPaths";
+
 import "./stepper.css";
 
 const Stepper = (props) => {
@@ -95,16 +102,16 @@ const Stepper = (props) => {
     let path = "";
     switch (stepIndex) {
       case 0:
-        path = "/formSlate1";
+        path = FormSlate;
         break;
       case 1:
-        path = "/formParty1";
+        path = FormParty;
         break;
       case 2:
-        path = "/formExtras1";
+        path = FormExtras;
         break;
       case 3:
-        path = "/formSummary";
+        path = FormSummary;
         break;
       default:
       // Manejar caso por defecto o error

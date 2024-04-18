@@ -24,7 +24,7 @@ import ProfileCard from "../profileCard/ProfileCard";
 import useBumpEffect from "../../../utils/useBumpEffect";
 import "./FormStart.css";
 
-import { FormParty1, FormStart } from "../../../utils/navigationPaths";
+import { FormParty, FormStart } from "../../../utils/navigationPaths";
 
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
@@ -168,7 +168,7 @@ const FormSlate = () => {
       );
 
       setTimeout(() => {
-        navigate(FormParty1);
+        navigate(FormParty);
       }, 100);
     }
   }, [isSuccessSlate, dispatch]);

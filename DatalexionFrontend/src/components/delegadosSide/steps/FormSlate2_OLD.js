@@ -103,7 +103,7 @@ const FormSlate2_OLD = ({
       );
 
       setTimeout(() => {
-        navigate(FormParty1);
+        navigate(FormParty);
       }, 100);
     }
   }, [isSuccessSlate, dispatch]);

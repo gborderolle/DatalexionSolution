@@ -32,14 +32,14 @@ const LoginDelegados = React.lazy(() =>
 const FormStart = React.lazy(() =>
   import("./components/delegadosSide/steps/FormStart")
 );
-const FormParty1 = React.lazy(() =>
-  import("./components/delegadosSide/steps/FormParty1")
+const FormParty = React.lazy(() =>
+  import("./components/delegadosSide/steps/FormParty")
 );
 const FormSlate = React.lazy(() =>
   import("./components/delegadosSide/steps/FormSlate")
 );
-const FormExtras1 = React.lazy(() =>
-  import("./components/delegadosSide/steps/FormExtras1")
+const FormExtras = React.lazy(() =>
+  import("./components/delegadosSide/steps/FormExtras")
 );
 const FormSummary = React.lazy(() =>
   import("./components/delegadosSide/steps/FormSummary")
@@ -53,8 +53,8 @@ const routes = [
   },
   { path: "/formStart", name: "Formulario", element: FormStart },
   { path: "/formSlate", name: "Formulario", element: FormSlate },
-  { path: "/formParty1", name: "Formulario", element: FormParty1 },
-  { path: "/formExtras1", name: "Formulario", element: FormExtras1 },
+  { path: "/formParty", name: "Formulario", element: FormParty },
+  { path: "/formExtras", name: "Formulario", element: FormExtras },
   { path: "/formSummary", name: "Formulario", element: FormSummary },
   { path: "/menu-data", name: "Menú de datos", element: MenuData },
   { path: "/menu-admin", name: "Menú admin", element: MenuAdmin },

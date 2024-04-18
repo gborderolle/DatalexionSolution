@@ -61,10 +61,10 @@ const initialFixedCards = [
   },
 ];
 
-const FormExtras2 = ({
+const FormExtras2_OLD = ({
   formHandlerGeneric,
-  isLoading,
-  setIsLoading,
+  isLoadingExtras,
+  setIsLoadingExtras,
   setTOTALVotosExtras,
   TOTALVotosGLOBAL = 0,
 }) => {
@@ -199,7 +199,7 @@ const FormExtras2 = ({
 
       setIsValidFormExtras(true);
       setIsDisabledExtras(true);
-      setIsLoading(true);
+      setIsLoadingExtras(true);
 
       const updatedSelectedCircuit = {
         ...reduxSelectedCircuit,
@@ -222,7 +222,7 @@ const FormExtras2 = ({
         null,
         "circuit",
         setIsSuccessExtras,
-        setIsLoading,
+        setIsLoadingExtras,
         updatedSelectedCircuit,
         imageFile
       );
@@ -284,6 +284,7 @@ const FormExtras2 = ({
       </motion.div>
     );
   });
+
   //#endregion Functions ***********************************
 
   //#region JSX props ***********************************
@@ -303,7 +304,7 @@ const FormExtras2 = ({
         style={{ paddingBottom: "4rem" }}
       >
         <CRow className="justify-content-center">
-          {isLoading ? (
+          {isLoadingExtras ? (
             <LoadingSpinner />
           ) : reduxSelectedCircuit ? (
             cardList
@@ -389,4 +390,4 @@ const FormExtras2 = ({
   );
 };
 
-export default FormExtras2;
+export default FormExtras2_OLD;

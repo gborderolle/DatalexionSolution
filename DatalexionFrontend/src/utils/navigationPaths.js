@@ -1,9 +1,7 @@
 export const FormStart = "/formStart";
 export const FormSlate = "/formSlate";
-export const FormParty1 = "/formParty1";
-export const FormParty2 = "/formParty2";
-export const FormExtras1 = "/formExtras1";
-export const FormExtras2 = "/formExtras2";
+export const FormParty = "/formParty";
+export const FormExtras = "/formExtras";
 export const FormSummary = "/formSummary";
 export const MenuData = "/menu-data";
 export const MenuAdmin = "/menu-admin";

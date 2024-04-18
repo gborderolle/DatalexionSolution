@@ -7,7 +7,7 @@ import { CForm, CCardFooter, CButton, CRow } from "@coreui/react";
 import { LoadingSpinner } from "../../../utils/LoadingSpinner";
 import WidgetCard from "../widgets/WidgetCard";
 
-import { FormExtras1 } from "../../../utils/navigationPaths";
+import { FormExtras } from "../../../utils/navigationPaths";
 
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
@@ -17,10 +17,10 @@ import { formActions } from "../../../store/form-slice";
 
 const buttonColor = "dark";
 
-const FormParty2 = ({
+const FormParty2_OLD = ({
   formHandlerGeneric,
-  setIsLoading,
-  isLoading,
+  isLoadingParty,
+  setIsLoadingParty,
   setVotosPartyTotal,
   TOTALVotosGLOBAL = 0,
 }) => {
@@ -91,7 +91,7 @@ const FormParty2 = ({
       );
 
       setTimeout(() => {
-        navigate(FormExtras1);
+        navigate(FormExtras);
       }, 100);
     }
   }, [isSuccessParty, dispatch]);
@@ -109,7 +109,7 @@ const FormParty2 = ({
       filteredPartyList,
       "partyList",
       setIsSuccessParty,
-      setIsLoading,
+      setIsLoadingParty,
       reduxSelectedCircuit
     );
 
@@ -202,7 +202,7 @@ const FormParty2 = ({
         onUpdateVotes={(newVotes) =>
           updateVotesHandlerParty(party.id, +newVotes)
         }
-        disabled={isLoading || party.id === reduxClient?.party.id}
+        disabled={isLoadingParty || party.id === reduxClient?.party.id}
         otherVotes={Number(TOTALVotosGLOBAL) || 0}
         name={party.name}
         photoURL={party.photoLongURL}
@@ -231,7 +231,7 @@ const FormParty2 = ({
         style={{ paddingBottom: "4rem" }}
       >
         <CRow className="justify-content-center">
-          {isLoading ? (
+          {isLoadingParty ? (
             <LoadingSpinner />
           ) : reduxSelectedCircuit && reduxSelectedCircuit.id > 0 ? (
             partyList1
@@ -257,4 +257,4 @@ const FormParty2 = ({
     </>
   );
 };
-export default FormParty2;
+export default FormParty2_OLD;
