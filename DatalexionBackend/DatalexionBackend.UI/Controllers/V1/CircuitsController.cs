@@ -22,6 +22,7 @@ namespace DatalexionBackend.UI.Controllers.V1
     public class CircuitsController : CustomBaseController<Circuit>
     {
         private readonly ICircuitRepository _circuitRepository;
+        private readonly IClientRepository _clientRepository;
         private readonly IPhotoRepository _photoRepository;
         private readonly ContextDB _dbContext;
         private readonly ILogService _logService;
@@ -29,10 +30,11 @@ namespace DatalexionBackend.UI.Controllers.V1
         // private readonly IHubContext<NotifyHub> _hubContext; // SignalR
         private readonly IMessage<Circuit> _message;
 
-        public CircuitsController(ILogger<CircuitsController> logger, IMapper mapper, ICircuitRepository circuitRepository, IPhotoRepository photoRepository, IFileStorage fileStorage, ContextDB dbContext, ILogService logService, IMessage<Circuit> message)
+        public CircuitsController(ILogger<CircuitsController> logger, IMapper mapper, ICircuitRepository circuitRepository, IClientRepository clientRepository, IPhotoRepository photoRepository, IFileStorage fileStorage, ContextDB dbContext, ILogService logService, IMessage<Circuit> message)
             : base(mapper, logger, circuitRepository)
         {
             _circuitRepository = circuitRepository;
+            _clientRepository = clientRepository;
             _photoRepository = photoRepository;
             _fileStorage = fileStorage;
             _dbContext = dbContext;
@@ -88,6 +90,76 @@ namespace DatalexionBackend.UI.Controllers.V1
                 },
             };
             return await Get<Circuit, CircuitDTO>(paginationDTO: paginationDTO, thenIncludes: thenIncludes);
+        }
+
+        /// <summary>
+        /// Filtra los circuitos que incluye únicamente las listas de nuestro cliente
+        /// </summary>
+        /// <param name="paginationDTO"></param>
+        /// <returns></returns>
+        [HttpGet("GetCircuitByClient")]
+        [ResponseCache(Duration = 60)]
+        public async Task<ActionResult<APIResponse>> GetCircuitByClient([FromQuery] int clientId)
+        {
+            try
+            {
+                var includesClient = new List<IncludePropertyConfiguration<Client>>
+                {
+                    new IncludePropertyConfiguration<Client>
+                    {
+                        IncludeExpression = b => b.Party
+                    },
+                };
+                var client = await _clientRepository.Get(v => v.Id == clientId, includes: includesClient);
+                if (client == null)
+                {
+                    _logger.LogError(((ClientMessage)_message).NotFound(clientId), clientId);
+                    _response.ErrorMessages = new() { ((ClientMessage)_message).NotFound(clientId) };
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    return NotFound(_response);
+                }
+
+                if (client.Party == null)
+                {
+                    _logger.LogError(((PartyMessage)_message).NotFound(), clientId);
+                    _response.ErrorMessages = new() { ((PartyMessage)_message).NotFound() };
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    return NotFound(_response);
+                }
+
+                // n..n
+                var thenIncludes = new List<ThenIncludePropertyConfiguration<Circuit>>
+                {
+                    // delegados
+                    new ThenIncludePropertyConfiguration<Circuit>
+                    {
+                        IncludeExpression = b => b.ListCircuitDelegados,
+                        ThenIncludeExpression = ab => ((CircuitDelegado)ab).Delegado
+                    },
+                    new ThenIncludePropertyConfiguration<Circuit>
+                    {
+                        IncludeExpression = b => b.ListCircuitSlates.Where(cs => cs.Slate.Wing.PartyId == client.PartyId),
+                        ThenIncludeExpression = ab => ((CircuitSlate)ab).Slate
+                    },
+                    new ThenIncludePropertyConfiguration<Circuit>
+                    {
+                        IncludeExpression = b => b.ListCircuitParties,
+                        ThenIncludeExpression = ab => ((CircuitParty)ab).Party
+                    },
+                };
+
+                return await Get<Circuit, CircuitDTO>(thenIncludes: thenIncludes);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.InternalServerError;
+                _response.ErrorMessages = [ex.ToString()];
+                return BadRequest(_response);
+            }
         }
 
         /// <summary>

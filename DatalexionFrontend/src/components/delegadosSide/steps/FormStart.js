@@ -31,7 +31,7 @@ import { LoginGeneral } from "../../../utils/navigationPaths";
 import { authActions } from "../../../store/auth-slice";
 import { liveSettingsActions } from "../../../store/liveSettings-slice";
 import { uiActions } from "../../../store/ui-slice";
-import { fetchCircuitList } from "../../../store/generalData-actions";
+import { fetchCircuitListByClient } from "../../../store/generalData-actions";
 
 import useBumpEffect from "../../../utils/useBumpEffect";
 
@@ -52,7 +52,7 @@ const FormStart = (props) => {
   const [selectedForBump, setSelectedForBump] = useState(null);
   const [circuitList, setCircuitList] = useState([]);
   const reduxCircuitList = useSelector(
-    (state) => state.generalData.circuitList
+    (state) => state.generalData.circuitListByClient
   );
 
   //#region Pagination   ***********************************
@@ -124,7 +124,7 @@ const FormStart = (props) => {
   }, [userRole, navigate, dispatch]);
 
   useEffect(() => {
-    dispatch(fetchCircuitList());
+    dispatch(fetchCircuitListByClient());
     dispatch(uiActions.hideStepper());
     dispatch(uiActions.setStepsSubmittedEmpty());
 
@@ -273,8 +273,11 @@ const FormStart = (props) => {
 
     if (circuit) {
       setSelectedCircuit(circuit);
+
+      // SET REDUX ACA
       dispatch(liveSettingsActions.setSelectedCircuit(circuit));
     } else {
+      // SET REDUX ACA
       dispatch(liveSettingsActions.setSelectedCircuit(null));
     }
 
@@ -289,7 +292,7 @@ const FormStart = (props) => {
   const bumpHandler = () => {
     triggerBump();
 
-    dispatch(fetchCircuitList());
+    dispatch(fetchCircuitListByClient());
   };
 
   //#endregion Events ***********************************

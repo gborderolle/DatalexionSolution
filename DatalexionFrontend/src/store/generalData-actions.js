@@ -208,6 +208,41 @@ export const fetchCircuitList = () => {
   };
 };
 
+// Filtra los circuitos que incluye únicamente las listas de nuestro cliente
+export const fetchCircuitListByClient = () => {
+  return async (dispatch, getState) => {
+    try {
+      // Intenta usar el parámetro username si se proporciona, de lo contrario, obtiene el username del estado Redux
+      let clientId = selectClientId(getState());
+      if (!clientId) {
+        console.error("Nombre de usuario no proporcionado o inválido.");
+        return; // Termina la ejecución si no hay un username válido
+      }
+
+      // Asegura que clientId sea un entero
+      clientId = parseInt(clientId, 10); // El segundo argumento (10) especifica la base decimal
+      if (isNaN(clientId)) {
+        console.error("clientId debe ser un número.");
+        return; // Termina la ejecución si clientId no es un número
+      }
+
+      const urlWithParam = `${urlCircuit}/GetCircuitByClient?clientId=${clientId}`;
+      const data = await fetchApi(urlWithParam);
+
+      // Procesa los datos recibidos
+      if (data && data.result) {
+        dispatch(generalDataActions.setCircuitListByClient(data.result));
+      } else {
+        console.error(
+          "Error al obtener los circuitos: No se encontraron datos."
+        );
+      }
+    } catch (error) {
+      console.error("Error al obtener la lista de circuitos:", error);
+    }
+  };
+};
+
 export const fetchCandidateList = () => {
   return async (dispatch) => {
     try {
