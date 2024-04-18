@@ -156,7 +156,7 @@ const FormParty1 = () => {
     dispatch(formActions.emptyAllVotos());
 
     setTimeout(() => {
-      navigate("/formStart");
+      navigate(FormStart);
     }, 200);
   };
 

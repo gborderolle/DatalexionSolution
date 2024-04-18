@@ -5,22 +5,24 @@ import { motion } from "framer-motion";
 import { CForm, CCardFooter, CButton, CRow } from "@coreui/react";
 
 import { LoadingSpinner } from "../../../utils/LoadingSpinner";
-import ProfileCard from "../profileCard/ProfileCard"; // Asegúrate de que la ruta sea correcta
+import ProfileCard from "../profileCard/ProfileCard";
 
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
-import { fetchSlateList } from "../../../store/generalData-actions";
-import { fetchVotosTotal } from "../../../store/generalData-actions";
+import {
+  fetchSlateList,
+  fetchVotosTotal,
+} from "../../../store/generalData-actions";
 import { uiActions } from "../../../store/ui-slice";
 import { formActions } from "../../../store/form-slice";
 import { SlateGetWing, SlateGetCandidate } from "src/utils/auxiliarFunctions";
 
 const buttonColor = "dark";
-const FormSlate2 = ({
+const FormSlate2_OLD = ({
   setVotosSlateTotal,
   formHandlerGeneric,
-  isLoading,
-  setIsLoading,
+  isLoadingSlate,
+  setIsLoadingSlate,
   myPartyImageURL,
   TOTALVotosGLOBAL = 0,
 }) => {
@@ -35,8 +37,6 @@ const FormSlate2 = ({
   const [isValidFormSlate, setIsValidFormSlate] = useState(true);
   const [isSuccessSlate, setIsSuccessSlate] = useState(false);
   const [filteredSlateList, setFilteredSlateList] = useState([]);
-
-  const [votoLocal, setVotoLocal] = useState(0);
 
   // const [votosSlateTotal, setVotosSlateTotal] = useState(0);
   const votosSlateTotal = 0;
@@ -103,7 +103,7 @@ const FormSlate2 = ({
       );
 
       setTimeout(() => {
-        navigate("/FormParty1");
+        navigate(FormParty1);
       }, 100);
     }
   }, [isSuccessSlate, dispatch]);
@@ -121,10 +121,10 @@ const FormSlate2 = ({
       filteredSlateList,
       "slateList",
       setIsSuccessSlate,
-      setIsLoading,
+      setIsLoadingSlate,
       reduxSelectedCircuit
     );
-    setIsLoading(false);
+    setIsLoadingSlate(false);
 
     // SET REDUX ACA
     dispatch(formActions.setReduxVotosStep1(votosSlateTotal));
@@ -259,7 +259,7 @@ const FormSlate2 = ({
         style={{ paddingBottom: "4rem" }}
       >
         <CRow className="justify-content-center">
-          {isLoading ? (
+          {isLoadingSlate ? (
             <LoadingSpinner />
           ) : reduxSelectedCircuit && reduxSelectedCircuit.id > 0 ? (
             slateList1
@@ -285,4 +285,4 @@ const FormSlate2 = ({
     </>
   );
 };
-export default FormSlate2;
+export default FormSlate2_OLD;

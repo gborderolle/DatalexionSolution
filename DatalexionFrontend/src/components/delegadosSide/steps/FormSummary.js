@@ -25,6 +25,8 @@ import {
 import useBumpEffect from "../../../utils/useBumpEffect";
 import "./FormStart.css";
 
+import { FormStart } from "../../../utils/navigationPaths";
+
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
 import { uiActions } from "../../../store/ui-slice";
@@ -103,7 +105,7 @@ const FormSummary = () => {
     setAnimateTable(true);
 
     if (!reduxSelectedCircuit) {
-      navigate("/formStart");
+      navigate(FormStart);
     }
   }, []);
 
@@ -134,7 +136,6 @@ const FormSummary = () => {
   }, []);
 
   useEffect(() => {
-    // Asegúrate de que newVotes no sea nulo o undefined y tenga la forma esperada
     if (reduxSelectedCircuit && Object.keys(reduxSelectedCircuit).length > 0) {
       setFixedCards((prevCards) => {
         return prevCards?.map((card) => {
@@ -226,7 +227,7 @@ const FormSummary = () => {
     dispatch(formActions.emptyAllVotos());
 
     setTimeout(() => {
-      navigate("/formStart");
+      navigate(FormStart);
     }, 200);
   };
 

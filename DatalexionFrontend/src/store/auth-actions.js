@@ -4,6 +4,8 @@ import { authActions } from "./auth-slice";
 import { urlLoginGeneral, urlLoginDelegados } from "../endpoints";
 import showToastMessage from "../components/messages/ShowSuccess";
 
+import { FormStart, Dashboard } from "../utils/navigationPaths";
+
 // Redux imports
 import { fetchClientByUser } from "../store/generalData-actions";
 
@@ -15,7 +17,6 @@ export const loginDelegadosHandler = (ci, navigate) => async (dispatch) => {
       { headers: { "x-version": "1" } }
     );
 
-    // Asegúrate de que la respuesta contenga el resultado esperado
     if (response.data && response.data.result && response.data.result.token) {
       const {
         token,
@@ -47,7 +48,7 @@ export const loginDelegadosHandler = (ci, navigate) => async (dispatch) => {
               })
             );
             dispatch(fetchClientByUser(ci));
-            navigate("/formStart");
+            navigate(FormStart);
           }, 500);
         },
       });
@@ -77,7 +78,6 @@ export const loginAdminHandler =
         { headers: { "x-version": "1" } }
       );
 
-      // Asegúrate de que la respuesta contenga el resultado esperado
       if (response.data && response.data.result && response.data.result.token) {
         const { token, userRoles, clientId, fullname } = response.data.result;
 
@@ -98,7 +98,7 @@ export const loginAdminHandler =
                 })
               );
               dispatch(fetchClientByUser(username));
-              navigate("/dashboard");
+              navigate(Dashboard);
             }, 500);
           },
         });

@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import routes from "../../routes";
 import { CBreadcrumb, CBreadcrumbItem } from "@coreui/react";
 
+import { Dashboard } from "../../utils/navigationPaths";
+
 // Redux imports
 import { useSelector } from "react-redux";
 
@@ -37,7 +39,7 @@ const AppBreadcrumb = (props) => {
 
   // Función para manejar el clic en Home
   const handleHomeClick = () => {
-    navigate("/dashboard"); // Asegúrate de que la ruta '/dashboard' esté definida en tus rutas
+    navigate(Dashboard);
   };
 
   const getRouteName = (pathname, routes) => {

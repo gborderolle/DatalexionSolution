@@ -197,7 +197,6 @@ const DashboardFilter = ({
   }, [reduxSlateList]);
 
   useEffect(() => {
-    // Asegúrate de que reduxSelectedCircuit y slateVotesList existen
     if (selectedCircuit && selectedCircuit?.listCircuitSlates) {
       selectedCircuit?.listCircuitSlates.forEach((slate, index) => {
         const slateColor = slateColors[slate.id] || getRandomColor();
@@ -477,7 +476,6 @@ const DashboardFilter = ({
     if (currentProvinces && currentProvinces.length > 0) {
       return currentProvinces.map((province) => {
         const totalVotes = getTotalVotesByProvince(province.id);
-        // Asegúrate de que cada CListGroupItem tenga una prop `key` única.
         return (
           <CListGroupItem
             component="button"

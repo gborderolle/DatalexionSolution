@@ -15,6 +15,8 @@ import {
 
 import { USER_ROLE_ADMIN, USER_ROLE_ANALYST } from "../../../userRoles";
 
+import { LoginGeneral } from "../../../utils/navigationPaths";
+
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
 import { authActions } from "../../../store/auth-slice";
@@ -40,7 +42,7 @@ const MenuData = () => {
   useEffect(() => {
     if (userRole != USER_ROLE_ADMIN && userRole != USER_ROLE_ANALYST) {
       dispatch(authActions.logout());
-      navigate("/login-general");
+      navigate(LoginGeneral);
     }
   }, [userRole, navigate, dispatch]);
   //#endregion RUTA PROTEGIDA

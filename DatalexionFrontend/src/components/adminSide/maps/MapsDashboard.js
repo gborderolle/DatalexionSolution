@@ -25,6 +25,8 @@ import { faRefresh } from "@fortawesome/free-solid-svg-icons";
 import useBumpEffect from "../../../utils/useBumpEffect";
 import MapsDashboardFilter from "./MapsDashboardFilter";
 
+import { LoginGeneral } from "../../../utils/navigationPaths";
+
 // redux imports
 import { batch, useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../../store/auth-slice";
@@ -75,7 +77,7 @@ const MapsDashboard = () => {
   useEffect(() => {
     if (userRole != USER_ROLE_ADMIN && userRole != USER_ROLE_ANALYST) {
       dispatch(authActions.logout());
-      navigate("/login-general");
+      navigate(LoginGeneral);
     }
   }, [userRole, navigate, dispatch]);
   //#endregion RUTA PROTEGIDA

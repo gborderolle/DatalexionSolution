@@ -22,6 +22,8 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { LoadingSpinner } from "../../../utils/LoadingSpinner";
 import WidgetCard from "../widgets/WidgetCard";
 
+import { FormSummary } from "../../../utils/navigationPaths";
+
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
 import { liveSettingsActions } from "../../../store/liveSettings-slice";
@@ -133,7 +135,6 @@ const FormExtras2 = ({
   }, []);
 
   useEffect(() => {
-    // Asegúrate de que newVotes no sea nulo o undefined y tenga la forma esperada
     if (reduxSelectedCircuit && Object.keys(reduxSelectedCircuit).length > 0) {
       setFixedCards((prevCards) => {
         return prevCards?.map((card) => {
@@ -156,7 +157,7 @@ const FormExtras2 = ({
 
       setTimeout(() => {
         // Poner step Resumen en azul (activo)
-        navigate("/FormSummary");
+        navigate(FormSummary);
       }, 100);
     }
   }, [isSuccessExtras, dispatch]);

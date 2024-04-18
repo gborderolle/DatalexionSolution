@@ -107,7 +107,6 @@ const GroupInputParty = (props) => {
 
     // Espera a que la imagen se cargue y obtén la URL
     const uploadedImageURL = await uploadImage();
-    // Asegúrate de que la imagen se haya cargado antes de continuar
     if (uploadedImageURL) {
       setImageURL(uploadedImageURL); // Establece la URL de la imagen en el estado
 

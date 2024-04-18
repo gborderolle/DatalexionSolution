@@ -35,8 +35,8 @@ const FormStart = React.lazy(() =>
 const FormParty1 = React.lazy(() =>
   import("./components/delegadosSide/steps/FormParty1")
 );
-const FormSlate1 = React.lazy(() =>
-  import("./components/delegadosSide/steps/FormSlate1")
+const FormSlate = React.lazy(() =>
+  import("./components/delegadosSide/steps/FormSlate")
 );
 const FormExtras1 = React.lazy(() =>
   import("./components/delegadosSide/steps/FormExtras1")
@@ -52,7 +52,7 @@ const routes = [
     element: LoginDelegados,
   },
   { path: "/formStart", name: "Formulario", element: FormStart },
-  { path: "/formSlate1", name: "Formulario", element: FormSlate1 },
+  { path: "/formSlate", name: "Formulario", element: FormSlate },
   { path: "/formParty1", name: "Formulario", element: FormParty1 },
   { path: "/formExtras1", name: "Formulario", element: FormExtras1 },
   { path: "/formSummary", name: "Formulario", element: FormSummary },

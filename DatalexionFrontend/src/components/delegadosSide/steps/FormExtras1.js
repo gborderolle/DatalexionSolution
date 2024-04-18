@@ -12,6 +12,8 @@ import FormExtras2 from "./FormExtras2";
 import useBumpEffect from "../../../utils/useBumpEffect";
 import "./FormStart.css";
 
+import { FormStart } from "../../../utils/navigationPaths";
+
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
 import { formActions } from "../../../store/form-slice";
@@ -141,7 +143,7 @@ const FormExtras1 = () => {
     dispatch(formActions.emptyAllVotos());
 
     setTimeout(() => {
-      navigate("/formStart");
+      navigate(FormStart);
     }, 200);
   };
 

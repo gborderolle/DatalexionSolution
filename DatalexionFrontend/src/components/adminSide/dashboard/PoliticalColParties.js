@@ -17,6 +17,8 @@ import { USER_ROLE_ADMIN, USER_ROLE_ANALYST } from "../../../userRoles";
 
 import { CChartPie } from "@coreui/react-chartjs";
 
+import { LoginGeneral } from "../../../utils/navigationPaths";
+
 // redux imports
 import { authActions } from "../../../store/auth-slice";
 
@@ -53,7 +55,7 @@ const PoliticalColParties = ({
   useEffect(() => {
     if (userRole != USER_ROLE_ADMIN && userRole != USER_ROLE_ANALYST) {
       dispatch(authActions.logout());
-      navigate("/login-general");
+      navigate(LoginGeneral);
     }
   }, [userRole, navigate, dispatch]);
   //#endregion RUTA PROTEGIDA

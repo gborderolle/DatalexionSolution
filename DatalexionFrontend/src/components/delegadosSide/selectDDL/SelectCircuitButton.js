@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import { CForm, CButton, CAlert, CRow, CCol } from "@coreui/react";
 
+import { FormSlate } from "../../../utils/navigationPaths";
+
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
 import { uiActions } from "../../../store/ui-slice";
@@ -42,7 +44,7 @@ const SelectCircuitButton = (props) => {
       setShowAlert(true); // Mostrar alerta si el circuito no está seleccionado
     } else {
       setShowAlert(false); // No mostrar alerta si el circuito está seleccionado
-      navigate("/formSlate1");
+      navigate(FormSlate);
     }
   };
 

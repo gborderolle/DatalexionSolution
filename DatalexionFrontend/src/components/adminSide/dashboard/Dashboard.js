@@ -17,6 +17,8 @@ import DashboardFilter from "./DashboardFilter";
 import PoliticalColSlates from "./PoliticalColSlates";
 import PoliticalColParties from "./PoliticalColParties";
 
+import { LoginGeneral } from "../../../utils/navigationPaths";
+
 // redux imports
 import { authActions } from "../../../store/auth-slice";
 import {
@@ -73,7 +75,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (userRole != USER_ROLE_ADMIN && userRole != USER_ROLE_ANALYST) {
       dispatch(authActions.logout());
-      navigate("/login-general");
+      navigate(LoginGeneral);
     }
   }, [userRole, navigate, dispatch]);
   //#endregion RUTA PROTEGIDA
@@ -195,7 +197,6 @@ const Dashboard = () => {
   }, [reduxSlateList]);
 
   useEffect(() => {
-    // Asegúrate de que reduxSelectedCircuit y slateVotesList existen
     if (selectedCircuit && selectedCircuit?.listCircuitSlates) {
       selectedCircuit?.listCircuitSlates.forEach((slate, index) => {
         const slateColor = slateColors[slate.id] || getRandomColor();
@@ -211,8 +212,8 @@ const Dashboard = () => {
   // useEffect(() => {
   //   const createHubConnection = async () => {
   //     const connection = new HubConnectionBuilder()
-  //       // .withUrl("https://localhost:8015/notifyHub") // Asegúrate de que la URL coincida con la configuración de tu backend
-  //       .withUrl("http://localhost:8015/notifyHub") // Asegúrate de que la URL coincida con la configuración de tu backend
+  //       // .withUrl("https://localhost:8015/notifyHub")
+  //       .withUrl("http://localhost:8015/notifyHub")
   //       .withAutomaticReconnect()
   //       .build();
 

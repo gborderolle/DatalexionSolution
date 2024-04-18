@@ -31,6 +31,8 @@ import {
 
 import useBumpEffect from "../../../utils/useBumpEffect";
 
+import { LoginGeneral } from "../../../utils/navigationPaths";
+
 // redux imports
 import { batch, useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../../store/auth-slice";
@@ -63,7 +65,7 @@ const DelegadosMenu = () => {
   useEffect(() => {
     if (userRole != USER_ROLE_ADMIN && userRole != USER_ROLE_ANALYST) {
       dispatch(authActions.logout());
-      navigate("/login-general");
+      navigate(LoginGeneral);
     }
   }, [userRole, navigate, dispatch]);
   //#endregion RUTA PROTEGIDA
@@ -228,7 +230,7 @@ const DelegadosMenu = () => {
 
     // Mapea los circuitos completados para extraer información relevante, por ejemplo, el número de cada circuito
     const circuitInfo = completedCircuits.map((circuit) => ({
-      id: circuit.id, // Asegúrate de que 'Id' es el nombre correcto de la propiedad
+      id: circuit.id,
       number: circuit.number, // Asume que 'number' es una propiedad que quieres mostrar
       name: circuit.name, // Asume que 'name' es otra propiedad que quieres mostrar
     }));

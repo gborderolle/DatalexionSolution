@@ -7,6 +7,8 @@ import { CForm, CCardFooter, CButton, CRow } from "@coreui/react";
 import { LoadingSpinner } from "../../../utils/LoadingSpinner";
 import WidgetCard from "../widgets/WidgetCard";
 
+import { FormExtras1 } from "../../../utils/navigationPaths";
+
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
 import { fetchPartyList } from "../../../store/generalData-actions";
@@ -89,7 +91,7 @@ const FormParty2 = ({
       );
 
       setTimeout(() => {
-        navigate("/FormExtras1");
+        navigate(FormExtras1);
       }, 100);
     }
   }, [isSuccessParty, dispatch]);

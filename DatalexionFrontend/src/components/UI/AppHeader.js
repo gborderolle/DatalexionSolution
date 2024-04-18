@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
+
+import { USER_ROLE_ADMIN, USER_ROLE_ANALYST } from "../../userRoles";
 
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
@@ -115,7 +117,7 @@ const AppHeader = () => {
         )}
 
         <CHeaderNav className="d-none d-md-flex me-auto">
-          {userRole != "Admin" && userRole != "Analyst" && (
+          {userRole != USER_ROLE_ADMIN && userRole != USER_ROLE_ANALYST && (
             <CNavItem>
               <CNavLink to="/form" component={NavLink}>
                 Formulario

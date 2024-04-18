@@ -1,0 +1,16 @@
+export const FormStart = "/formStart";
+export const FormSlate = "/formSlate";
+export const FormParty1 = "/formParty1";
+export const FormParty2 = "/formParty2";
+export const FormExtras1 = "/formExtras1";
+export const FormExtras2 = "/formExtras2";
+export const FormSummary = "/formSummary";
+export const MenuData = "/menu-data";
+export const MenuAdmin = "/menu-admin";
+export const AdminMenu = "/admin-menu";
+export const Dashboard = "/dashboard";
+export const MapsDashboard = "/maps-dashboard";
+export const DelegatesMenu = "/delegates-menu";
+export const LogsTable = "/logs-table";
+export const LoginDelegados = "/login-delegados";
+export const LoginGeneral = "/login-general";

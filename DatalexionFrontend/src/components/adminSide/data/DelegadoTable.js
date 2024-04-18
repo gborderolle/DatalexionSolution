@@ -98,7 +98,6 @@ const DelegadoTable = (props) => {
     isValid: false,
   });
 
-  // Asegúrate de ajustar la función validateCI para no realizar la verificación si isEditing es true
   const validateCI = async (ci, isEditing = false) => {
     if (isEditing) {
       // Si estamos editando, asumimos que la cédula es válida porque ya estaba registrada
@@ -377,7 +376,7 @@ const DelegadoTable = (props) => {
     setDdlSelectedProvince(department);
     // Filtra los municipios basados en el departamento seleccionado
     const filtered = municipalityList.filter(
-      (municipality) => municipality.provinceId === department.id // Asegúrate de que 'provinceId' sea la clave correcta
+      (municipality) => municipality.provinceId === department.id
     );
     setFilteredMunicipalities(filtered);
   };

@@ -10,7 +10,7 @@ const useBumpEffect = () => {
     // Desactiva el efecto bump después de 300ms
     const timer = setTimeout(() => {
       setIsBumped(false);
-    }, 300); // Asegúrate de que este tiempo coincida con la duración de tu animación
+    }, 300);
 
     // Limpia el timeout si el componente se desmonta
     // o si el efecto se vuelve a activar antes de que el timer termine

@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { isMobile } from "react-device-detect";
 
+import { LoginGeneral } from "../../../utils/navigationPaths";
+
 // Redux imports
 import { useDispatch } from "react-redux";
 import { loginDelegadosHandler } from "../../../store/auth-actions";
@@ -184,7 +186,7 @@ const LoginDelegados = () => {
     triggerBump();
 
     setTimeout(() => {
-      navigate("/login-general");
+      navigate(LoginGeneral);
     }, 200);
   };
 

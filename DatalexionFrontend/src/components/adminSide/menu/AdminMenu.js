@@ -8,10 +8,9 @@ import GroupInputAdmin from "./group/GroupInputAdmin";
 
 import { USER_ROLE_ADMIN, USER_ROLE_ANALYST } from "../../../userRoles";
 
-import {
-  urlDelegado,
-  urlAccount,
-} from "../../../endpoints";
+import { urlDelegado, urlAccount } from "../../../endpoints";
+
+import { LoginGeneral } from "../../../utils/navigationPaths";
 
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
@@ -29,7 +28,7 @@ const AdminMenu = () => {
   useEffect(() => {
     if (userRole != USER_ROLE_ADMIN && userRole != USER_ROLE_ANALYST) {
       dispatch(authActions.logout());
-      navigate("/login-general");
+      navigate(LoginGeneral);
     }
   }, [userRole, navigate, dispatch]);
   //#endregion RUTA PROTEGIDA

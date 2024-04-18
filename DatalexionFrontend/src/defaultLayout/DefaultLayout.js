@@ -15,6 +15,8 @@ import { authActions } from "../store/auth-slice";
 
 import classes from "./DefaultLayout.module.css";
 
+import { LoginGeneral } from "../utils/navigationPaths";
+
 // Redux imports
 import { batch, useDispatch, useSelector } from "react-redux";
 import {
@@ -54,7 +56,7 @@ const DefaultLayout = () => {
       const loggedInData = JSON.parse(localStorage.getItem("loggedInData"));
       if (!loggedInData || new Date().getTime() >= loggedInData.expiry) {
         dispatch(authActions.logout());
-        navigate("/login-general");
+        navigate(LoginGeneral);
       }
     };
 

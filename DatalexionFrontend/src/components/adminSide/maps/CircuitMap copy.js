@@ -82,7 +82,7 @@ function getClientPartyVotes(circuit, reduxClient, reduxSlateList) {
   let totalVotes = 0;
 
   if (reduxClient && circuit && circuit.listCircuitSlates && reduxSlateList) {
-    const clientPartyId = reduxClient.party?.id; // Asegúrate de usar la propiedad correcta para el ID del partido
+    const clientPartyId = reduxClient.party?.id;
 
     circuit.listCircuitSlates.forEach((circuitSlate) => {
       const slate = reduxSlateList.find(

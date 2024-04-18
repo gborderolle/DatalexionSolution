@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
+import { USER_ROLE_DELEGADO } from "../../../userRoles";
+
 import {
   CCol,
   CRow,
@@ -22,6 +24,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRefresh } from "@fortawesome/free-solid-svg-icons";
 
 import RadioButtonStepper from "../../stepper/RadioButtonStepper";
+
+import { LoginGeneral } from "../../../utils/navigationPaths";
 
 // redux imports
 import { authActions } from "../../../store/auth-slice";
@@ -113,9 +117,9 @@ const FormStart = (props) => {
   //#region Hooks ***********************************
 
   useEffect(() => {
-    if (userRole != "Delegado") {
+    if (userRole != USER_ROLE_DELEGADO) {
       dispatch(authActions.logout());
-      navigate("/login-general");
+      navigate(LoginGeneral);
     }
   }, [userRole, navigate, dispatch]);
 
@@ -130,7 +134,6 @@ const FormStart = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    // Asegúrate de que reduxListMunicipalitiesFromDelegado es un arreglo antes de llamar a .map
     if (Array.isArray(reduxListMunicipalitiesFromDelegado)) {
       const municipalityIdsFromDelegado =
         reduxListMunicipalitiesFromDelegado.map(
@@ -192,7 +195,7 @@ const FormStart = (props) => {
     }
 
     setCircuitList(filteredList);
-  }, [reduxCircuitList, userMunicipalityList, onlyOpen]); // Asegúrate de incluir onlyOpen en el array de dependencias
+  }, [reduxCircuitList, userMunicipalityList, onlyOpen]);
 
   //#endregion Hooks ***********************************
 

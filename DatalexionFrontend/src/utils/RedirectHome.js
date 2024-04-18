@@ -3,6 +3,8 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 import { USER_ROLE_ADMIN, USER_ROLE_ANALYST } from "../userRoles";
 
+import { Dashboard, FormStart } from "./navigationPaths";
+
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
 
@@ -16,9 +18,9 @@ export default function RedirectHome() {
   useEffect(() => {
     if (userRole === USER_ROLE_ADMIN || userRole === USER_ROLE_ANALYST) {
       // dispatch(authActions.logout());
-      navigate("/dashboard");
+      navigate(Dashboard);
     } else {
-      navigate("/formStart");
+      navigate(FormStart);
     }
   }, [userRole, navigate, dispatch]);
   //#endregion REDIRIGIR RUTA
