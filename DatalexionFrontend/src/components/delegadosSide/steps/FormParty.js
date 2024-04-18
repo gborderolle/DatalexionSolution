@@ -144,79 +144,6 @@ const FormParty = () => {
 
   //#region Functions ***********************************
 
-  const formHandlerGeneric = async (
-    event,
-    isValidArray,
-    setIsValidForm,
-    setIsDisabled,
-    list,
-    collectionName,
-    setIsSuccess,
-    setLoading,
-    reduxSelectedCircuit
-  ) => {
-    event.preventDefault();
-
-    if (!isValidArray.every(Boolean)) {
-      setIsValidForm(false);
-      return;
-    }
-
-    setIsValidForm(true);
-    setIsDisabled(true);
-
-    // Actualizar PartyVotesList en reduxSelectedCircuit con los nuevos votos
-    const updatedPartyVotesList = reduxSelectedCircuit?.listCircuitParties?.map(
-      (partyVote) => {
-        const updatedVote = list.find(
-          (party) => party.id == partyVote.partyId
-        )?.votes;
-        return updatedVote !== undefined
-          ? { ...partyVote, votes: updatedVote }
-          : partyVote;
-      }
-    );
-
-    setLoading(true);
-
-    let isSuccess = false;
-    const updatedCircuitPayload = preparePayload(updatedPartyVotesList);
-
-    try {
-      // HTTP Put a Circuits
-      await uploadData(
-        JSON.stringify(updatedCircuitPayload),
-        urlCircuit,
-        true,
-        reduxSelectedCircuit.id
-      );
-
-      if (isSuccess) {
-      } else if (error) {
-        console.error("Error al actualizar el circuito:", error);
-      }
-
-      setIsSuccess(true);
-      isSuccess = true;
-    } catch (error) {
-      console.error("Error al actualizar el circuito:", error);
-      setIsSuccess(false);
-    }
-
-    setLoading(false);
-
-    // Si el envío fue exitoso, intenta actualizar el circuito
-    if (isSuccess) {
-      dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
-
-      // Actualizar step en Redux
-      dispatch(liveSettingsActions.setStepCompletedCircuit(2));
-
-      fetchCircuitList();
-      fetchPartyList();
-    }
-  };
-
   const getFilteredParties = () => {
     if (
       !reduxPartyList ||
@@ -302,17 +229,66 @@ const FormParty = () => {
   };
 
   const formSubmitHandlerParty = async (event) => {
-    await formHandlerGeneric(
-      event,
-      isValidArrayParty,
-      setIsValidFormParty,
-      setIsDisabledParty,
-      filteredPartyList,
-      "partyList",
-      setIsSuccessParty,
-      setIsLoadingParty,
-      reduxSelectedCircuit
+    event.preventDefault();
+
+    if (!isValidArrayParty.every(Boolean)) {
+      setIsValidFormParty(false);
+      return;
+    }
+
+    setIsValidFormParty(true);
+    setIsDisabledParty(true);
+
+    // Actualizar PartyVotesList en reduxSelectedCircuit con los nuevos votos
+    const updatedPartyVotesList = reduxSelectedCircuit?.listCircuitParties?.map(
+      (partyVote) => {
+        const updatedVote = filteredPartyList.find(
+          (party) => party.id == partyVote.partyId
+        )?.votes;
+        return updatedVote !== undefined
+          ? { ...partyVote, votes: updatedVote }
+          : partyVote;
+      }
     );
+
+    setIsLoadingParty(true);
+
+    let isSuccess = false;
+    const updatedCircuitPayload = preparePayload(updatedPartyVotesList);
+
+    try {
+      // HTTP Put a Circuits
+      await uploadData(
+        JSON.stringify(updatedCircuitPayload),
+        urlCircuit,
+        true,
+        reduxSelectedCircuit.id
+      );
+
+      if (isSuccess) {
+      } else if (error) {
+        console.error("Error al actualizar el circuito:", error);
+      }
+
+      setIsSuccessParty(true);
+      isSuccess = true;
+    } catch (error) {
+      console.error("Error al actualizar el circuito:", error);
+      setIsSuccessParty(false);
+    }
+
+    setIsLoadingParty(false);
+
+    // Si el envío fue exitoso, intenta actualizar el circuito
+    if (isSuccess) {
+      dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
+
+      // Actualizar step en Redux
+      dispatch(liveSettingsActions.setStepCompletedCircuit(2));
+
+      fetchCircuitList();
+      fetchPartyList();
+    }
 
     // SET REDUX ACA
     dispatch(formActions.setReduxVotosStep2(votosPartyTotal)); //ToDo revisar

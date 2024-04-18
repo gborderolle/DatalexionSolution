@@ -108,22 +108,24 @@ const FormSlate = () => {
 
   // Calcula la suma total de todos los votos (slate votes) y actualiza updatedPartyVotesList
   useEffect(() => {
-    const totalVotes = reduxSelectedCircuit?.listCircuitSlates.reduce(
-      (acc, slate) => acc + slate.votes,
-      0
-    );
-    setVotosSlateTotal(totalVotes);
+    if (reduxSelectedCircuit && reduxSelectedCircuit.listCircuitSlates) {
+      const totalVotes = reduxSelectedCircuit.listCircuitSlates.reduce(
+        (acc, slate) => acc + (slate.votes || 0), // Ensure votes is a number
+        0
+      );
+      setVotosSlateTotal(totalVotes);
 
-    setUpdatedPartyVotesList([
-      {
-        PartyId: reduxClient.party?.id,
-        Votes: totalVotes,
-      },
-    ]);
+      setUpdatedPartyVotesList([
+        {
+          PartyId: reduxClient.party?.id,
+          Votes: totalVotes,
+        },
+      ]);
 
-    // Despacha la acción con la lista actualizada
-    dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
-  }, [reduxSelectedCircuit?.listCircuitSlates, dispatch]);
+      // Dispatch the action with the updated list
+      dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
+    }
+  }, [reduxSelectedCircuit, dispatch]); // Watch reduxSelectedCircuit itself to handle undefined cases
 
   useEffect(() => {
     const fetchData = async () => {
@@ -176,81 +178,6 @@ const FormSlate = () => {
   //#endregion Hooks ***********************************
 
   //#region Functions ***********************************
-
-  const formHandlerGeneric = async (
-    event,
-    isValidArray,
-    setIsValidForm,
-    setIsDisabled,
-    list,
-    collectionName,
-    setIsSuccess,
-    setLoading,
-    reduxSelectedCircuit
-  ) => {
-    event.preventDefault();
-
-    if (!isValidArray.every(Boolean)) {
-      setIsValidForm(false);
-      return;
-    }
-
-    setIsValidForm(true);
-    setIsDisabled(true);
-
-    // Actualizar SlateVotesList en reduxSelectedCircuit con los nuevos votos
-    const updatedSlateVotesList = reduxSelectedCircuit?.listCircuitSlates?.map(
-      (slateVote) => {
-        const updatedVote = list.find(
-          (slate) => slate.id === slateVote.slateId
-        )?.votes;
-        return updatedVote !== undefined
-          ? { ...slateVote, votes: updatedVote }
-          : slateVote;
-      }
-    );
-
-    setLoading(true);
-
-    let isSuccess = false;
-    const updatedCircuitPayload = preparePayload(updatedSlateVotesList);
-
-    try {
-      // HTTP Put a Circuits
-      await uploadData(
-        JSON.stringify(updatedCircuitPayload),
-        urlCircuit,
-        true,
-        reduxSelectedCircuit.id
-      );
-
-      if (isSuccess) {
-      } else if (error) {
-        console.error("Error al actualizar el circuito:", error);
-      }
-
-      setIsSuccess(true);
-      isSuccess = true;
-    } catch (error) {
-      console.error("Error al actualizar el circuito:", error);
-      setIsSuccess(false);
-    }
-
-    setLoading(false);
-
-    // Si el envío fue exitoso, intenta actualizar el circuito
-    if (isSuccess) {
-      dispatch(liveSettingsActions.setSlateVotesList(updatedSlateVotesList));
-      dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
-
-      // Actualizar step en Redux
-      dispatch(liveSettingsActions.setStepCompletedCircuit(1));
-
-      fetchCircuitList();
-      fetchSlateList();
-      fetchPartyList();
-    }
-  };
 
   const getFilteredSlates = () => {
     if (
@@ -356,17 +283,67 @@ const FormSlate = () => {
   };
 
   const formSubmitHandlerSlate = async (event) => {
-    await formHandlerGeneric(
-      event,
-      isValidArraySlate,
-      setIsValidFormSlate,
-      setIsDisabledSlate,
-      filteredSlateList,
-      "slateList",
-      setIsSuccessSlate,
-      setIsLoadingSlate,
-      reduxSelectedCircuit
+    event.preventDefault();
+
+    if (!isValidArraySlate.every(Boolean)) {
+      setIsValidFormSlate(false);
+      return;
+    }
+
+    setIsValidFormSlate(true);
+    setIsDisabledSlate(true);
+
+    // Actualizar SlateVotesList en reduxSelectedCircuit con los nuevos votos
+    const updatedSlateVotesList = reduxSelectedCircuit?.listCircuitSlates?.map(
+      (slateVote) => {
+        const updatedVote = filteredSlateList.find(
+          (slate) => slate.id === slateVote.slateId
+        )?.votes;
+        return updatedVote !== undefined
+          ? { ...slateVote, votes: updatedVote }
+          : slateVote;
+      }
     );
+
+    setIsLoadingSlate(true);
+
+    let isSuccess = false;
+    const updatedCircuitPayload = preparePayload(updatedSlateVotesList);
+
+    try {
+      // HTTP Put a Circuits
+      await uploadData(
+        JSON.stringify(updatedCircuitPayload),
+        urlCircuit,
+        true,
+        reduxSelectedCircuit.id
+      );
+
+      if (isSuccess) {
+      } else if (error) {
+        console.error("Error al actualizar el circuito:", error);
+      }
+
+      setIsSuccessSlate(true);
+      isSuccess = true;
+    } catch (error) {
+      console.error("Error al actualizar el circuito:", error);
+      setIsSuccessSlate(false);
+    }
+
+    // Si el envío fue exitoso, intenta actualizar el circuito
+    if (isSuccess) {
+      dispatch(liveSettingsActions.setSlateVotesList(updatedSlateVotesList));
+      dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
+
+      // Actualizar step en Redux
+      dispatch(liveSettingsActions.setStepCompletedCircuit(1));
+
+      fetchCircuitList();
+      fetchSlateList();
+      fetchPartyList();
+    }
+
     setIsLoadingSlate(false);
 
     // SET REDUX ACA
