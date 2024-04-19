@@ -17,6 +17,7 @@ import {
 } from "../endpoints";
 
 import { selectUsername, selectClientId } from "./auth-slice";
+import { selectClient } from "./generalData-slice";
 
 export const fetchPartyList = () => {
   return async (dispatch) => {
@@ -36,24 +37,14 @@ export const fetchPartyList = () => {
 export const fetchPartyListByClient = () => {
   return async (dispatch, getState) => {
     try {
-      // Intenta usar el parámetro username si se proporciona, de lo contrario, obtiene el username del estado Redux
-      let clientId = selectClientId(getState());
+      const clientId = selectClientId(getState());
       if (!clientId) {
-        console.error("Nombre de usuario no proporcionado o inválido.");
-        return; // Termina la ejecución si no hay un username válido
-      }
-
-      // Asegura que clientId sea un entero
-      clientId = parseInt(clientId, 10); // El segundo argumento (10) especifica la base decimal
-      if (isNaN(clientId)) {
-        console.error("clientId debe ser un número.");
-        return; // Termina la ejecución si clientId no es un número
+        console.error("ClientId no disponible.");
+        return;
       }
 
       const urlWithParam = `${urlParty}/GetPartiesByClient?clientId=${clientId}`;
       const data = await fetchApi(urlWithParam);
-
-      // Procesa los datos recibidos
       if (data && data.result) {
         dispatch(generalDataActions.setPartyListByClient(data.result));
       } else {
@@ -85,18 +76,10 @@ export const fetchWingList = () => {
 export const fetchWingListByClient = () => {
   return async (dispatch, getState) => {
     try {
-      // Intenta usar el parámetro username si se proporciona, de lo contrario, obtiene el username del estado Redux
-      let clientId = selectClientId(getState());
+      const clientId = selectClientId(getState());
       if (!clientId) {
-        console.error("Nombre de usuario no proporcionado o inválido.");
-        return; // Termina la ejecución si no hay un username válido
-      }
-
-      // Asegura que clientId sea un entero
-      clientId = parseInt(clientId, 10); // El segundo argumento (10) especifica la base decimal
-      if (isNaN(clientId)) {
-        console.error("clientId debe ser un número.");
-        return; // Termina la ejecución si clientId no es un número
+        console.error("ClientId no disponible.");
+        return;
       }
 
       const urlWithParam = `${urlWing}/GetWingsByClient?clientId=${clientId}`;
@@ -134,18 +117,10 @@ export const fetchSlateList = () => {
 export const fetchSlateListByClient = () => {
   return async (dispatch, getState) => {
     try {
-      // Intenta usar el parámetro username si se proporciona, de lo contrario, obtiene el username del estado Redux
-      let clientId = selectClientId(getState());
+      const clientId = selectClientId(getState());
       if (!clientId) {
-        console.error("Nombre de usuario no proporcionado o inválido.");
-        return; // Termina la ejecución si no hay un username válido
-      }
-
-      // Asegura que clientId sea un entero
-      clientId = parseInt(clientId, 10); // El segundo argumento (10) especifica la base decimal
-      if (isNaN(clientId)) {
-        console.error("clientId debe ser un número.");
-        return; // Termina la ejecución si clientId no es un número
+        console.error("ClientId no disponible.");
+        return;
       }
 
       const urlWithParam = `${urlSlate}/GetSlatesByClient?clientId=${clientId}`;
@@ -212,21 +187,13 @@ export const fetchCircuitList = () => {
 export const fetchCircuitListByClient = () => {
   return async (dispatch, getState) => {
     try {
-      // Intenta usar el parámetro username si se proporciona, de lo contrario, obtiene el username del estado Redux
-      let clientId = selectClientId(getState());
+      const clientId = selectClientId(getState());
       if (!clientId) {
-        console.error("Nombre de usuario no proporcionado o inválido.");
-        return; // Termina la ejecución si no hay un username válido
+        console.error("ClientId no disponible.");
+        return;
       }
 
-      // Asegura que clientId sea un entero
-      clientId = parseInt(clientId, 10); // El segundo argumento (10) especifica la base decimal
-      if (isNaN(clientId)) {
-        console.error("clientId debe ser un número.");
-        return; // Termina la ejecución si clientId no es un número
-      }
-
-      const urlWithParam = `${urlCircuit}/GetCircuitByClient?clientId=${clientId}`;
+      const urlWithParam = `${urlCircuit}/GetCircuitsByClient?clientId=${clientId}`;
       const data = await fetchApi(urlWithParam);
 
       // Procesa los datos recibidos
@@ -310,18 +277,10 @@ export const fetchDelegadoList = () => {
 export const fetchDelegadoListByClient = () => {
   return async (dispatch, getState) => {
     try {
-      // Intenta usar el parámetro username si se proporciona, de lo contrario, obtiene el username del estado Redux
-      let clientId = selectClientId(getState());
+      const clientId = selectClientId(getState());
       if (!clientId) {
-        console.error("Nombre de usuario no proporcionado o inválido.");
-        return; // Termina la ejecución si no hay un username válido
-      }
-
-      // Asegura que clientId sea un entero
-      clientId = parseInt(clientId, 10); // El segundo argumento (10) especifica la base decimal
-      if (isNaN(clientId)) {
-        console.error("clientId debe ser un número.");
-        return; // Termina la ejecución si clientId no es un número
+        console.error("ClientId no disponible.");
+        return;
       }
 
       const urlWithParam = `${urlDelegado}/GetDelegadosByClient?clientId=${clientId}`;
@@ -342,24 +301,43 @@ export const fetchDelegadoListByClient = () => {
 };
 
 export const fetchVotosTotal = (circuit) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
-      const apiResult = await fetchApi(urlCircuit + "/" + circuit.id);
-      if (apiResult.result) {
-        const circuitResult = apiResult.result;
+      const client = selectClient(getState());
+      if (!client) {
+        console.error("Client no disponible.");
+        return;
+      }
+
+      const urlWithParam = `${urlCircuit}/GetCircuitByClient/${circuit.id}?clientId=${client.id}`;
+      const data = await fetchApi(urlWithParam);
+
+      // const data = await fetchApi(urlCircuit + "/" + circuit.id);
+      if (data && data.result) {
+        const circuitResult = data.result;
         let votosCircuitoTotal = 0;
 
         // Sumar los votos de cada slate dentro del circuito
         circuitResult.listCircuitSlates.forEach((circuitSlate) => {
-          votosCircuitoTotal += circuitSlate.votes || 0; // Asegurarse de que Votes sea un número
+          votosCircuitoTotal += circuitSlate.totalSlateVotes || 0; // Asegurarse de que Votes sea un número
         });
+
+        // Encontrar el circuitParty específico basado en partyId
+        const myCircuitParty = circuitResult.listCircuitParties.find(
+          (party) => party.partyId === client.party.id
+        );
+
+        if (!myCircuitParty) {
+          console.error("No se encontró el circuitParty especificado.");
+          return; // Terminar si no se encuentra el circuitParty
+        }
 
         // Sumar votos extras
         const votosExtrasTotal =
-          circuitResult.nullVotes +
-          circuitResult.blankVotes +
-          circuitResult.recurredVotes +
-          circuitResult.observedVotes;
+          myCircuitParty.nullVotes +
+          myCircuitParty.blankVotes +
+          myCircuitParty.recurredVotes +
+          myCircuitParty.observedVotes;
 
         votosCircuitoTotal += votosExtrasTotal; // Sumar los votos extras al total
 
@@ -437,18 +415,10 @@ export const fetchUserList = () => {
 export const fetchUserListByClient = () => {
   return async (dispatch, getState) => {
     try {
-      // Intenta usar el parámetro username si se proporciona, de lo contrario, obtiene el username del estado Redux
-      let clientId = selectClientId(getState());
+      const clientId = selectClientId(getState());
       if (!clientId) {
-        console.error("Nombre de usuario no proporcionado o inválido.");
-        return; // Termina la ejecución si no hay un username válido
-      }
-
-      // Asegura que clientId sea un entero
-      clientId = parseInt(clientId, 10); // El segundo argumento (10) especifica la base decimal
-      if (isNaN(clientId)) {
-        console.error("clientId debe ser un número.");
-        return; // Termina la ejecución si clientId no es un número
+        console.error("ClientId no disponible.");
+        return;
       }
 
       const urlWithParam = `${urlAccount}/GetUsersByClient?clientId=${encodeURIComponent(

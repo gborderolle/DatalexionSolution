@@ -153,7 +153,7 @@ const PoliticalColParties = ({
                     {sortedParties &&
                       sortedParties.map((circuitParty, index) => {
                         const votePercentage = calculatePercentage(
-                          circuitParty.votes,
+                          circuitParty.totalPartyVotes,
                           totalPartyVotes
                         );
                         const party = getPartyById(circuitParty.partyId);
@@ -177,7 +177,7 @@ const PoliticalColParties = ({
                                 <div
                                   className={`text-medium-emphasis small ${classesMobile.value}`}
                                 >
-                                  {`Votos: ${circuitParty.votes} (${votePercentage}%)`}
+                                  {`Votos: ${circuitParty.totalPartyVotes} (${votePercentage}%)`}
                                 </div>
                               </div>
                             </CCol>
@@ -191,7 +191,7 @@ const PoliticalColParties = ({
                   {sortedParties &&
                     sortedParties.map((circuitParty, index) => {
                       const votePercentage = calculatePercentage(
-                        circuitParty.votes,
+                        circuitParty.totalPartyVotes,
                         totalPartyVotes
                       );
                       const party = getPartyById(circuitParty.partyId);
@@ -207,7 +207,7 @@ const PoliticalColParties = ({
                           <div className="progress-group mb-4" key={key}>
                             <div className="progress-group-header">
                               <span>{party.name}</span>
-                              <span className="ms-auto">{`Votos: ${circuitParty.votes} (${votePercentage}%)`}</span>
+                              <span className="ms-auto">{`Votos: ${circuitParty.totalPartyVotes} (${votePercentage}%)`}</span>
                             </div>
                             <div className="progress-group-bars">
                               <StyledProgress

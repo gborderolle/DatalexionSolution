@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const generalDataSlice = createSlice({
   name: "generalData",
   initialState: {
-    client: [],
+    client: null,
     partyList: [],
     partyListByClient: [],
     wingList: [],
@@ -78,5 +78,7 @@ const generalDataSlice = createSlice({
 });
 
 export const generalDataActions = generalDataSlice.actions;
+
+export const selectClient = (state) => state.generalData.client;
 
 export default generalDataSlice;

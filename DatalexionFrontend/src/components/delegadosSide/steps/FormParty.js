@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-import { urlCircuit } from "../../../endpoints";
+import { urlCircuit, urlCircuitUpdateStep2 } from "../../../endpoints";
 import useAPI from "../../../hooks/use-API";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -80,7 +80,7 @@ const FormParty = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(formActions.setReduxVotosTotalSteps(votosPartyTotal));
+    // dispatch(formActions.setReduxVotosTotalSteps(votosPartyTotal));
   }, [votosPartyTotal, dispatch]);
 
   useEffect(() => {
@@ -101,7 +101,7 @@ const FormParty = () => {
     const totalVotosParty = reduxSelectedCircuit?.listCircuitParties
       // .filter((circuitParty) => circuitParty.partyId !== reduxClient?.party.id) // Excluir el partido del cliente
       .reduce((total, circuitParty) => {
-        return total + Number(circuitParty.votes || 0); // Asegurar que party.votes sea un número
+        return total + Number(circuitParty.totalPartyVotes || 0); // Asegurar que party.votes sea un número
       }, 0);
 
     setVotosPartyTotal(totalVotosParty);
@@ -168,7 +168,7 @@ const FormParty = () => {
         );
         return {
           ...party,
-          votes: circuitParty?.votes || 0,
+          votes: circuitParty?.totalPartyVotes || 0,
         };
       });
 
@@ -259,7 +259,8 @@ const FormParty = () => {
       // HTTP Put a Circuits
       await uploadData(
         JSON.stringify(updatedCircuitPayload),
-        urlCircuit,
+        // urlCircuit,
+        urlCircuitUpdateStep2,
         true,
         reduxSelectedCircuit.id
       );
@@ -325,7 +326,7 @@ const FormParty = () => {
       listCircuitParties: updatedPartyVotesList.map((party) => ({
         circuitId: party.circuitId,
         partyId: party.partyId,
-        votes: party.votes,
+        totalPartyVotes: party.votes,
       })),
       listCircuitSlates: reduxSelectedCircuit?.listCircuitSlates,
     };
@@ -333,20 +334,29 @@ const FormParty = () => {
     // Update reduxSelectedCircuit
     dispatch(liveSettingsActions.setSelectedCircuit(updatedCircuit));
 
+    // const updatedCircuitPayload = {
+    //   Number: reduxSelectedCircuit?.number,
+    //   Name: reduxSelectedCircuit?.name,
+    //   Address: reduxSelectedCircuit?.address,
+    //   BlankVotes: reduxSelectedCircuit?.blankVotes,
+    //   NullVotes: reduxSelectedCircuit?.nullVotes,
+    //   ObservedVotes: reduxSelectedCircuit?.observedVotes,
+    //   RecurredVotes: reduxSelectedCircuit?.recurredVotes,
+    //   ListCircuitParties: updatedCircuit?.listCircuitParties,
+    //   ListCircuitSlates: reduxSelectedCircuit?.listCircuitSlates,
+    //   Step1completed: reduxSelectedCircuit?.step1completed,
+    //   Step2completed: true,
+    //   Step3completed: reduxSelectedCircuit?.step3completed,
+    //   LastUpdateDelegadoId: delegadoId,
+    // };
+
     const updatedCircuitPayload = {
+      Id: reduxSelectedCircuit?.id,
       Number: reduxSelectedCircuit?.number,
       Name: reduxSelectedCircuit?.name,
-      Address: reduxSelectedCircuit?.address,
-      BlankVotes: reduxSelectedCircuit?.blankVotes,
-      NullVotes: reduxSelectedCircuit?.nullVotes,
-      ObservedVotes: reduxSelectedCircuit?.observedVotes,
-      RecurredVotes: reduxSelectedCircuit?.recurredVotes,
       ListCircuitParties: updatedCircuit?.listCircuitParties,
-      ListCircuitSlates: reduxSelectedCircuit?.listCircuitSlates,
-      Step1completed: reduxSelectedCircuit?.step1completed,
-      Step2completed: true,
-      Step3completed: reduxSelectedCircuit?.step3completed,
       LastUpdateDelegadoId: delegadoId,
+      ClientId: reduxClient.id,
     };
 
     return updatedCircuitPayload;

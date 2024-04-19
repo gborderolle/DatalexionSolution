@@ -83,7 +83,7 @@ function getCircuitPartiesVotes(circuit, reduxClient, reduxSlateList) {
   let totalVotes = 0;
   if (circuit && circuit.listCircuitParties) {
     circuit.listCircuitParties.forEach((circuitParty) => {
-      totalVotes += circuitParty.votes || 0;
+      totalVotes += circuitParty.totalPartyVotes || 0;
     });
   }
   return totalVotes;

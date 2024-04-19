@@ -90,7 +90,7 @@ function getClientPartyVotes(circuit, reduxClient, reduxSlateList) {
       );
 
       if (slate && slate.wing && slate.wing.partyId === clientPartyId) {
-        totalVotes += circuitSlate.votes || 0;
+        totalVotes += circuitSlate.totalSlateVotes || 0;
       }
     });
   }
@@ -106,7 +106,7 @@ function getAllSlateVotes(circuit) {
     // Itera sobre cada slate del circuito
     circuit.listCircuitSlates.forEach((circuitSlate) => {
       // Suma los votos de cada slate al total
-      totalVotes += circuitSlate.votes || 0;
+      totalVotes += circuitSlate.totalSlateVotes || 0;
     });
   }
 

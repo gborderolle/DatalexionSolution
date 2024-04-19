@@ -174,7 +174,7 @@ const FormSummary = () => {
         if (!partyDetail) return null; // Si no se encuentra detalle, filtrar fuera
         return {
           ...partyDetail,
-          votes: circuitParty.votes || 0,
+          votes: circuitParty.totalPartyVotes || 0,
         };
       })
       .filter(Boolean); // Eliminar cualquier elemento nulo resultante de no encontrar detalles
@@ -202,7 +202,7 @@ const FormSummary = () => {
         if (!slateDetail) return null; // Si no se encuentra detalle, filtrar fuera
         return {
           ...slateDetail,
-          votes: circuitSlate.votes || 0,
+          votes: circuitSlate.totalSlateVotes || 0,
         };
       })
       .filter(Boolean); // Eliminar cualquier elemento nulo resultante de no encontrar detalles

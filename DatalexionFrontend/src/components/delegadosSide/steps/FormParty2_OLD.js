@@ -58,7 +58,7 @@ const FormParty2_OLD = ({
     const totalVotosParty = reduxSelectedCircuit?.listCircuitParties
       // .filter((circuitParty) => circuitParty.partyId !== reduxClient?.party.id) // Excluir el partido del cliente
       .reduce((total, circuitParty) => {
-        return total + Number(circuitParty.votes || 0); // Asegurar que party.votes sea un número
+        return total + Number(circuitParty.totalPartyVotes || 0); // Asegurar que party.votes sea un número
       }, 0);
 
     setVotosPartyTotal(totalVotosParty);
@@ -167,7 +167,7 @@ const FormParty2_OLD = ({
         );
         return {
           ...party,
-          votes: circuitParty?.votes || 0,
+          votes: circuitParty?.totalPartyVotes || 0,
         };
       });
 

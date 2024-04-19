@@ -183,11 +183,11 @@
             <param name="paginationDTO">Parámetros de paginación.</param>
             <returns>Una lista paginada de circuitos.</returns>
         </member>
-        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.GetCircuitByClient(System.Int32)">
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.GetCircuitsByClient(System.Int32)">
             <summary>
             Filtra los circuitos que incluye únicamente las listas de nuestro cliente
             </summary>
-            <param name="paginationDTO"></param>
+            <param name="clientId"></param>
             <returns></returns>
         </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.All">
@@ -203,6 +203,14 @@
             <param name="id">ID del circuito.</param>
             <returns>Un circuito específico.</returns>
         </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.GetCircuitByClient(System.Int32,System.Int32)">
+            <summary>
+            Obtiene un circuito específico por su ID de cliente.
+            </summary>
+            <param name="id">ID del circuito.</param>
+            <param name="clientId">ID del cliente.</param>
+            <returns>Un circuito específico.</returns>
+        </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.Delete(System.Int32)">
             <summary>
             Elimina un circuito específico por su ID.
@@ -212,6 +220,24 @@
         </member>
         <!-- Badly formed XML comment ignored for member "M:DatalexionBackend.UI.Controllers.V1.CircuitsController.Put(System.Int32,DatalexionBackend.Core.DTO.CircuitPutDTO)" -->
         <!-- Badly formed XML comment ignored for member "M:DatalexionBackend.UI.Controllers.V1.CircuitsController.CircuitPut(System.Int32,DatalexionBackend.Core.DTO.CircuitPutDTO)" -->
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.UpdateStep1(System.Int32,DatalexionBackend.Core.DTO.CircuitUpdateStep1DTO)">
+            <summary>
+            Updates an existing circuit, applying the specified changes in the creation DTO.
+            Origin Frontend: CircuitTable.js
+            </summary>
+            <param name="id">ID of the circuit to update.</param>
+            <param name="dto">Creation DTO with the data to update the circuit.</param>
+            <returns>Response indicating the result of the update operation.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.UpdateStep2(System.Int32,DatalexionBackend.Core.DTO.CircuitUpdateStep2DTO)">
+            <summary>
+            Updates an existing circuit, applying the specified changes in the creation DTO.
+            Origin Frontend: CircuitTable.js
+            </summary>
+            <param name="id">ID of the circuit to update.</param>
+            <param name="dto">Creation DTO with the data to update the circuit.</param>
+            <returns>Response indicating the result of the update operation.</returns>
+        </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.CircuitUpdate(System.Int32,DatalexionBackend.Core.DTO.CircuitCreateDTO)">
             <summary>
             Actualiza un circuito existente, aplicando los cambios especificados en el DTO de creación.

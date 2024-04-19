@@ -184,7 +184,7 @@ const FormSlate2_OLD = ({
         );
         return {
           ...slateDetail,
-          votes: circuitSlate.votes || 0, // Asegura que votes siempre sea un número
+          votes: circuitSlate.totalSlateVotes || 0, // Asegura que votes siempre sea un número
         };
       })
       .sort((a, b) => {

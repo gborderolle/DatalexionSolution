@@ -160,7 +160,7 @@ const Dashboard = () => {
     let totalVotes = 0;
     // filteredCircuitParties.forEach((circuitParty) => {
     sortedFilteredCircuitParties.forEach((circuitParty) => {
-      totalVotes += circuitParty.votes;
+      totalVotes += circuitParty.totalPartyVotes;
     });
     return totalVotes;
   };
@@ -271,11 +271,12 @@ const Dashboard = () => {
       if (circuit.listCircuitSlates) {
         circuit.listCircuitSlates.forEach((circuitSlate) => {
           if (totalVotesBySlate[circuitSlate.slateId]) {
-            totalVotesBySlate[circuitSlate.slateId].votes += circuitSlate.votes;
+            totalVotesBySlate[circuitSlate.slateId].votes +=
+              circuitSlate.totalSlateVotes;
           } else {
             totalVotesBySlate[circuitSlate.slateId] = {
               ...circuitSlate,
-              votes: circuitSlate.votes,
+              votes: circuitSlate.totalSlateVotes,
             };
           }
         });
@@ -316,8 +317,8 @@ const Dashboard = () => {
         const partyColor = party?.color || getRandomColor();
         const hoverColor = hexToRGBA(partyColor, 0.9);
 
-        acc.labels.push(`${party?.name} (${circuitParty.votes})`);
-        acc.data.push(circuitParty.votes);
+        acc.labels.push(`${party?.name} (${circuitParty.totalPartyVotes})`);
+        acc.data.push(circuitParty.totalPartyVotes);
         acc.backgroundColor.push(partyColor);
         acc.hoverBackgroundColor.push(hoverColor);
 
@@ -445,8 +446,10 @@ const Dashboard = () => {
     sortedFilteredCircuitSlates.forEach((circuitSlate) => {
       const slate = getSlateById(circuitSlate.slateId);
       if (slate) {
-        slateChartData.labels.push(`${slate.name} (${circuitSlate.votes})`);
-        slateChartData.datasets[0].data.push(circuitSlate.votes);
+        slateChartData.labels.push(
+          `${slate.name} (${circuitSlate.totalSlateVotes})`
+        );
+        slateChartData.datasets[0].data.push(circuitSlate.totalSlateVotes);
         slateChartData.datasets[0].backgroundColor.push(
           slate.color || getRandomColor()
         );

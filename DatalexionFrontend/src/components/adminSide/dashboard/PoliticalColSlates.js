@@ -190,11 +190,11 @@ const PoliticalColSlates = ({
                       sortedSlates.map((circuitSlate, index) => {
                         const votePercentage = isRelativePercentage
                           ? calculatePercentage(
-                              circuitSlate.votes,
+                              circuitSlate.totalSlateVotes,
                               totalVotesOfSelectedParty
                             )
                           : calculatePercentage(
-                              circuitSlate.votes,
+                              circuitSlate.totalSlateVotes,
                               totalSelectedVotes
                             );
 
@@ -219,7 +219,7 @@ const PoliticalColSlates = ({
                               <div
                                 className={`text-medium-emphasis small ${classesMobile.value}`}
                               >
-                                {`Votos: ${circuitSlate.votes} (${votePercentage}%)`}
+                                {`Votos: ${circuitSlate.totalSlateVotes} (${votePercentage}%)`}
                               </div>
                             </div>
                           </CCol>
@@ -233,11 +233,11 @@ const PoliticalColSlates = ({
                     sortedSlates.map((circuitSlate, index) => {
                       const votePercentage = isRelativePercentage
                         ? calculatePercentage(
-                            circuitSlate.votes,
+                            circuitSlate.totalSlateVotes,
                             totalVotesOfSelectedParty
                           )
                         : calculatePercentage(
-                            circuitSlate.votes,
+                            circuitSlate.totalSlateVotes,
                             totalSelectedVotes
                           );
 
@@ -254,7 +254,7 @@ const PoliticalColSlates = ({
                         <div className="progress-group mb-4" key={key}>
                           <div className="progress-group-header">
                             <span>{`${wing?.name}: ${slate?.name}`}</span>
-                            <span className="ms-auto">{`Votos: ${circuitSlate.votes} (${votePercentage}%)`}</span>
+                            <span className="ms-auto">{`Votos: ${circuitSlate.totalSlateVotes} (${votePercentage}%)`}</span>
                           </div>
                           <div className="progress-group-bars">
                             <StyledProgress
