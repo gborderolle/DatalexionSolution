@@ -32,7 +32,7 @@ namespace DatalexionBackend.Core.Helpers
 
             // N..N
             CreateMap<Circuit, CircuitDTO>()
-              .ForMember(dest => dest.ListPhotosURL, opt => opt.MapFrom(src => src.ListPhotos.Select(photo => photo.URL).ToList()))
+            //   .ForMember(dest => dest.ListPhotosURL, opt => opt.MapFrom(src => src.ListPhotos.Select(photo => photo.URL).ToList()))
                 .ForMember(dest => dest.ListCircuitDelegados, opt => opt.MapFrom(src => src.ListCircuitDelegados))
                 .ForMember(dest => dest.ListCircuitSlates, opt => opt.MapFrom(src => src.ListCircuitSlates))
                 .ForMember(dest => dest.ListCircuitParties, opt => opt.MapFrom(src => src.ListCircuitParties))
@@ -51,7 +51,7 @@ namespace DatalexionBackend.Core.Helpers
 
             // N..N
             CreateMap<CircuitCreateDTO, Circuit>()
-              .ForMember(dest => dest.ListPhotos, opt => opt.Ignore()) // Ignorar porque lo agrego a mano en el Controller
+            //   .ForMember(dest => dest.ListPhotos, opt => opt.Ignore()) // Ignorar porque lo agrego a mano en el Controller
                 .ForMember(dest => dest.ListCircuitSlates, opt => opt.MapFrom(src =>
                     src.ListCircuitSlates != null
                         ? src.ListCircuitSlates.Select(dto => new CircuitSlate
@@ -81,7 +81,7 @@ namespace DatalexionBackend.Core.Helpers
 
             CreateMap<CircuitPartyCreateDTO, CircuitParty>()
                 .ForMember(dest => dest.PartyId, opt => opt.MapFrom(src => src.PartyId))
-                .ForMember(dest => dest.Votes, opt => opt.MapFrom(src => src.Votes))
+                .ForMember(dest => dest.TotalPartyVotes, opt => opt.MapFrom(src => src.TotalPartyVotes))
                 .ForMember(dest => dest.CircuitId, opt => opt.MapFrom(src => src.CircuitId))
                 .ReverseMap();
 

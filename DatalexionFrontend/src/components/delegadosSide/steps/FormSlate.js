@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-import { urlCircuit } from "../../../endpoints";
+import { urlCircuitPut } from "../../../endpoints";
 import useAPI from "../../../hooks/use-API";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,10 +21,9 @@ import {
 import { LoadingSpinner } from "../../../utils/LoadingSpinner";
 import ProfileCard from "../profileCard/ProfileCard";
 
+import { FormParty, FormStart } from "../../../utils/navigationPaths";
 import useBumpEffect from "../../../utils/useBumpEffect";
 import "./FormStart.css";
-
-import { FormParty, FormStart } from "../../../utils/navigationPaths";
 
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
@@ -125,7 +124,7 @@ const FormSlate = () => {
       // Dispatch the action with the updated list
       dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
     }
-  }, [reduxSelectedCircuit, dispatch]); // Watch reduxSelectedCircuit itself to handle undefined cases
+  }, [reduxSelectedCircuit, dispatch]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -311,10 +310,10 @@ const FormSlate = () => {
     const updatedCircuitPayload = preparePayload(updatedSlateVotesList);
 
     try {
-      // HTTP Put a Circuits
+      // HTTP Put (especial) a Circuits
       await uploadData(
         JSON.stringify(updatedCircuitPayload),
-        urlCircuit,
+        urlCircuitPut,
         true,
         reduxSelectedCircuit.id
       );
@@ -346,8 +345,8 @@ const FormSlate = () => {
 
     setIsLoadingSlate(false);
 
-    // SET REDUX ACA
-    dispatch(formActions.setReduxVotosStep1(votosSlateTotal));
+    // SET REDUX ACA --> No es necesario acá, porque se guarda cada vez que cambia el valor de voto, verificar.
+    // dispatch(formActions.setReduxVotosStep1(votosSlateTotal));
 
     // Redux fetch DB
     dispatch(fetchSlateList()); // refresh DB data
@@ -411,6 +410,7 @@ const FormSlate = () => {
       Step2completed: reduxSelectedCircuit?.step2completed,
       Step3completed: reduxSelectedCircuit?.step3completed,
       LastUpdateDelegadoId: delegadoId,
+      ClientId: reduxClient.id,
     };
 
     return updatedCircuitPayload;

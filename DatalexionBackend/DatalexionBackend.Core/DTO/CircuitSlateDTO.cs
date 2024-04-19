@@ -10,7 +10,7 @@ namespace DatalexionBackend.Core.DTO
         public int SlateId { get; set; }
 
         // Uniques
-        public int? Votes { get; set; }
+        public int? TotalSlateVotes { get; set; }
 
         #endregion
 

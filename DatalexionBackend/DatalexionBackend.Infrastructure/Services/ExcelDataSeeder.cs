@@ -101,7 +101,6 @@ namespace DatalexionBackend.Infrastructure.Services
                                 var municipality1 = await context.Municipality.FirstOrDefaultAsync(p => p.Id == municipalityNames[municipalityName]);
                                 if (municipality1 != null)
                                 {
-
                                     var circuit = new Circuit
                                     {
                                         Name = circuitName,
@@ -110,7 +109,7 @@ namespace DatalexionBackend.Infrastructure.Services
                                         LatLong = latLong,
                                         MunicipalityId = municipality1.Id,
                                         Municipality = municipality1,
-                                        LastUpdateDelegadoId = delegadoId
+                                        // LastUpdateDelegadoId = delegadoId
                                     };
 
                                     context.Circuit.Add(circuit);
@@ -146,12 +145,12 @@ namespace DatalexionBackend.Infrastructure.Services
 
                                     // Asociar el circuito con todos los parties
                                     var parties = await context.Party.ToListAsync();
-                                    foreach (var slate in parties)
+                                    foreach (var party in parties)
                                     {
                                         var circuitParty = new CircuitParty
                                         {
                                             CircuitId = circuit.Id,
-                                            PartyId = slate.Id
+                                            PartyId = party.Id,
                                         };
                                         context.CircuitParty.Add(circuitParty);
                                     }
@@ -209,8 +208,8 @@ namespace DatalexionBackend.Infrastructure.Services
                             foreach (var slate in circuit.ListCircuitSlates)
                             {
                                 int randomVotes = random.Next(1, 30); // Genera un número aleatorio entre 1 y 100
-                                int vote = (slate.Votes ?? 0) + randomVotes;
-                                slate.Votes = vote;
+                                int vote = (slate.TotalSlateVotes ?? 0) + randomVotes;
+                                slate.TotalSlateVotes = vote;
                                 // slateTotalVotes += vote;
 
                                 var slate1 = context.Slate.FirstOrDefault(mySlate => mySlate.Id == slate.SlateId);
@@ -228,22 +227,28 @@ namespace DatalexionBackend.Infrastructure.Services
                             {
                                 if (party.PartyId == client.PartyId)
                                 {
-                                    party.Votes = slateTotalVotes;
+                                    party.TotalPartyVotes = slateTotalVotes;
                                     continue;
                                 }
                                 int randomVotes = random.Next(1, 150); // Genera un número aleatorio entre 1 y 100
-                                int vote = (party.Votes ?? 0) + randomVotes;
-                                party.Votes = vote;
+                                int vote = (party.TotalPartyVotes ?? 0) + randomVotes;
+                                party.TotalPartyVotes = vote;
                             }
 
-                            // Añadir votos extras si es necesario
-                            circuit.BlankVotes += random.Next(1, 20); // Genera un número aleatorio entre 1 y 50
-                            circuit.NullVotes += random.Next(1, 20);
-                            circuit.ObservedVotes += random.Next(1, 20);
+                            var circuitPartiesList = context.CircuitParty.Where(x => x.CircuitId == circuit.Id).ToList();
+                            foreach (var circuitParty in circuitPartiesList)
+                            {
+                                circuitParty.BlankVotes += random.Next(1, 20); // Genera un número aleatorio entre 1 y 50
+                                circuitParty.NullVotes += random.Next(1, 20);
+                                circuitParty.ObservedVotes += random.Next(1, 20);
+                                circuitParty.RecurredVotes += random.Next(1, 20);
 
-                            circuit.Step1completed = true;
-                            circuit.Step2completed = true;
-                            circuit.Step3completed = true;
+                                circuitParty.Step1completed = true;
+                                circuitParty.Step2completed = true;
+                                circuitParty.Step3completed = true;
+
+                                context.CircuitParty.Update(circuitParty);
+                            }
                         }
 
                         context.SaveChanges();

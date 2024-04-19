@@ -22,7 +22,6 @@ import { LoadingSpinner } from "../../../utils/LoadingSpinner";
 import WidgetCard from "../widgets/WidgetCard";
 
 import { FormStart, FormExtras } from "../../../utils/navigationPaths";
-
 import useBumpEffect from "../../../utils/useBumpEffect";
 import "./FormStart.css";
 

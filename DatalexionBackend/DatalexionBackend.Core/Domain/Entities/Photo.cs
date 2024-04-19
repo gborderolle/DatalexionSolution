@@ -25,7 +25,7 @@ public class Photo
     #region External
 
     public int? CircuitId { get; set; }
-    public Circuit? Circuit { get; set; }
+    public CircuitParty? Circuit { get; set; }
 
     public int? CandidateId { get; set; }
     public Candidate? Candidate { get; set; }

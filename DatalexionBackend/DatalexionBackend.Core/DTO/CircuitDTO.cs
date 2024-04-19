@@ -20,14 +20,6 @@ namespace DatalexionBackend.Core.DTO
         public required string Name { get; set; }
         public string Address { get; set; }
         public string? LatLong { get; set; }
-        public int BlankVotes { get; set; }
-        public int NullVotes { get; set; }
-        public int ObservedVotes { get; set; }
-        public int RecurredVotes { get; set; }
-        public bool Step1completed { get; set; } = false;
-        public bool Step2completed { get; set; } = false;
-        public bool Step3completed { get; set; } = false;
-        public int? LastUpdateDelegadoId { get; set; }
 
         #endregion
 
@@ -47,8 +39,6 @@ namespace DatalexionBackend.Core.DTO
         /// N-N
         /// </summary>
         public List<CircuitPartyDTO> ListCircuitParties { get; set; }
-
-        public List<string> ListPhotosURL { get; set; }
 
         // -- Vueltas --
 

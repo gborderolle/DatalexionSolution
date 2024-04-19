@@ -8,8 +8,14 @@ using DatalexionBackend.Core.Domain.Entities;
 
 namespace DatalexionBackend.Core.DTO
 {
-    public class CircuitCreateDTO
+    public class CircuitPutDTO
     {
+        #region Specials
+
+        public int ClientId { get; set; }
+
+        #endregion 
+
         #region Internal
 
         [Key]
@@ -53,13 +59,6 @@ namespace DatalexionBackend.Core.DTO
         /// <summary>
         /// N-N Usar TypeBinder.cs, s: https://www.udemy.com/course/desarrollando-aplicaciones-en-react-y-aspnet-core/learn/lecture/26047194#overview
         /// </summary>
-        // public List<CircuitDelegado> ListCircuitDelegados { get; set; }
-        [ModelBinder(BinderType = typeof(TypeBinder<List<CircuitDelegadoCreateDTO>>))]
-        public List<CircuitDelegadoCreateDTO> ListCircuitDelegados { get; set; }
-
-        /// <summary>
-        /// N-N Usar TypeBinder.cs, s: https://www.udemy.com/course/desarrollando-aplicaciones-en-react-y-aspnet-core/learn/lecture/26047194#overview
-        /// </summary>
         [ModelBinder(BinderType = typeof(TypeBinder<List<CircuitSlateCreateDTO>>))]
         public List<CircuitSlateCreateDTO> ListCircuitSlates { get; set; }
 
@@ -69,10 +68,6 @@ namespace DatalexionBackend.Core.DTO
         public List<CircuitPartyCreateDTO> ListCircuitParties { get; set; }
 
         // -- Vueltas --
-
-        [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
-        public int MunicipalityId { get; set; }
-        public Municipality Municipality { get; set; }
 
         #endregion
 

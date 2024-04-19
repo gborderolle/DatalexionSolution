@@ -1,6 +1,8 @@
-﻿namespace DatalexionBackend.Core.DTO
+﻿using Microsoft.AspNetCore.Http;
+
+namespace DatalexionBackend.Core.DTO
 {
-    public class CircuitPartyDTO
+    public class CircuitPartyPatchDTO
     {
         #region Internal
 
@@ -18,7 +20,12 @@
         public bool Step2completed { get; set; } = false;
         public bool Step3completed { get; set; } = false;
         public int? LastUpdateDelegadoId { get; set; }
-        public List<string> ListPhotosURL { get; set; }
+
+        #endregion
+
+        #region External
+
+        public List<IFormFile> Photos { get; set; } = new();
 
         #endregion
 

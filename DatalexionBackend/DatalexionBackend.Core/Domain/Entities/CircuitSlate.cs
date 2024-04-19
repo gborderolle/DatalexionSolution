@@ -12,7 +12,7 @@ namespace DatalexionBackend.Core.Domain.Entities
         public Slate Slate { get; set; }
 
         // Uniques
-        public int? Votes { get; set; }
+        public int? TotalSlateVotes { get; set; }
 
         #endregion
 

@@ -7,6 +7,7 @@ export const urlLoginGeneral = `${apiURL}/accounts/LoginGeneral`;
 export const urlLoginDelegados = `${apiURL}/accounts/LoginDelegados`;
 export const urlCircuit = `${apiURL}/circuits`; // POST (CircuitTable.js), PUT (FormParty.js y FormSlate.js) y PATCH (FormExtras.js)
 export const urlCircuitUpdate = `${apiURL}/circuits/CircuitUpdate`; // PUT (CircuitTable.js) Circuits
+export const urlCircuitPut = `${apiURL}/circuits/CircuitPut`; // PUT (CircuitTable.js) Circuits
 export const urlClient = `${apiURL}/clients`;
 export const urlDelegado = `${apiURL}/delegados`;
 export const urlCandidate = `${apiURL}/candidates`;

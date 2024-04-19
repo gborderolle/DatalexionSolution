@@ -25,15 +25,7 @@ namespace DatalexionBackend.Core.Domain.Entities
         public required string Name { get; set; }
         [Required(ErrorMessage = "El campo {0} es requerido")] // n..0 (0=no existe este sin el padre)
         public string Address { get; set; }
-        public string? LatLong { get; set; }
-        public int BlankVotes { get; set; }
-        public int NullVotes { get; set; }
-        public int ObservedVotes { get; set; }
-        public int RecurredVotes { get; set; }
-        public bool Step1completed { get; set; } = false;
-        public bool Step2completed { get; set; } = false;
-        public bool Step3completed { get; set; } = false;
-        public int? LastUpdateDelegadoId { get; set; }
+        public string? LatLong { get; set; }        
 
         #endregion
 
@@ -53,11 +45,6 @@ namespace DatalexionBackend.Core.Domain.Entities
         /// N-N
         /// </summary>
         public List<CircuitParty> ListCircuitParties { get; set; }
-
-        /// <summary>
-        /// 1-N
-        /// </summary>
-        public List<Photo> ListPhotos { get; set; }
 
         // -- Vueltas --
 
