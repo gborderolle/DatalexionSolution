@@ -4,7 +4,7 @@ import { CFooter } from "@coreui/react";
 
 import FooterEspecial from "../delegadosSide/footer/FooterEspecial";
 import BtnSeleccionarCircuito from "../delegadosSide/selectDDL/SelectCircuitButton";
-import Stepper from "../stepper/Stepper";
+import FooterStepper from "../stepper/FooterStepper";
 
 // redux imports
 import { useSelector } from "react-redux";
@@ -15,7 +15,9 @@ const AppFooterMobileDelegados = () => {
   //#region Consts ***********************************
 
   // redux gets
-  const reduxVotosTotalSteps = useSelector((state) => state.form.reduxVotosTotalSteps);
+  const reduxVotosTotalSteps = useSelector(
+    (state) => state.form.reduxVotosTotalSteps
+  );
   const reduxVotosStep1 = useSelector((state) => state.form.reduxVotosStep1);
   const reduxVotosStep2 = useSelector((state) => state.form.reduxVotosStep2);
   const reduxVotosStep3 = useSelector((state) => state.form.reduxVotosStep3);
@@ -69,7 +71,7 @@ const AppFooterMobileDelegados = () => {
           />
           <div className="bg-gray-900 flex flex-row gap-10 items-center justify-center">
             <div className="bg-gray-900 flex flex-row gap-10 items-center justify-center">
-              <Stepper />
+              <FooterStepper />
             </div>
           </div>
         </>

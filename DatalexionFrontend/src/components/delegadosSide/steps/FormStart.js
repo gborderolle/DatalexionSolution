@@ -42,6 +42,8 @@ const FormStart = (props) => {
 
   const [selectedCircuit, setSelectedCircuit] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+
+  // redux gets
   const reduxListMunicipalitiesFromDelegado = useSelector(
     (state) => state.auth.listMunicipalities
   );
@@ -54,6 +56,7 @@ const FormStart = (props) => {
   const reduxCircuitList = useSelector(
     (state) => state.generalData.circuitListByClient
   );
+  const reduxClient = useSelector((state) => state.generalData.client);
 
   //#region Pagination   ***********************************
 
@@ -225,32 +228,40 @@ const FormStart = (props) => {
         ? { animationDelay: `${delay}ms` }
         : {};
 
-      return (
-        <RadioButton
-          iconSize={20}
-          padding={14}
-          key={circuit.id}
-          value={circuit.id.toString()}
-          rootColor={isSelected ? "rgb(136 131 131)" : "rgb(136 131 131)"}
-          pointColor={isSelected ? "rgb(42 113 222)" : "rgb(136 131 131)"}
-          onClick={() => onChangeHandler(circuit.id.toString())}
-          style={{ ...radioButtonStyles, ...animationStyle }}
-          className={`radio-button-margin ${
-            applyAnimation ? "fade-in-element" : ""
-          }`}
-        >
-          <div className={`${isBumped ? "bump" : ""}`}>
-            <CRow style={radioButtonStyle}>
-              <h2># {circuit.number}</h2>
-            </CRow>
-            <CRow style={radioButtonStyle}>{circuit.name}</CRow>
-            <br />
-            <CRow>
-              <RadioButtonStepper currentStep={circuit} />
-            </CRow>
-          </div>
-        </RadioButton>
-      );
+      if (circuit.listCircuitParties && circuit.listCircuitParties.length > 0) {
+        const circuitParty = circuit.listCircuitParties.find(
+          (circuitP) => circuitP.partyId.toString() == reduxClient.party?.id
+        );
+        if (circuitParty) {
+          return (
+            <RadioButton
+              iconSize={20}
+              padding={14}
+              key={circuit.id}
+              value={circuit.id.toString()}
+              rootColor={isSelected ? "rgb(136 131 131)" : "rgb(136 131 131)"}
+              pointColor={isSelected ? "rgb(42 113 222)" : "rgb(136 131 131)"}
+              onClick={() => onChangeHandler(circuit.id.toString())}
+              style={{ ...radioButtonStyles, ...animationStyle }}
+              className={`radio-button-margin ${
+                applyAnimation ? "fade-in-element" : ""
+              }`}
+            >
+              <div className={`${isBumped ? "bump" : ""}`}>
+                <CRow style={radioButtonStyle}>
+                  <h2># {circuit.number}</h2>
+                </CRow>
+                <CRow style={radioButtonStyle}>{circuit.name}</CRow>
+                <br />
+                <CRow>
+                  {/* <RadioButtonStepper currentStep={circuit} /> */}
+                  <RadioButtonStepper currentStep={circuitParty} />
+                </CRow>
+              </div>
+            </RadioButton>
+          );
+        }
+      }
     });
 
   //#endregion Functions ***********************************

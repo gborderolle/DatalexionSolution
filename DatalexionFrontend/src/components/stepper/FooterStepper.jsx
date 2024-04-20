@@ -11,14 +11,13 @@ import {
   FormSummary,
 } from "../../utils/navigationPaths";
 
-import "./stepper.css";
+import "./FooterStepper.css";
 
-const Stepper = (props) => {
+const FooterStepper = () => {
   //#region Consts ***********************************
 
   const [enrichedStepList, setEnrichedStepList] = useState([]);
 
-  // redux
   const navigate = useNavigate();
 
   // redux get
@@ -148,4 +147,4 @@ const Stepper = (props) => {
   );
 };
 
-export default Stepper;
+export default FooterStepper;
