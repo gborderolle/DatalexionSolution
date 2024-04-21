@@ -97,8 +97,8 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
+        // [ResponseCache(Duration = 60)]
         [HttpGet("GetCircuitsByClient")]
-        [ResponseCache(Duration = 60)]
         public async Task<ActionResult<APIResponse>> GetCircuitsByClient([FromQuery] int clientId)
         {
             try

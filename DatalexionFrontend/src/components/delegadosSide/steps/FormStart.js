@@ -229,9 +229,11 @@ const FormStart = (props) => {
         : {};
 
       if (circuit.listCircuitParties && circuit.listCircuitParties.length > 0) {
-        const circuitParty = circuit.listCircuitParties.find(
-          (circuitP) => circuitP.partyId.toString() == reduxClient.party?.id
-        );
+        const circuitParty = circuit.listCircuitParties.find((circuitP) => {
+          const partyId = circuitP.partyId.toString();
+          const reduxPartyId = reduxClient.party ? reduxClient.party.id : null;
+          return partyId == reduxPartyId;
+        });
         if (circuitParty) {
           return (
             <RadioButton
@@ -284,13 +286,9 @@ const FormStart = (props) => {
 
     if (circuit) {
       setSelectedCircuit(circuit);
-
-      // SET REDUX ACA
-      dispatch(liveSettingsActions.setSelectedCircuit(circuit));
-    } else {
-      // SET REDUX ACA
-      dispatch(liveSettingsActions.setSelectedCircuit(null));
     }
+    // SET REDUX ACA
+    dispatch(liveSettingsActions.setSelectedCircuit(circuit));
 
     setSelectedForBump(value);
 
