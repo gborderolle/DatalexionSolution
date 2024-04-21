@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-import { urlCircuitPut, urlCircuitUpdateStep1 } from "../../../endpoints";
+import { urlCircuitUpdateStep1 } from "../../../endpoints";
 import useAPI from "../../../hooks/use-API";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -37,7 +37,6 @@ import {
   fetchVotosTotal,
 } from "../../../store/generalData-actions";
 import { SlateGetWing, SlateGetCandidate } from "src/utils/auxiliarFunctions";
-import { Logger } from "sass";
 
 const buttonColor = "dark";
 

@@ -1,6 +1,4 @@
-﻿using DatalexionBackend.Core.Domain.Entities;
-
-namespace DatalexionBackend.Core.DTO
+﻿namespace DatalexionBackend.Core.DTO
 {
     public class CircuitDTO
     {

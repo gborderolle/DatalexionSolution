@@ -11,6 +11,8 @@ import {
   FormSummary,
 } from "../../utils/navigationPaths";
 
+import { getCircuitParty } from "../../utils/auxiliarFunctions";
+
 import "./FooterStepper.css";
 
 const FooterStepper = () => {
@@ -18,18 +20,24 @@ const FooterStepper = () => {
 
   const [enrichedStepList, setEnrichedStepList] = useState([]);
 
+  let reduxSelectedCircuitStep1completed = false;
+  let reduxSelectedCircuitStep2completed = false;
+  let reduxSelectedCircuitStep3completed = false;
+
   const navigate = useNavigate();
 
   // redux get
-  const reduxSelectedCircuitStep1completed = useSelector(
-    (state) => state.liveSettings.circuit?.step1completed
+  const reduxSelectedCircuit = useSelector(
+    (state) => state.liveSettings.circuit
   );
-  const reduxSelectedCircuitStep2completed = useSelector(
-    (state) => state.liveSettings.circuit?.step2completed
-  );
-  const reduxSelectedCircuitStep3completed = useSelector(
-    (state) => state.liveSettings.circuit?.step3completed
-  );
+  const reduxClient = useSelector((state) => state.generalData.client);
+
+  const circuitParty = getCircuitParty(reduxSelectedCircuit, reduxClient);
+  if (circuitParty) {
+    reduxSelectedCircuitStep1completed = circuitParty?.step1completed;
+    reduxSelectedCircuitStep2completed = circuitParty?.step2completed;
+    reduxSelectedCircuitStep3completed = circuitParty?.step3completed;
+  }
 
   const stepList = [
     { name: "Listas", stepKey: "step1completed" },

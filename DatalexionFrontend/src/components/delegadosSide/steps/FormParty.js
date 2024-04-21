@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-import { urlCircuit, urlCircuitUpdateStep2 } from "../../../endpoints";
+import { urlCircuitUpdateStep2 } from "../../../endpoints";
 import useAPI from "../../../hooks/use-API";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -73,6 +73,24 @@ export function CircuitGetMunicipality(circuit, municipalityList) {
     : undefined;
 }
 
+// Obtiene el CircuitParty del circuito
+export const getCircuitParty = (circuit, client) => {
+  if (
+    circuit &&
+    circuit.listCircuitParties &&
+    circuit.listCircuitParties.length > 0 &&
+    client
+  ) {
+    const circuitParty = circuit.listCircuitParties.find((circuitP) => {
+      const partyId = circuitP.partyId.toString();
+      const reduxPartyId = client.party ? client.party.id : null;
+      return partyId == reduxPartyId;
+    });
+    return circuitParty;
+  }
+  return null;
+};
+
 //#endregion Gets Circuit
 
 //#region Gets Client
@@ -137,7 +155,6 @@ export function hexToRGBA(hex, alpha = 1) {
 
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
-
 
 export const getDynamicClassName = (color) => {
   // Verifica si el color existe y es un string antes de llamar a replace.

@@ -33,6 +33,8 @@ import { liveSettingsActions } from "../../../store/liveSettings-slice";
 import { uiActions } from "../../../store/ui-slice";
 import { fetchCircuitListByClient } from "../../../store/generalData-actions";
 
+import { getCircuitParty } from "../../../utils/auxiliarFunctions";
+
 import useBumpEffect from "../../../utils/useBumpEffect";
 
 import "./FormStart.css";
@@ -228,41 +230,35 @@ const FormStart = (props) => {
         ? { animationDelay: `${delay}ms` }
         : {};
 
-      if (circuit.listCircuitParties && circuit.listCircuitParties.length > 0) {
-        const circuitParty = circuit.listCircuitParties.find((circuitP) => {
-          const partyId = circuitP.partyId.toString();
-          const reduxPartyId = reduxClient.party ? reduxClient.party.id : null;
-          return partyId == reduxPartyId;
-        });
-        if (circuitParty) {
-          return (
-            <RadioButton
-              iconSize={20}
-              padding={14}
-              key={circuit.id}
-              value={circuit.id.toString()}
-              rootColor={isSelected ? "rgb(136 131 131)" : "rgb(136 131 131)"}
-              pointColor={isSelected ? "rgb(42 113 222)" : "rgb(136 131 131)"}
-              onClick={() => onChangeHandler(circuit.id.toString())}
-              style={{ ...radioButtonStyles, ...animationStyle }}
-              className={`radio-button-margin ${
-                applyAnimation ? "fade-in-element" : ""
-              }`}
-            >
-              <div className={`${isBumped ? "bump" : ""}`}>
-                <CRow style={radioButtonStyle}>
-                  <h2># {circuit.number}</h2>
-                </CRow>
-                <CRow style={radioButtonStyle}>{circuit.name}</CRow>
-                <br />
-                <CRow>
-                  {/* <RadioButtonStepper currentStep={circuit} /> */}
-                  <RadioButtonStepper currentStep={circuitParty} />
-                </CRow>
-              </div>
-            </RadioButton>
-          );
-        }
+      const circuitParty = getCircuitParty(circuit, reduxClient);
+      if (circuitParty) {
+        return (
+          <RadioButton
+            iconSize={20}
+            padding={14}
+            key={circuit.id}
+            value={circuit.id.toString()}
+            rootColor={isSelected ? "rgb(136 131 131)" : "rgb(136 131 131)"}
+            pointColor={isSelected ? "rgb(42 113 222)" : "rgb(136 131 131)"}
+            onClick={() => onChangeHandler(circuit.id.toString())}
+            style={{ ...radioButtonStyles, ...animationStyle }}
+            className={`radio-button-margin ${
+              applyAnimation ? "fade-in-element" : ""
+            }`}
+          >
+            <div className={`${isBumped ? "bump" : ""}`}>
+              <CRow style={radioButtonStyle}>
+                <h2># {circuit.number}</h2>
+              </CRow>
+              <CRow style={radioButtonStyle}>{circuit.name}</CRow>
+              <br />
+              <CRow>
+                {/* <RadioButtonStepper currentStep={circuit} /> */}
+                <RadioButtonStepper currentStep={circuitParty} />
+              </CRow>
+            </div>
+          </RadioButton>
+        );
       }
     });
 

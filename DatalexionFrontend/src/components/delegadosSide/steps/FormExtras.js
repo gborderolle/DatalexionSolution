@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 let backendURL = process.env.REACT_APP_URL;
 
-import { urlCircuit } from "../../../endpoints";
+import { urlCircuit, urlCircuitUpdateStep3 } from "../../../endpoints";
 import useAPI from "../../../hooks/use-API";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
