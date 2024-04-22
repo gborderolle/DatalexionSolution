@@ -9,6 +9,7 @@ export const urlCircuit = `${apiURL}/circuits`; // POST (CircuitTable.js), PUT (
 export const urlCircuitUpdate = `${apiURL}/circuits/CircuitUpdate`; // PUT (CircuitTable.js) Circuits
 export const urlCircuitUpdateStep1 = `${apiURL}/circuits/UpdateStep1`; // PUT (FormSlate.js) Circuits
 export const urlCircuitUpdateStep2 = `${apiURL}/circuits/UpdateStep2`; // PUT (FormParty.js) Circuits
+export const urlCircuitUpdateStep3 = `${apiURL}/circuits/UpdateStep3`; // PUT (FormExtras.js) Circuits
 export const urlCircuitPut = `${apiURL}/circuits/CircuitPut`; // PUT (CircuitTable.js) Circuits
 export const urlClient = `${apiURL}/clients`;
 export const urlDelegado = `${apiURL}/delegados`;

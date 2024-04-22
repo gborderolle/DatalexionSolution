@@ -238,6 +238,15 @@
             <param name="dto">Creation DTO with the data to update the circuit.</param>
             <returns>Response indicating the result of the update operation.</returns>
         </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.UpdateStep3(System.Int32,DatalexionBackend.Core.DTO.CircuitUpdateStep3DTO,System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile})">
+            <summary>
+            Updates an existing circuit, applying the specified changes in the creation DTO.
+            Origin Frontend: CircuitTable.js
+            </summary>
+            <param name="id">ID of the circuit to update.</param>
+            <param name="dto">Creation DTO with the data to update the circuit.</param>
+            <returns>Response indicating the result of the update operation.</returns>
+        </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.CircuitsController.CircuitUpdate(System.Int32,DatalexionBackend.Core.DTO.CircuitCreateDTO)">
             <summary>
             Actualiza un circuito existente, aplicando los cambios especificados en el DTO de creación.

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 let backendURL = process.env.REACT_APP_URL;
 
-import { urlCircuit, urlCircuitUpdateStep3 } from "../../../endpoints";
+import { urlCircuitUpdateStep3 } from "../../../endpoints";
 import useAPI from "../../../hooks/use-API";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,6 +25,8 @@ import {
 import { LoadingSpinner } from "../../../utils/LoadingSpinner";
 import WidgetCard from "../widgets/WidgetCard";
 
+import { FormSummary } from "../../../utils/navigationPaths";
+import { getCircuitParty } from "../../../utils/auxiliarFunctions";
 import useBumpEffect from "../../../utils/useBumpEffect";
 
 import "./FormStart.css";
@@ -75,19 +77,19 @@ const FormExtras = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // redux get
+  // redux gets
   const reduxSelectedCircuit = useSelector(
     (state) => state.liveSettings.circuit
   );
-
-  // redux gets
   const [isLoadingExtras, setIsLoadingExtras] = useState(false);
   const TOTALVotosGLOBAL = useSelector(
     (state) => state.form.reduxVotosTotalSteps
   );
+  const reduxClient = useSelector((state) => state.generalData.client);
+  const delegadoId = useSelector((state) => state.auth.userId);
+
   const [TOTALVotosExtras, setTOTALVotosExtras] = useState(0);
   const [isBumped, triggerBump] = useBumpEffect();
-
   const [isDisabledExtras, setIsDisabledExtras] = useState(false);
   const [isValidArrayExtras, setIsValidArrayExtras] = useState([true]);
   const [isValidFormExtras, setIsValidFormExtras] = useState(true);
@@ -98,7 +100,7 @@ const FormExtras = () => {
   const [votosExtrasTotal, setVotosExtrasTotal] = useState(0);
   const [txbComments, setTxbComments] = useState("");
 
-  const { isSuccess, patchData } = useAPI();
+  const { uploadData } = useAPI();
 
   //#endregion Consts ***********************************
 
@@ -196,6 +198,74 @@ const FormExtras = () => {
 
   //#region Functions ***********************************
 
+  const formSubmitHandlerExtras = async (event) => {
+    event.preventDefault();
+
+    // Verifica la validez del formulario antes de proceder
+    const allValid = isValidArrayExtras.every(Boolean);
+    if (!allValid) {
+      setIsValidFormExtras(false);
+      return;
+    }
+
+    setIsValidFormExtras(true);
+    setIsDisabledExtras(true);
+
+    let isSuccess = false;
+
+    // Define 'count' aquí para que sea accesible en todo el cuerpo de la función
+    let count =
+      getCircuitParty(reduxSelectedCircuit, reduxClient)?.imagesUploadedCount ||
+      0;
+
+    // Llama a preparePayload con el contador actualizado de imágenes
+    let circuitStep3DTO = preparePayload(count);
+    const formData = new FormData();
+
+    if (imageFile) {
+      formData.append("Photos", imageFile, imageFile.name);
+      count++; // Incrementa el contador localmente después de añadir el archivo a formData
+    }
+
+    circuitStep3DTO = {
+      ...circuitStep3DTO,
+      imagesUploadedCount: count,
+    };
+
+    // Agregar campos del DTO como partes individuales de FormData
+    Object.keys(circuitStep3DTO).forEach((key) => {
+      if (key !== "photos") {
+        // Asumiendo que `photos` no es un campo del DTO
+        formData.append(key, circuitStep3DTO[key]);
+      }
+    });
+
+    try {
+      // HTTP Put a Circuits
+      await uploadData(
+        formData,
+        urlCircuitUpdateStep3,
+        true,
+        reduxSelectedCircuit.id
+      );
+
+      isSuccess = true;
+    } catch (error) {
+      console.error("Error al actualizar el circuito:", error);
+    }
+
+    setIsLoadingExtras(false);
+
+    // Si el envío fue exitoso, intenta actualizar el circuito
+    if (isSuccess) {
+      dispatch(liveSettingsActions.setStepCompletedCircuit(3));
+      dispatch(fetchCircuitList());
+    }
+
+    setIsSuccessExtras(isSuccess);
+  };
+
+  /*
   const formHandlerGeneric = async (
     event,
     isValidArray,
@@ -258,6 +328,7 @@ const FormExtras = () => {
       fetchCircuitList();
     }
   };
+*/
 
   const cardList = fixedCards?.map((card, index) => {
     return (
@@ -317,6 +388,8 @@ const FormExtras = () => {
     }
   };
 
+  /*
+
   const formSubmitHandlerExtras = async (event) => {
     event.preventDefault();
 
@@ -366,6 +439,7 @@ const FormExtras = () => {
     }
   };
 
+  */
   const validityHandlerExtras = (index, isValid) => {
     setIsValidArrayExtras((prevIsValidArray) => {
       const updatedIsValidArray = [...prevIsValidArray];
@@ -391,6 +465,62 @@ const FormExtras = () => {
   //#endregion Events ***********************************
 
   //#region JSX props ***********************************
+
+  const preparePayload = (imagesUploadedCount) => {
+    const updatedVotes = fixedCards.reduce((acc, card) => {
+      const voteKey = card.id.replace("circuit", ""); // Transforma "circuitNullVotes" en "NullVotes"
+      acc[voteKey.charAt(0).toLowerCase() + voteKey.slice(1)] = card.votes; // Convierte "NullVotes" en "nullVotes" y asigna el valor
+      return acc;
+    }, {});
+
+    let updatedCircuitParty = reduxSelectedCircuit.listCircuitParties.find(
+      (circuitParty) => {
+        const partyId = circuitParty.partyId;
+        const reduxPartyId = reduxClient.party ? reduxClient.party.id : null;
+        return partyId == reduxPartyId;
+      }
+    );
+
+    if (updatedCircuitParty) {
+      updatedCircuitParty = {
+        ...updatedCircuitParty,
+        step3completed: true,
+        nullVotes: updatedVotes.nullVotes,
+        blankVotes: updatedVotes.blankVotes,
+        recurredVotes: updatedVotes.recurredVotes,
+        observedVotes: updatedVotes.observedVotes,
+      };
+
+      const updatedCircuit = {
+        ...reduxSelectedCircuit,
+        listCircuitParties: reduxSelectedCircuit.listCircuitParties.map(
+          (circuitParty) =>
+            circuitParty.partyId === updatedCircuitParty.partyId
+              ? updatedCircuitParty
+              : circuitParty
+        ),
+      };
+
+      // Update reduxSelectedCircuit
+      dispatch(liveSettingsActions.setSelectedCircuit(updatedCircuit));
+
+      const circuitStep3DTO = {
+        Id: reduxSelectedCircuit?.id,
+        Number: reduxSelectedCircuit?.number,
+        Name: reduxSelectedCircuit?.name,
+        ListCircuitParties: updatedCircuit?.listCircuitParties,
+        LastUpdateDelegadoId: delegadoId,
+        ClientId: reduxClient.id,
+        nullVotes: updatedVotes.nullVotes,
+        blankVotes: updatedVotes.blankVotes,
+        recurredVotes: updatedVotes.recurredVotes,
+        observedVotes: updatedVotes.observedVotes,
+        imagesUploadedCount: imagesUploadedCount,
+      };
+
+      return circuitStep3DTO;
+    }
+  };
 
   const labelSelectCircuit = (
     <span style={{ color: "blue", fontStyle: "italic", width: "auto" }}>

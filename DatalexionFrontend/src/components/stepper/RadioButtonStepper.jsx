@@ -3,37 +3,44 @@ import { TiTick } from "react-icons/ti";
 
 import "./RadioButtonStepper.css";
 
-const RadioButtonStepper = (props) => {
-  //#region Consts ***********************************
+const RadioButtonStepper = ({ currentStep }) => {
+  // Define los nombres de los pasos a mostrar
   const steps = ["Listas", "Partidos", "Extras"];
 
-  const [stepsSubmitted, setStepsSubmitted] = useState(props.currentStep);
+  // Estado que almacena la información de los pasos completados
+  const [stepsSubmitted, setStepsSubmitted] = useState({
+    step1: currentStep.step1completed,
+    step2: currentStep.step2completed,
+    step3: currentStep.step3completed,
+  });
+
+  // Estado que indica si todos los pasos han sido completados
   const [complete, setComplete] = useState(false);
 
-  //#endregion Consts ***********************************
-
-  //#region Hooks ***********************************
+  // Efecto para actualizar stepsSubmitted cuando cambia props.currentStep
   useEffect(() => {
-    setStepsSubmitted(props.currentStep);
-  }, [props.currentStep]);
+    setStepsSubmitted({
+      step1: currentStep.step1completed,
+      step2: currentStep.step2completed,
+      step3: currentStep.step3completed,
+    });
+  }, [currentStep]);
 
+  // Efecto para verificar si todos los pasos están completos
   useEffect(() => {
-    // Verificar si todos los pasos están completos
     const allStepsCompleted = Object.values(stepsSubmitted).every(Boolean);
     setComplete(allStepsCompleted);
   }, [stepsSubmitted]);
 
-  //#endregion Hooks ***********************************
-
-  //#region JSX ***********************************
+  // Renderiza los pasos con indicadores visuales de su estado
   return (
     <>
-      <div className={`flex justify-between`} style={{ display: "flex" }}>
-        {steps?.map((step, i) => (
+      <div className="flex justify-between" style={{ display: "flex" }}>
+        {steps.map((step, i) => (
           <div
             key={i}
             className={`step-item ${
-              stepsSubmitted[`step${i + 1}completed`] && "complete"
+              stepsSubmitted[`step${i + 1}`] && "complete"
             }`}
           >
             <div className="step">
@@ -48,7 +55,6 @@ const RadioButtonStepper = (props) => {
       )}
     </>
   );
-  //#endregion JSX ***********************************
 };
 
 export default RadioButtonStepper;

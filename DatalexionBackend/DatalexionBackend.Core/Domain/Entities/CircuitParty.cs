@@ -23,6 +23,7 @@
         public bool Step2completed { get; set; } = false;
         public bool Step3completed { get; set; } = false;
         public int? LastUpdateDelegadoId { get; set; } = null;
+        public int ImagesUploadedCount { get; set; } = 0;
 
         /// <summary>
         /// 1-N

@@ -122,7 +122,7 @@ const FormSlate = () => {
       ]);
 
       // Dispatch the action with the updated list
-      dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
+      // dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
     }
   }, [reduxSelectedCircuit, dispatch]);
 
@@ -334,8 +334,8 @@ const FormSlate = () => {
 
     // Si el envío fue exitoso, intenta actualizar el circuito
     if (isSuccess) {
-      dispatch(liveSettingsActions.setSlateVotesList(updatedSlateVotesList));
-      dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
+      // dispatch(liveSettingsActions.setSlateVotesList(updatedSlateVotesList));
+      // dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
 
       // Actualizar step en Redux
       dispatch(liveSettingsActions.setStepCompletedCircuit(1));
@@ -374,12 +374,16 @@ const FormSlate = () => {
 
   //#region JSX props ***********************************
 
-  const preparePayload = (updatedSlateVotesList) => {
+  const preparePayload = (updatedListCircuitSlates) => {
     // Update reduxSelectedCircuit: Actualizar circuito seleccionado en Redux - parte 1
     const updatedListCircuitParties =
       reduxSelectedCircuit.listCircuitParties.map((party) => {
         if (party.partyId === reduxClient.party?.id) {
-          return { ...party, totalPartyVotes: votosSlateTotal }; // Actualiza los votos
+          return {
+            ...party,
+            totalPartyVotes: votosSlateTotal,
+            step1completed: true,
+          }; // Actualiza los votos
         }
         return party; // Retorna los partidos sin cambios si no es el partido del cliente
       });
@@ -388,32 +392,15 @@ const FormSlate = () => {
     const updatedCircuit = {
       ...reduxSelectedCircuit,
       listCircuitParties: updatedListCircuitParties,
-      listCircuitSlates: updatedSlateVotesList.map((slate) => ({
-        circuitId: slate.circuitId,
-        slateId: slate.slateId,
-        totalSlateVotes: slate.votes,
+      listCircuitSlates: updatedListCircuitSlates.map((circuitSlate) => ({
+        circuitId: circuitSlate.circuitId,
+        slateId: circuitSlate.slateId,
+        totalSlateVotes: circuitSlate.votes,
       })),
     };
 
     // Update reduxSelectedCircuit
     dispatch(liveSettingsActions.setSelectedCircuit(updatedCircuit));
-
-    // const updatedCircuitPayload = {
-    //   Number: reduxSelectedCircuit?.number,
-    //   Name: reduxSelectedCircuit?.name,
-    //   Address: reduxSelectedCircuit?.address,
-    //   BlankVotes: reduxSelectedCircuit?.blankVotes,
-    //   NullVotes: reduxSelectedCircuit?.nullVotes,
-    //   ObservedVotes: reduxSelectedCircuit?.observedVotes,
-    //   RecurredVotes: reduxSelectedCircuit?.recurredVotes,
-    //   ListCircuitSlates: updatedCircuit?.listCircuitSlates,
-    //   ListCircuitParties: updatedCircuit?.listCircuitParties,
-    //   Step1completed: true,
-    //   Step2completed: reduxSelectedCircuit?.step2completed,
-    //   Step3completed: reduxSelectedCircuit?.step3completed,
-    //   LastUpdateDelegadoId: delegadoId,
-    //   ClientId: reduxClient.id,
-    // };
 
     const updatedCircuitPayload = {
       Id: reduxSelectedCircuit?.id,

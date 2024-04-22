@@ -20,9 +20,9 @@ const FooterStepper = () => {
 
   const [enrichedStepList, setEnrichedStepList] = useState([]);
 
-  let reduxSelectedCircuitStep1completed = false;
-  let reduxSelectedCircuitStep2completed = false;
-  let reduxSelectedCircuitStep3completed = false;
+  let step1completed = false;
+  let step2completed = false;
+  let step3completed = false;
 
   const navigate = useNavigate();
 
@@ -34,9 +34,9 @@ const FooterStepper = () => {
 
   const circuitParty = getCircuitParty(reduxSelectedCircuit, reduxClient);
   if (circuitParty) {
-    reduxSelectedCircuitStep1completed = circuitParty?.step1completed;
-    reduxSelectedCircuitStep2completed = circuitParty?.step2completed;
-    reduxSelectedCircuitStep3completed = circuitParty?.step3completed;
+    step1completed = circuitParty?.step1completed;
+    step2completed = circuitParty?.step2completed;
+    step3completed = circuitParty?.step3completed;
   }
 
   const stepList = [
@@ -74,13 +74,13 @@ const FooterStepper = () => {
       let stepCompleted = false;
       switch (step.stepKey) {
         case "step1completed":
-          stepCompleted = reduxSelectedCircuitStep1completed;
+          stepCompleted = step1completed;
           break;
         case "step2completed":
-          stepCompleted = reduxSelectedCircuitStep2completed;
+          stepCompleted = step2completed;
           break;
         case "step3completed":
-          stepCompleted = reduxSelectedCircuitStep3completed;
+          stepCompleted = step3completed;
           break;
         case "step4completed":
           stepCompleted = false;
@@ -91,11 +91,7 @@ const FooterStepper = () => {
       return { ...step, stepCompleted };
     });
     setEnrichedStepList(newEnrichedStepList);
-  }, [
-    reduxSelectedCircuitStep1completed,
-    reduxSelectedCircuitStep2completed,
-    reduxSelectedCircuitStep3completed,
-  ]);
+  }, [step1completed, step2completed, step3completed]);
 
   //#endregion Hooks ***********************************
 

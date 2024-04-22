@@ -618,7 +618,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="id">ID of the circuit to update.</param>
         /// <param name="dto">Creation DTO with the data to update the circuit.</param>
         /// <returns>Response indicating the result of the update operation.</returns>
-        [HttpPut("UpdateStep1/{id:int}")] // url completa: https://localhost:7003/api/Circuits/CircuitPut/1
+        [HttpPut("UpdateStep1/{id:int}")] // url completa: https://localhost:7003/api/Circuits/UpdateStep1/1
         public async Task<ActionResult<APIResponse>> UpdateStep1(int id, [FromBody] CircuitUpdateStep1DTO dto)
         {
             try
@@ -750,7 +750,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="id">ID of the circuit to update.</param>
         /// <param name="dto">Creation DTO with the data to update the circuit.</param>
         /// <returns>Response indicating the result of the update operation.</returns>
-        [HttpPut("UpdateStep2/{id:int}")] // url completa: https://localhost:7003/api/Circuits/CircuitPut/1
+        [HttpPut("UpdateStep2/{id:int}")] // url completa: https://localhost:7003/api/Circuits/UpdateStep2/2
         public async Task<ActionResult<APIResponse>> UpdateStep2(int id, [FromBody] CircuitUpdateStep2DTO dto)
         {
             try
@@ -849,6 +849,120 @@ namespace DatalexionBackend.UI.Controllers.V1
                         {
                             circuitPartyDB.Step2completed = true;
                             circuitPartyDB.LastUpdateDelegadoId = dto.LastUpdateDelegadoId;
+                        }
+                    }
+                }
+
+                await _dbContext.SaveChangesAsync();
+                _response.Result = $"Los votos del circuito con ID {id} han sido actualizados exitosamente.";
+                _response.StatusCode = HttpStatusCode.OK;
+
+                // SignalR
+                // await _hubContext.Clients.All.SendAsync("ReceiveMessage", "System", $"Se actualizó correctamente el circuito Id:{id}.");
+
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.InternalServerError;
+                _response.ErrorMessages = [ex.ToString()];
+            }
+            return BadRequest(_response);
+        }
+
+        /// <summary>
+        /// Updates an existing circuit, applying the specified changes in the creation DTO.
+        /// Origin Frontend: CircuitTable.js
+        /// </summary>
+        /// <param name="id">ID of the circuit to update.</param>
+        /// <param name="dto">Creation DTO with the data to update the circuit.</param>
+        /// <returns>Response indicating the result of the update operation.</returns>
+        [HttpPut("UpdateStep3/{id:int}")] // url completa: https://localhost:7003/api/Circuits/UpdateStep3/3
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<APIResponse>> UpdateStep3(int id, [FromForm] CircuitUpdateStep3DTO dto, [FromForm] List<IFormFile> photos)
+        {
+            try
+            {
+                if (id <= 0 || dto == null || dto.ClientId <= 0 || dto.LastUpdateDelegadoId <= 0)
+                {
+                    _logger.LogError(_message.NotValid());
+                    _response.ErrorMessages = new() { _message.NotValid() };
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    return BadRequest(_response);
+                }
+                var circuitDB = await _dbContext.Circuit
+                    .Include(c => c.ListCircuitSlates)
+                    .ThenInclude(c => c.Slate)
+                    .Include(c => c.ListCircuitParties)
+                    .ThenInclude(c => c.Party)
+                    // .Include(c => c.ListPhotos)
+                    .FirstOrDefaultAsync(c => c.Id == id);
+                if (circuitDB == null)
+                {
+                    _logger.LogError($"No se encontró el circuito con ID {id}.");
+                    _response.ErrorMessages = new() { $"No se encontró el circuito con ID {id}." };
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    return NotFound(_response);
+                }
+
+                var delegadoDB = await _dbContext.Delegado
+                        .Where(c => c.Id == dto.LastUpdateDelegadoId)
+                        .FirstOrDefaultAsync();
+
+                if (delegadoDB == null)
+                {
+                    _logger.LogError(((DelegadoMessage)_message).NotFound(dto.LastUpdateDelegadoId.Value), dto.LastUpdateDelegadoId.Value);
+                    _response.ErrorMessages = new() { ((DelegadoMessage)_message).NotFound(dto.LastUpdateDelegadoId.Value) };
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    return NotFound(_response);
+                }
+
+                var clientDB = await _dbContext.Client
+                           .Where(c => c.Id == dto.ClientId)
+                           .FirstOrDefaultAsync();
+                if (clientDB == null)
+                {
+                    _logger.LogError(((ClientMessage)_message).NotFound(dto.ClientId), dto.ClientId);
+                    _response.ErrorMessages = new() { ((ClientMessage)_message).NotFound(dto.ClientId) };
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    return NotFound(_response);
+                }
+
+                if (circuitDB.ListCircuitParties != null && circuitDB.ListCircuitParties.Any())
+                {
+                    var circuitPartyDB = circuitDB.ListCircuitParties.Where(x => x.PartyId == clientDB.PartyId && x.CircuitId == dto.Id).FirstOrDefault();
+                    if (circuitPartyDB == null)
+                    {
+                        _logger.LogError($"No se encontró el circuito con ID {id}.");
+                        _response.ErrorMessages = new() { $"No se encontró el circuito con ID {id}." };
+                        _response.IsSuccess = false;
+                        _response.StatusCode = HttpStatusCode.NotFound;
+                        return NotFound(_response);
+                    }
+
+                    // Paso 1) Actualizar Extra votes
+                    if (circuitPartyDB != null)
+                    {
+                        // Actualizar votos
+                        circuitPartyDB.BlankVotes = dto.BlankVotes;
+                        circuitPartyDB.NullVotes = dto.NullVotes;
+                        circuitPartyDB.ObservedVotes = dto.ObservedVotes;
+                        circuitPartyDB.RecurredVotes = dto.RecurredVotes;
+                        circuitPartyDB.Step3completed = true;
+
+                        circuitPartyDB.LastUpdateDelegadoId = dto.LastUpdateDelegadoId;
+                        circuitPartyDB.ImagesUploadedCount = dto.ImagesUploadedCount;
+
+                        // Manejar carga de fotos
+                        if (photos != null && photos.Count > 0)
+                        {
+                            await HandlePhotoUpload(photos, circuitPartyDB);
                         }
                     }
                 }

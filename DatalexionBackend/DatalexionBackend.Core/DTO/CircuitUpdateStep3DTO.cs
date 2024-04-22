@@ -1,10 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
-using DatalexionBackend.Core.Helpers;
+using DatalexionBackend.Core.Domain.Entities;
 
 namespace DatalexionBackend.Core.DTO
 {
-    public class CircuitUpdateStep1DTO
+    public class CircuitUpdateStep3DTO
     {
         #region Specials
 
@@ -31,11 +30,16 @@ namespace DatalexionBackend.Core.DTO
 
         #region Uniques
 
+        public int BlankVotes { get; set; } = 0;
+        public int NullVotes { get; set; } = 0;
+        public int ObservedVotes { get; set; } = 0;
+        public int RecurredVotes { get; set; } = 0;
+        public int ImagesUploadedCount { get; set; } = 0;
+
         /// <summary>
-        /// N-N Usar TypeBinder.cs, s: https://www.udemy.com/course/desarrollando-aplicaciones-en-react-y-aspnet-core/learn/lecture/26047194#overview
+        /// 1-N
         /// </summary>
-        [ModelBinder(BinderType = typeof(TypeBinder<List<CircuitSlateCreateDTO>>))]
-        public List<CircuitSlateCreateDTO> ListCircuitSlates { get; set; }
+        // public List<Photo> ListPhotos { get; set; }
 
         #endregion 
 

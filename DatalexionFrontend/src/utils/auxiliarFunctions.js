@@ -81,12 +81,12 @@ export const getCircuitParty = (circuit, client) => {
     circuit.listCircuitParties.length > 0 &&
     client
   ) {
-    const circuitParty = circuit.listCircuitParties.find((circuitP) => {
-      const partyId = circuitP.partyId.toString();
+    const circuitPartyReturn = circuit.listCircuitParties.find((circuitParty) => {
+      const partyId = circuitParty.partyId.toString();
       const reduxPartyId = client.party ? client.party.id : null;
       return partyId == reduxPartyId;
     });
-    return circuitParty;
+    return circuitPartyReturn;
   }
   return null;
 };

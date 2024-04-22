@@ -346,7 +346,7 @@ const FormSummary = () => {
                             {index + 1}
                           </CTableHeaderCell>
                           <CTableDataCell>
-                            {party.name ? party.name : party.shortName}
+                            {party.name ? party.shortName: party.name }
                           </CTableDataCell>
                           <CTableDataCell>
                             {party.votes ? party.votes : 0}

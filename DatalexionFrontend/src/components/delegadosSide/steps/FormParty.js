@@ -44,29 +44,25 @@ const FormParty = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // redux get
+  // redux gets
   const reduxSelectedCircuit = useSelector(
     (state) => state.liveSettings.circuit
   );
-
-  // redux gets
-  const [isLoadingParty, setIsLoadingParty] = useState(false);
   const TOTALVotosGLOBAL = useSelector(
     (state) => state.form.reduxVotosTotalSteps
   );
-  const [votosPartyTotal, setVotosPartyTotal] = useState(0);
   const reduxClient = useSelector((state) => state.generalData.client);
   const reduxPartyList = useSelector((state) => state.generalData.partyList);
+  const delegadoId = useSelector((state) => state.auth.userId);
 
-  const [isBumped, triggerBump] = useBumpEffect();
-
+  const [isLoadingParty, setIsLoadingParty] = useState(false);
+  const [votosPartyTotal, setVotosPartyTotal] = useState(0);
   const [isDisabledParty, setIsDisabledParty] = useState(false);
   const [isValidArrayParty, setIsValidArrayParty] = useState([true]);
   const [isValidFormParty, setIsValidFormParty] = useState(true);
   const [isSuccessParty, setIsSuccessParty] = useState(false);
   const [filteredPartyList, setFilteredPartyList] = useState([]);
-
-  const delegadoId = useSelector((state) => state.auth.userId);
+  const [isBumped, triggerBump] = useBumpEffect();
 
   const { uploadData, error } = useAPI();
 
@@ -253,12 +249,12 @@ const FormParty = () => {
     setIsLoadingParty(true);
 
     let isSuccess = false;
-    const updatedCircuitPayload = preparePayload(updatedPartyVotesList);
+    const circuitStep2DTO = preparePayload(updatedPartyVotesList);
 
     try {
       // HTTP Put a Circuits
       await uploadData(
-        JSON.stringify(updatedCircuitPayload),
+        JSON.stringify(circuitStep2DTO),
         // urlCircuit,
         urlCircuitUpdateStep2,
         true,
@@ -281,7 +277,7 @@ const FormParty = () => {
 
     // Si el envío fue exitoso, intenta actualizar el circuito
     if (isSuccess) {
-      dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
+      // dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
 
       // Actualizar step en Redux
       dispatch(liveSettingsActions.setStepCompletedCircuit(2));
@@ -319,14 +315,16 @@ const FormParty = () => {
 
   //#region JSX props ***********************************
 
-  const preparePayload = (updatedPartyVotesList) => {
+  const preparePayload = (updatedListCircuitParties) => {
     // Update reduxSelectedCircuit: Actualizar circuito seleccionado en Redux - parte 2
     const updatedCircuit = {
       ...reduxSelectedCircuit,
-      listCircuitParties: updatedPartyVotesList.map((party) => ({
-        circuitId: party.circuitId,
-        partyId: party.partyId,
-        totalPartyVotes: party.votes,
+      listCircuitParties: updatedListCircuitParties.map((circuitParty) => ({
+        ...circuitParty,
+        circuitId: circuitParty.circuitId,
+        partyId: circuitParty.partyId,
+        totalPartyVotes: circuitParty.votes,
+        step2completed: true,
       })),
       listCircuitSlates: reduxSelectedCircuit?.listCircuitSlates,
     };
@@ -334,23 +332,7 @@ const FormParty = () => {
     // Update reduxSelectedCircuit
     dispatch(liveSettingsActions.setSelectedCircuit(updatedCircuit));
 
-    // const updatedCircuitPayload = {
-    //   Number: reduxSelectedCircuit?.number,
-    //   Name: reduxSelectedCircuit?.name,
-    //   Address: reduxSelectedCircuit?.address,
-    //   BlankVotes: reduxSelectedCircuit?.blankVotes,
-    //   NullVotes: reduxSelectedCircuit?.nullVotes,
-    //   ObservedVotes: reduxSelectedCircuit?.observedVotes,
-    //   RecurredVotes: reduxSelectedCircuit?.recurredVotes,
-    //   ListCircuitParties: updatedCircuit?.listCircuitParties,
-    //   ListCircuitSlates: reduxSelectedCircuit?.listCircuitSlates,
-    //   Step1completed: reduxSelectedCircuit?.step1completed,
-    //   Step2completed: true,
-    //   Step3completed: reduxSelectedCircuit?.step3completed,
-    //   LastUpdateDelegadoId: delegadoId,
-    // };
-
-    const updatedCircuitPayload = {
+    const circuitStep2DTO = {
       Id: reduxSelectedCircuit?.id,
       Number: reduxSelectedCircuit?.number,
       Name: reduxSelectedCircuit?.name,
@@ -359,7 +341,7 @@ const FormParty = () => {
       ClientId: reduxClient.id,
     };
 
-    return updatedCircuitPayload;
+    return circuitStep2DTO;
   };
 
   const labelSelectCircuit = (
