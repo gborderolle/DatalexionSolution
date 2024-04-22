@@ -26,6 +26,7 @@ import useBumpEffect from "../../../utils/useBumpEffect";
 import "./FormStart.css";
 
 import { FormStart } from "../../../utils/navigationPaths";
+import { getCircuitParty } from "../../../utils/auxiliarFunctions";
 
 // redux imports
 import { useSelector, useDispatch } from "react-redux";
@@ -70,11 +71,7 @@ const FormSummary = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [filteredSlateList, setFilteredSlateList] = useState([]);
-  const [filteredPartyList, setFilteredPartyList] = useState([]);
-  const [fixedCards, setFixedCards] = useState(initialFixedCards);
-
-  // redux gets
+  // useSelector
   const reduxClient = useSelector((state) => state.generalData.client);
   const reduxSlateList = useSelector(
     (state) => state.generalData.slateList || []
@@ -88,12 +85,14 @@ const FormSummary = () => {
   const reduxWingList = useSelector(
     (state) => state.generalData.wingList || []
   );
-  const circuitImagesUploadedCount = reduxSelectedCircuit
-    ? reduxSelectedCircuit.imagesUploadedCount
-    : 0;
 
+  // useStates
+  const [filteredSlateList, setFilteredSlateList] = useState([]);
+  const [filteredPartyList, setFilteredPartyList] = useState([]);
+  const [fixedCards, setFixedCards] = useState(initialFixedCards);
   const [isBumped, triggerBump] = useBumpEffect();
   const [animateTable, setAnimateTable] = useState(false);
+  const [imagesUploadedCount, setImagesUploadedCount] = useState(false);
 
   //#endregion Consts ***********************************
 
@@ -139,12 +138,20 @@ const FormSummary = () => {
     if (reduxSelectedCircuit && Object.keys(reduxSelectedCircuit).length > 0) {
       setFixedCards((prevCards) => {
         return prevCards?.map((card) => {
-          // Si newVotes tiene una entrada para el cardId actual, actualízalo
-          const newVoteCount = reduxSelectedCircuit[card.id];
-          return {
-            ...card,
-            votes: newVoteCount !== undefined ? newVoteCount : card.votes,
-          };
+          const circuitParty = getCircuitParty(
+            reduxSelectedCircuit,
+            reduxClient
+          );
+          if (circuitParty) {
+            setImagesUploadedCount(circuitParty.imagesUploadedCount);
+
+            // Si newVotes tiene una entrada para el cardId actual, actualízalo
+            const newVoteCount = circuitParty[card.id];
+            return {
+              ...card,
+              votes: newVoteCount !== undefined ? newVoteCount : card.votes,
+            };
+          }
         });
       });
     }
@@ -404,9 +411,7 @@ const FormSummary = () => {
                         Actas cargadas
                       </CTableDataCell>
                       <CTableDataCell>
-                        {circuitImagesUploadedCount
-                          ? circuitImagesUploadedCount
-                          : 0}
+                        {imagesUploadedCount ? imagesUploadedCount : 0}
                       </CTableDataCell>
                     </CTableRow>
                   </CTableBody>

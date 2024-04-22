@@ -78,6 +78,7 @@ const FormSlate = () => {
   const [isValidFormSlate, setIsValidFormSlate] = useState(true);
   const [isSuccessSlate, setIsSuccessSlate] = useState(false);
   const [filteredSlateList, setFilteredSlateList] = useState([]);
+  const [isFormDirty, setIsFormDirty] = useState(false);
 
   //#endregion Consts ***********************************
 
@@ -89,7 +90,8 @@ const FormSlate = () => {
   }, []);
 
   useEffect(() => {
-    // dispatch(formActions.setReduxVotosTotalSteps(votosSlateTotal));
+    // Actualiza el conteo parcial de votos (total de slates de la página actual)
+    dispatch(formActions.setReduxVotosTotalSteps(votosSlateTotal));
   }, [votosSlateTotal, dispatch]);
 
   useEffect(() => {
@@ -160,6 +162,34 @@ const FormSlate = () => {
       }, 100);
     }
   }, [isSuccessSlate, dispatch]);
+
+  useEffect(() => {
+    const confirmNavigation = (e) => {
+      if (isFormDirty) {
+        const confirmMessage =
+          "Tienes cambios sin guardar. ¿Estás seguro de que quieres salir?";
+        e.returnValue = confirmMessage; // Para navegadores estándar
+        return confirmMessage; // Para algunos navegadores más antiguos
+      }
+    };
+
+    window.addEventListener("beforeunload", confirmNavigation);
+    return () => {
+      window.removeEventListener("beforeunload", confirmNavigation);
+    };
+  }, [isFormDirty]);
+
+  const handleNavigateAway = () => {
+    if (
+      isFormDirty &&
+      !window.confirm(
+        "Tienes cambios sin guardar. ¿Estás seguro de que quieres salir?"
+      )
+    ) {
+      return; // Detener la navegación si hay cambios sin guardar y el usuario no confirma
+    }
+    navigate(FormParty); // Reemplaza esto con tu ruta objetivo
+  };
 
   //#endregion Hooks ***********************************
 
@@ -321,6 +351,8 @@ const FormSlate = () => {
 
     // Si el envío fue exitoso, intenta actualizar el circuito
     if (isSuccess) {
+      setIsFormDirty(false);
+
       // Actualizar step en Redux
       dispatch(liveSettingsActions.setStepCompletedCircuit(1));
 
@@ -444,7 +476,7 @@ const FormSlate = () => {
               >
                 <div style={{ textAlign: "center" }}>
                   <CButton type="submit" color={buttonColor}>
-                    Siguiente
+                    Guardar
                   </CButton>
                 </div>
               </CCardFooter>

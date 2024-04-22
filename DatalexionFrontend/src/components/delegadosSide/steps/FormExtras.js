@@ -113,6 +113,7 @@ const FormExtras = () => {
   }, []);
 
   useEffect(() => {
+    // Actualiza el conteo parcial de votos (total de extras de la página actual)
     dispatch(formActions.setReduxVotosTotalSteps(TOTALVotosExtras));
   }, [TOTALVotosExtras, dispatch]);
 
@@ -171,8 +172,13 @@ const FormExtras = () => {
     if (reduxSelectedCircuit && Object.keys(reduxSelectedCircuit).length > 0) {
       setFixedCards((prevCards) => {
         return prevCards?.map((card) => {
+          const circuitParty = getCircuitParty(
+            reduxSelectedCircuit,
+            reduxClient
+          );
+
           // Si newVotes tiene una entrada para el cardId actual, actualízalo
-          const newVoteCount = reduxSelectedCircuit[card.id];
+          const newVoteCount = circuitParty[card.id];
           return {
             ...card,
             votes: newVoteCount !== undefined ? newVoteCount : card.votes,
@@ -629,7 +635,7 @@ const FormExtras = () => {
                 >
                   <div style={{ textAlign: "center" }}>
                     <CButton type="submit" color={buttonColor}>
-                      Siguiente
+                      Guardar
                     </CButton>
                   </div>
                 </CCardFooter>

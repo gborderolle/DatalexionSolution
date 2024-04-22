@@ -77,7 +77,8 @@ const FormParty = () => {
   }, []);
 
   useEffect(() => {
-    // dispatch(formActions.setReduxVotosTotalSteps(votosPartyTotal));
+    // Actualiza el conteo parcial de votos (total de partidos de la página actual)
+    dispatch(formActions.setReduxVotosTotalSteps(votosPartyTotal));
   }, [votosPartyTotal, dispatch]);
 
   useEffect(() => {
@@ -398,7 +399,7 @@ const FormParty = () => {
                 >
                   <div style={{ textAlign: "center" }}>
                     <CButton type="submit" color={buttonColor}>
-                      Siguiente
+                    Guardar
                     </CButton>
                   </div>
                 </CCardFooter>

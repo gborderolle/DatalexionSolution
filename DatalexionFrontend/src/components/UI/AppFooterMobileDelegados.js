@@ -14,7 +14,7 @@ import classes from "./AppFooterMobileDelegados.module.css";
 const AppFooterMobileDelegados = () => {
   //#region Consts ***********************************
 
-  // redux gets
+  // useSelector
   const reduxVotosTotalSteps = useSelector(
     (state) => state.form.reduxVotosTotalSteps
   );
@@ -22,10 +22,7 @@ const AppFooterMobileDelegados = () => {
   const reduxVotosStep2 = useSelector((state) => state.form.reduxVotosStep2);
   const reduxVotosStep3 = useSelector((state) => state.form.reduxVotosStep3);
   const stepperIsVisible = useSelector((state) => state.ui.stepperIsVisible);
-
   const reduxClient = useSelector((state) => state.generalData.client);
-
-  // redux gets
   const reduxSelectedCircuit = useSelector(
     (state) => state.liveSettings.circuit
   );

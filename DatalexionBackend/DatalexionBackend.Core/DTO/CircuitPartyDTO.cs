@@ -18,6 +18,7 @@
         public bool Step2completed { get; set; } = false;
         public bool Step3completed { get; set; } = false;
         public int? LastUpdateDelegadoId { get; set; }
+        public int ImagesUploadedCount { get; set; } = 0;
         public List<string> ListPhotosURL { get; set; }
 
         #endregion

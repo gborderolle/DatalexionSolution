@@ -315,11 +315,17 @@ export const fetchVotosTotal = (circuit) => {
       // const data = await fetchApi(urlCircuit + "/" + circuit.id);
       if (data && data.result) {
         const circuitResult = data.result;
-        let votosCircuitoTotal = 0;
+        let nSlates = 0;
+        let nParties = 0;
+        let nSlatesPartiesExtras = 0;
 
         // Sumar los votos de cada slate dentro del circuito
         circuitResult.listCircuitSlates.forEach((circuitSlate) => {
-          votosCircuitoTotal += circuitSlate.totalSlateVotes || 0; // Asegurarse de que Votes sea un número
+          nSlates += circuitSlate.totalSlateVotes || 0; // Asegurarse de que Votes sea un número
+        });
+
+        circuitResult.listCircuitParties.forEach((circuitParty) => {
+          nParties += circuitParty.totalPartyVotes || 0; // Asegurarse de que Votes sea un número
         });
 
         // Encontrar el circuitParty específico basado en partyId
@@ -333,18 +339,19 @@ export const fetchVotosTotal = (circuit) => {
         }
 
         // Sumar votos extras
-        const votosExtrasTotal =
+        const nExtras =
           myCircuitParty.nullVotes +
           myCircuitParty.blankVotes +
           myCircuitParty.recurredVotes +
           myCircuitParty.observedVotes;
 
-        votosCircuitoTotal += votosExtrasTotal; // Sumar los votos extras al total
+        nSlatesPartiesExtras += nParties + nExtras; // Sumar los votos extras al total
 
         // Actualizar el estado global con el total de votos
-        dispatch(formActions.setReduxVotosStep1(votosCircuitoTotal));
-        // dispatch(formActions.setVotosPartyTotalRedux(votosPartyTotal)); // Slate votos está contenido dentro de Party votos (partido propio)
-        dispatch(formActions.setReduxVotosStep3(votosExtrasTotal));
+        dispatch(formActions.setReduxVotosStep1(nSlates));
+        dispatch(formActions.setReduxVotosStep2(nParties));
+        dispatch(formActions.setReduxVotosStep3(nExtras));
+        dispatch(formActions.setReduxVotosTotalSteps(nSlatesPartiesExtras));
       } else {
         console.error("Fetch error:", data.errorMessages);
       }
