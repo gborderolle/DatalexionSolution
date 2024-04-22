@@ -61,8 +61,9 @@ else
 bool SeedCircuitsAndMunicipalitiesFromExcelOnStartup = builder.Configuration.GetValue<bool>("SeedCircuitsAndMunicipalitiesFromExcelOnStartup");
 if (SeedCircuitsAndMunicipalitiesFromExcelOnStartup)
 {
+    int provinceId = 1;
     var logger = app.Services.GetRequiredService<ILogger<DataSeeder>>();
-    await ExcelDataSeeder.LoadDataFromExcel(app.Services, wwwrootPath, logger);
+    await ExcelDataSeeder.LoadDataFromExcel(app.Services, wwwrootPath, logger, provinceId);
 }
 bool SeedVotesOnStartup = builder.Configuration.GetValue<bool>("SeedVotesOnStartup");
 if (SeedVotesOnStartup)

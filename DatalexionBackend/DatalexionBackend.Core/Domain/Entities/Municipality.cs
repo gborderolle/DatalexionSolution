@@ -30,7 +30,7 @@ public class Municipality : IId
     /// <summary>
     /// 0-N
     /// </summary>
-    public List<Circuit> ListCircuits { get; set; }
+    public List<Circuit> ListCircuits { get; set; } = new();
 
     // -- Vueltas --
 
@@ -38,8 +38,8 @@ public class Municipality : IId
     public int ProvinceId { get; set; }
     public Province Province { get; set; }
 
-    public int? DelegadoId { get; set; }
-    public Delegado? Delegado { get; set; }
+    // public int? DelegadoId { get; set; }
+    // public Delegado? Delegado { get; set; }
 
     #endregion
 

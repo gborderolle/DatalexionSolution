@@ -34,12 +34,12 @@ namespace DatalexionBackend.Core.Domain.Entities
         /// <summary>
         /// N-N
         /// </summary>
-        public List<CircuitDelegado> ListCircuitDelegados { get; set; }
+        public List<CircuitDelegado> ListCircuitDelegados { get; set; } = new();
 
         /// <summary>
         /// 1-N
         /// </summary>
-        public List<Municipality> ListMunicipalities { get; set; }
+        public List<Municipality> ListMunicipalities { get; set; } = new();
 
         // -- Vueltas --
 

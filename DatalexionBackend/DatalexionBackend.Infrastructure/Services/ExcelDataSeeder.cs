@@ -10,7 +10,7 @@ namespace DatalexionBackend.Infrastructure.Services
 {
     public static class ExcelDataSeeder
     {
-        public static async Task LoadDataFromExcel(IServiceProvider serviceProvider, string wwwrootPath, ILogger logger)
+        public static async Task LoadDataFromExcel(IServiceProvider serviceProvider, string wwwrootPath, ILogger logger, int provinceId)
         {
             try
             {
@@ -26,19 +26,15 @@ namespace DatalexionBackend.Infrastructure.Services
                         var rows = worksheet.RowsUsed();
 
                         var headers = worksheet.Row(1).CellsUsed().Select(c => c.Value.ToString()).ToList();
-                        if (headers.Count == 0)
-                        {
+                        if (!headers.Any())
                             return;
-                        }
-                        else
+
+                        var tablesToClear = new List<string> { "CircuitParty", "CircuitSlate", "CircuitDelegado", "Circuit", "Municipality" };
+                        foreach (var tableName in tablesToClear)
                         {
-                            var tablesToClear = new List<string> { "CircuitParty", "CircuitSlate", "CircuitDelegado", "Circuit", "Municipality" };
-                            foreach (var tableName in tablesToClear)
-                            {
-                                await context.Database.ExecuteSqlRawAsync($"DELETE FROM {tableName};");
-                                // En SQL Server, también podrías considerar reiniciar los contadores de IDENTITY si es necesario:
-                                // await context.Database.ExecuteSqlRawAsync($"DBCC CHECKIDENT ('{tableName}', RESEED, 0);");
-                            }
+                            await context.Database.ExecuteSqlRawAsync($"DELETE FROM {tableName};");
+                            // En SQL Server, también podrías considerar reiniciar los contadores de IDENTITY si es necesario:
+                            // await context.Database.ExecuteSqlRawAsync($"DBCC CHECKIDENT ('{tableName}', RESEED, 0);");
                         }
 
                         int numberIndex = headers.IndexOf("CIRCUITO") + 1;
@@ -48,10 +44,10 @@ namespace DatalexionBackend.Infrastructure.Services
                         int provinceIndex = headers.IndexOf("DEPARTAMENTO") + 1;
 
                         // ToDo: Hardcodeado
-                        int provinceId = 1; //provinceIndex; // Asumiendo que el provinceId es 1 para este ejemplo
-                        var delegadoId = 1; // Asumiendo que el delegadoId es 1 para este ejemplo
+                        // int provinceId = 1; //provinceIndex; // Asumiendo que el provinceId es 1 para este ejemplo
+                        // var delegadoId = 1; // Asumiendo que el delegadoId es 1 para este ejemplo
 
-                        var delegado = await context.Delegado.FirstOrDefaultAsync(p => p.Id == delegadoId);
+                        // var delegado = await context.Delegado.FirstOrDefaultAsync(p => p.Id == delegadoId);
 
                         // Agregando municipios
                         var municipalitiesToAdd = new List<Municipality>();
@@ -68,8 +64,6 @@ namespace DatalexionBackend.Infrastructure.Services
                                     Name = municipalityName,
                                     ProvinceId = provinceId,
                                     Province = province,
-                                    DelegadoId = delegadoId,
-                                    Delegado = delegado
                                 });
                             }
                         }
@@ -77,12 +71,6 @@ namespace DatalexionBackend.Infrastructure.Services
                         // Guardar todos los municipios agregados
                         context.Municipality.AddRange(municipalitiesToAdd);
                         await context.SaveChangesAsync();
-
-                        if (delegado != null)
-                        {
-                            delegado.ListMunicipalities = municipalitiesToAdd;
-                            context.Delegado.Update(delegado);
-                        }
 
                         // Creando el Dictionary de MunicipalityIds
                         var municipalityNames = municipalitiesToAdd.ToDictionary(m => m.Name, m => m.Id);
@@ -115,17 +103,20 @@ namespace DatalexionBackend.Infrastructure.Services
                                     context.Circuit.Add(circuit);
                                     await context.SaveChangesAsync();
 
-                                    if (delegado != null)
+                                    var delegates = context.Delegado.ToList();  // Obtener todos los delegados
+                                    foreach (var delegado1 in delegates)
                                     {
+                                        delegado1.ListMunicipalities = municipalitiesToAdd;
+                                        context.Delegado.Update(delegado1);
+
                                         var circuitDelegado = new CircuitDelegado
                                         {
                                             CircuitId = circuit.Id,
-                                            DelegadoId = delegado.Id
+                                            DelegadoId = delegado1.Id
                                         };
-
                                         context.CircuitDelegado.Add(circuitDelegado);
-                                        await context.SaveChangesAsync();
                                     }
+                                    await context.SaveChangesAsync();
 
                                     // Asociar el circuito con todos los slates de provinceId 1
                                     var slatesInProvince = await context.Slate

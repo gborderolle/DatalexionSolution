@@ -12,6 +12,7 @@ const generalDataSlice = createSlice({
     slateListByClient: [],
     provinceList: [],
     municipalityList: [],
+    municipalityListByDelegado: [],
     circuitList: [],
     circuitListByClient: [],
     candidateList: [],
@@ -49,6 +50,9 @@ const generalDataSlice = createSlice({
     },
     setMunicipalityList: (state, action) => {
       state.municipalityList = action.payload;
+    },
+    setMunicipalityListByDelegado: (state, action) => {
+      state.municipalityListByDelegado = action.payload;
     },
     setCircuitList: (state, action) => {
       state.circuitList = action.payload;

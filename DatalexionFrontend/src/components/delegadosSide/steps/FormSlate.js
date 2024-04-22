@@ -247,7 +247,7 @@ const FormSlate = () => {
   };
 
   // Por cada Slate creo una card con su input votos
-  const slateList1 = filteredSlateList?.map((circuit, index) => {
+  const slateListJSX = filteredSlateList?.map((circuit, index) => {
     const candidate = SlateGetCandidate(circuit, reduxCandidateList);
     const partyImageURL = circuit.photoURL
       ? circuit.photoURL
@@ -461,7 +461,7 @@ const FormSlate = () => {
                 {isLoadingSlate ? (
                   <LoadingSpinner />
                 ) : reduxSelectedCircuit && reduxSelectedCircuit.id > 0 ? (
-                  slateList1
+                  slateListJSX
                 ) : (
                   <>
                     {labelSelectCircuit}

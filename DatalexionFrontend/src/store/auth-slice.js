@@ -24,10 +24,10 @@ const getInitialState = () => {
   } else {
     localStorage.removeItem("loggedInData");
     localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("userProvinceId");
-    localStorage.removeItem("userMunicipalityId");
+    // localStorage.removeItem("userProvinceId");
+    // localStorage.removeItem("userMunicipalityId");
     localStorage.removeItem("listMunicipalities");
-    localStorage.removeItem("listCircuitDelegados");
+    // localStorage.removeItem("listCircuitDelegados");
     localStorage.removeItem("userRole");
     localStorage.removeItem("username");
     localStorage.removeItem("fullname");
@@ -40,10 +40,10 @@ const getInitialState = () => {
   return {
     loggedInData: loggedInData,
     isLoggedIn: localStorage.getItem("isLoggedIn") || "",
-    userProvinceId: localStorage.getItem("userProvinceId") || "",
-    userMunicipalityId: localStorage.getItem("userMunicipalityId") || "",
-    listMunicipalities: getSafeJSONParse("listMunicipalities", []),
-    listCircuitDelegados: getSafeJSONParse("listCircuitDelegados", []),
+    // userProvinceId: localStorage.getItem("userProvinceId") || "",
+    // userMunicipalityId: localStorage.getItem("userMunicipalityId") || "",
+    listMunicipalities: getSafeJSONParse("listMunicipalities", []), // borrar?
+    // listCircuitDelegados: getSafeJSONParse("listCircuitDelegados", []),
     userRole: localStorage.getItem("userRole") || "",
     username: localStorage.getItem("username") || "",
     fullname: localStorage.getItem("fullname") || "",
@@ -60,10 +60,10 @@ const authSlice = createSlice({
   reducers: {
     login(state, action) {
       state.isLoggedIn = true;
-      state.userProvinceId = action.payload.userProvinceId;
-      state.userMunicipalityId = action.payload.userMunicipalityId;
+      // state.userProvinceId = action.payload.userProvinceId;
+      // state.userMunicipalityId = action.payload.userMunicipalityId;
       state.listMunicipalities = action.payload.listMunicipalities;
-      state.listCircuitDelegados = action.payload.listCircuitDelegados;
+      // state.listCircuitDelegados = action.payload.listCircuitDelegados;
       state.userRole = action.payload.userRole;
       state.username = action.payload.username;
       state.fullname = action.payload.fullname;
@@ -82,16 +82,13 @@ const authSlice = createSlice({
 
       localStorage.setItem("isLoggedIn", true);
       localStorage.setItem("loggedInData", JSON.stringify(data));
-      localStorage.setItem("userProvinceId", state.userProvinceId);
-      localStorage.setItem("userMunicipalityId", state.userMunicipalityId);
+      // localStorage.setItem("userProvinceId", state.userProvinceId);
+      // localStorage.setItem("userMunicipalityId", state.userMunicipalityId);
       localStorage.setItem(
         "listMunicipalities",
         JSON.stringify(state.listMunicipalities)
       );
-      localStorage.setItem(
-        "listCircuitDelegados",
-        JSON.stringify(state.listCircuitDelegados)
-      );
+      // localStorage.setItem("listCircuitDelegados",JSON.stringify(state.listCircuitDelegados));
       localStorage.setItem("userRole", state.userRole);
       localStorage.setItem("username", state.username);
       localStorage.setItem("fullname", state.fullname);
@@ -103,10 +100,10 @@ const authSlice = createSlice({
 
     logout(state) {
       state.isLoggedIn = false;
-      state.userProvinceId = "";
-      state.userMunicipalityId = "";
+      // state.userProvinceId = "";
+      // state.userMunicipalityId = "";
       state.listMunicipalities = "";
-      state.listCircuitDelegados = "";
+      // state.listCircuitDelegados = "";
       state.userRole = "";
       state.username = "";
       state.fullname = "";
@@ -120,10 +117,10 @@ const authSlice = createSlice({
       };
       localStorage.setItem("loggedInData", JSON.stringify(data));
 
-      localStorage.removeItem("userProvinceId");
-      localStorage.removeItem("userMunicipalityId");
+      // localStorage.removeItem("userProvinceId");
+      // localStorage.removeItem("userMunicipalityId");
       localStorage.removeItem("listMunicipalities");
-      localStorage.removeItem("listCircuitDelegados");
+      // localStorage.removeItem("listCircuitDelegados");
       localStorage.removeItem("userRole");
       localStorage.removeItem("username");
       localStorage.removeItem("fullname");
@@ -149,13 +146,11 @@ const authSlice = createSlice({
       }
 
       state.isLoggedIn = localStorage.getItem("isLoggedIn") || "";
-      state.userProvinceId = localStorage.getItem("userProvinceId") || "";
-      state.userMunicipalityId =
-        localStorage.getItem("userMunicipalityId") || "";
+      // state.userProvinceId = localStorage.getItem("userProvinceId") || "";
+      // state.userMunicipalityId = localStorage.getItem("userMunicipalityId") || "";
       state.listMunicipalities =
         JSON.parse(localStorage.getItem("listMunicipalities")) || [];
-      state.listCircuitDelegados =
-        JSON.parse(localStorage.getItem("listCircuitDelegados")) || [];
+      // state.listCircuitDelegados =JSON.parse(localStorage.getItem("listCircuitDelegados")) || [];
       state.userRole = localStorage.getItem("userRole") || "";
       state.username = localStorage.getItem("username") || "";
       state.fullname = localStorage.getItem("fullname") || "";
@@ -169,10 +164,10 @@ const authSlice = createSlice({
     resetAuthState(state) {
       localStorage.removeItem("loggedInData");
       localStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("userProvinceId");
-      localStorage.removeItem("userMunicipalityId");
+      // localStorage.removeItem("userProvinceId");
+      // localStorage.removeItem("userMunicipalityId");
       localStorage.removeItem("listMunicipalities");
-      localStorage.removeItem("listCircuitDelegados");
+      // localStorage.removeItem("listCircuitDelegados");
       localStorage.removeItem("userRole");
       localStorage.removeItem("username");
       localStorage.removeItem("fullname");
@@ -183,10 +178,10 @@ const authSlice = createSlice({
 
       state.loggedInData = null;
       state.isLoggedIn = false;
-      state.userProvinceId = null;
-      state.userMunicipalityId = null;
+      // state.userProvinceId = null;
+      // state.userMunicipalityId = null;
       state.listMunicipalities = null;
-      state.listCircuitDelegados = null;
+      // state.listCircuitDelegados = null;
       state.userRole = null;
       state.username = null;
       state.fullname = null;

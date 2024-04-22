@@ -129,6 +129,23 @@ namespace DatalexionBackend.UI.Controllers.V1
                     return NotFound(_response);
                 }
 
+                // 1..n
+                var includes = new List<IncludePropertyConfiguration<Circuit>>
+                {
+                    new IncludePropertyConfiguration<Circuit>
+                    {
+                        IncludeExpression = b => b.Municipality
+                    },
+                    new IncludePropertyConfiguration<Circuit>
+                    {
+                        IncludeExpression = b => b.ListCircuitParties
+                    },
+                    new IncludePropertyConfiguration<Circuit>
+                    {
+                        IncludeExpression = b => b.ListCircuitSlates
+                    },
+                };
+
                 // n..n
                 var thenIncludes = new List<ThenIncludePropertyConfiguration<Circuit>>
                 {
@@ -149,7 +166,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                         ThenIncludeExpression = ab => ((CircuitParty)ab).Party
                     },
                 };
-                return await Get<Circuit, CircuitDTO>(thenIncludes: thenIncludes);
+                return await Get<Circuit, CircuitDTO>(includes: includes, thenIncludes: thenIncludes);
             }
             catch (Exception ex)
             {
@@ -232,9 +249,35 @@ namespace DatalexionBackend.UI.Controllers.V1
         [HttpGet("GetCircuitByClient/{id:int}")]
         public async Task<ActionResult<APIResponse>> GetCircuitByClient([FromRoute] int id, [FromQuery] int clientId)
         {
+            var includesClient = new List<IncludePropertyConfiguration<Client>>
+            {
+                new IncludePropertyConfiguration<Client>
+                {
+                    IncludeExpression = b => b.Party
+                },
+            };
+            var client = await _clientRepository.Get(v => v.Id == clientId, includes: includesClient);
+            if (client == null)
+            {
+                _logger.LogError(((ClientMessage)_message).NotFound(clientId), clientId);
+                _response.ErrorMessages = new() { ((ClientMessage)_message).NotFound(clientId) };
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.NotFound;
+                return NotFound(_response);
+            }
+
+            if (client.Party == null)
+            {
+                _logger.LogError(((PartyMessage)_message).NotFound(), clientId);
+                _response.ErrorMessages = new() { ((PartyMessage)_message).NotFound() };
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.NotFound;
+                return NotFound(_response);
+            }
+
             // 1..n
             var includes = new List<IncludePropertyConfiguration<Circuit>>
-            {
+                {
                     new IncludePropertyConfiguration<Circuit>
                     {
                         IncludeExpression = b => b.Municipality
@@ -243,11 +286,12 @@ namespace DatalexionBackend.UI.Controllers.V1
                     {
                         IncludeExpression = b => b.ListCircuitParties
                     },
-                    // new IncludePropertyConfiguration<Circuit>
-                    // {
-                    //     IncludeExpression = b => b.ListPhotos
-                    // },
+                    new IncludePropertyConfiguration<Circuit>
+                    {
+                        IncludeExpression = b => b.ListCircuitSlates
+                    },
                 };
+            // n..n
             var thenIncludes = new List<ThenIncludePropertyConfiguration<Circuit>>
             {
                 // delegados
@@ -258,7 +302,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                 },
                 new ThenIncludePropertyConfiguration<Circuit>
                 {
-                        IncludeExpression = b => b.ListCircuitSlates.Where(cs => cs.Slate.Wing.PartyId == clientId),
+                    IncludeExpression = b => b.ListCircuitSlates.Where(cs => cs.Slate.Wing.PartyId == client.PartyId),
                     ThenIncludeExpression = ab => ((CircuitSlate)ab).Slate
                 },
                 new ThenIncludePropertyConfiguration<Circuit>
@@ -267,7 +311,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                     ThenIncludeExpression = ab => ((CircuitParty)ab).Party
                 },
             };
-            return await GetById<Circuit, CircuitDTO>(id, thenIncludes: thenIncludes);
+            return await GetById<Circuit, CircuitDTO>(id, includes: includes, thenIncludes: thenIncludes);
         }
 
         /// <summary>

@@ -47,17 +47,13 @@ namespace DatalexionBackend.UI.Controllers.V1
                 {
                     IncludeExpression = b => b.ListCircuits
                 },
-                new IncludePropertyConfiguration<Municipality>
-                {
-                    IncludeExpression = b => b.Delegado
-                },
+                // new IncludePropertyConfiguration<Municipality>
+                // {
+                //     IncludeExpression = b => b.Delegado
+                // },
                 new IncludePropertyConfiguration<Municipality>
                 {
                     IncludeExpression = b => b.Province
-                },
-                new IncludePropertyConfiguration<Municipality>
-                {
-                    IncludeExpression = b => b.Delegado
                 },
             };
             return await Get<Municipality, MunicipalityDTO>(paginationDTO: paginationDTO, includes: includes);
@@ -84,17 +80,13 @@ namespace DatalexionBackend.UI.Controllers.V1
                 {
                     IncludeExpression = b => b.ListCircuits
                 },
-                new IncludePropertyConfiguration<Municipality>
-                {
-                    IncludeExpression = b => b.Delegado
-                },
+                // new IncludePropertyConfiguration<Municipality>
+                // {
+                //     IncludeExpression = b => b.Delegado
+                // },
                 new IncludePropertyConfiguration<Municipality>
                 {
                     IncludeExpression = b => b.Province
-                },
-                new IncludePropertyConfiguration<Municipality>
-                {
-                    IncludeExpression = b => b.Delegado
                 },
             };
             return await GetById<Municipality, MunicipalityDTO>(id, includes: includes);

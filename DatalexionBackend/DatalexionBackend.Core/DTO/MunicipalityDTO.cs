@@ -32,8 +32,8 @@ namespace DatalexionBackend.Core.DTO
         public int ProvinceId { get; set; }
         public Province Province { get; set; }
 
-        public int? DelegadoId { get; set; }
-        public Delegado? Delegado { get; set; }
+        // public int? DelegadoId { get; set; }
+        // public Delegado? Delegado { get; set; }
 
         #endregion
 

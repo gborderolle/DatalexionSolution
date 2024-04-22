@@ -540,7 +540,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
             var fotosCandidatos = new List<Photo>
                 {
                     new Photo { Id = 1, URL = $"{_baseUrl}/uploads/candidates/photo1.jpg" },
-                    new Photo { Id = 2, URL = $"{_baseUrl}/uploads/candidates/photo1.jpg" },
+                    new Photo { Id = 2, URL = $"{_baseUrl}/uploads/candidates/photo2.jpg" },
                     new Photo { Id = 3, URL = $"{_baseUrl}/uploads/candidates/photo3.jpg" },
                     new Photo { Id = 4, URL = $"{_baseUrl}/uploads/candidates/photo4.jpg" },
                     new Photo { Id = 5, URL = $"{_baseUrl}/uploads/candidates/photo5.jpg" },
@@ -568,21 +568,18 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Name = "Álvaro Delgado",
                 PhotoId = 1
             };
-
             var candidate2 = new Candidate()
             {
                 Id = 2,
                 Name = "Laura Raffo",
                 PhotoId = 2
             };
-
             var candidate3 = new Candidate()
             {
                 Id = 3,
                 Name = "Jorge Gandini",
                 PhotoId = 3
             };
-
             var candidate4 = new Candidate()
             {
                 Id = 4,
@@ -595,7 +592,6 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Name = "Yamandú Orsi",
                 PhotoId = 5
             };
-
             var candidate6 = new Candidate()
             {
                 Id = 6,
@@ -718,7 +714,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Name = "71",
                 Color = "#bec11a",
                 WingId = 2,
-                CandidateId = 1,
+                CandidateId = 2,
                 ProvinceId = 1
             };
 
@@ -738,7 +734,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Name = "40",
                 Color = "#ff0000",
                 WingId = 2,
-                CandidateId = 2,
+                CandidateId = 1,
                 ProvinceId = 1
             };
 
@@ -748,7 +744,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Name = "250",
                 Color = "#00ff00",
                 WingId = 2,
-                CandidateId = 2,
+                CandidateId = 3,
                 ProvinceId = 1
             };
 
@@ -758,9 +754,41 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Name = "880",
                 Color = "#0000ff",
                 WingId = 2,
+                CandidateId = 4,
+                ProvinceId = 1
+            };
+
+            // ---------
+
+            var slate30 = new Slate()
+            {
+                Id = 30,
+                Name = "22",
+                Color = "#0000ff",
+                WingId = 2,
+                CandidateId = 1,
+                ProvinceId = 1
+            };
+            var slate31 = new Slate()
+            {
+                Id = 31,
+                Name = "904",
+                Color = "#0000ff",
+                WingId = 2,
                 CandidateId = 2,
                 ProvinceId = 1
             };
+            var slate32 = new Slate()
+            {
+                Id = 32,
+                Name = "1",
+                Color = "#0000ff",
+                WingId = 2,
+                CandidateId = 2,
+                ProvinceId = 1
+            };
+
+            // ---------
 
             var slate10 = new Slate()
             {
@@ -830,7 +858,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Color = "#abcdef",
                 WingId = 1,
                 CandidateId = 5,
-                ProvinceId = 2
+                ProvinceId = 1
             };
 
             var slate17 = new Slate()
@@ -840,7 +868,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Color = "#fedcba",
                 WingId = 1,
                 CandidateId = 5,
-                ProvinceId = 2
+                ProvinceId = 1
             };
 
             var slate18 = new Slate()
@@ -850,7 +878,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Color = "#012345",
                 WingId = 1,
                 CandidateId = 5,
-                ProvinceId = 2
+                ProvinceId = 1
             };
 
             var slate19 = new Slate()
@@ -860,7 +888,7 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Color = "#abcdef",
                 WingId = 1,
                 CandidateId = 5,
-                ProvinceId = 2
+                ProvinceId = 1
             };
 
             var slate20 = new Slate()
@@ -870,11 +898,14 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 Color = "#fedcba",
                 WingId = 2,
                 CandidateId = 1,
-                ProvinceId = 2
+                ProvinceId = 1
             };
 
             modelBuilder.Entity<Slate>()
                     .HasData(slate1, slate2, slate3, slate4, slate5, slate6, slate7, slate8, slate9, slate10, slate11, slate12, slate13, slate14, slate15, slate16, slate17, slate18, slate19, slate20);
+
+            // Nuevos
+            modelBuilder.Entity<Slate>().HasData(slate30, slate31, slate32);
 
             #endregion Slates
 

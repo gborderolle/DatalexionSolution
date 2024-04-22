@@ -185,7 +185,7 @@ const FormParty = () => {
     return filteredAndMappedParties;
   };
 
-  const partyList1 = filteredPartyList?.map((party, index) => (
+  const partyListJSX = filteredPartyList?.map((party, index) => (
     <motion.div
       key={party.id}
       initial={{ opacity: 0 }}
@@ -384,7 +384,7 @@ const FormParty = () => {
                   {isLoadingParty ? (
                     <LoadingSpinner />
                   ) : reduxSelectedCircuit && reduxSelectedCircuit.id > 0 ? (
-                    partyList1
+                    partyListJSX
                   ) : (
                     <>
                       {labelSelectCircuit}

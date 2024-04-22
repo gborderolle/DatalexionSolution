@@ -168,6 +168,33 @@ export const fetchMunicipalityList = () => {
   };
 };
 
+// Todo: no está terminado el método
+export const fetchMunicipalityListByDelegado = () => {
+  return async (dispatch, getState) => {
+    try {
+      const clientId = selectClientId(getState());
+      if (!clientId) {
+        console.error("ClientId no disponible.");
+        return;
+      }
+
+      const urlWithParam = `${urlCircuit}/GetMunicipalityByDelegado?delegadoId=${clientId}`;
+      const data = await fetchApi(urlWithParam);
+
+      // Procesa los datos recibidos
+      if (data && data.result) {
+        dispatch(generalDataActions.setMunicipalityListByDelegado(data.result));
+      } else {
+        console.error(
+          "Error al obtener los municipios: No se encontraron datos."
+        );
+      }
+    } catch (error) {
+      console.error("Error al obtener la lista de municipios:", error);
+    }
+  };
+};
+
 export const fetchCircuitList = () => {
   return async (dispatch) => {
     try {

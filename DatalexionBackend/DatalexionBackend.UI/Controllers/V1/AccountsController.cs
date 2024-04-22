@@ -392,11 +392,22 @@ namespace DatalexionBackend.UI.Controllers.V1
                     _logger.LogInformation(((DatalexionUserMessage)_messageUser).LoginSuccess(delegado.Id.ToString(), delegado.Name));
                     await _logService.LogAction(((DatalexionUserMessage)_messageUser).LoginSuccess(delegado.Id.ToString(), delegado.Name), "Login", "Inicio de sesión.", delegado.Name, delegado.ClientId);
 
+                    // var municipalities = await _contextDB.Municipality
+                    //     // .Include(m => m.ListCircuits) // Incluye la lista de circuitos de cada municipio
+                    //     // .ThenInclude(c => c.ListCircuitDelegados) // Luego, para cada circuito, incluye la lista de circuitos delegados
+                    //     // .ThenInclude(cd => cd.Delegado) // Luego, para cada circuito delegado, incluye el delegado relacionado
+                    //     .Where(m => m.ListCircuits.Any(c => c.ListCircuitDelegados.Any(cd => cd.DelegadoId == delegado.Id)))
+                    //     .ToListAsync();
+
+                    // Recorté el retorno para mayor eficiencia
                     var municipalities = await _contextDB.Municipality
-                        .Include(m => m.ListCircuits) // Incluye la lista de circuitos de cada municipio
-                        .ThenInclude(c => c.ListCircuitDelegados) // Luego, para cada circuito, incluye la lista de circuitos delegados
-                        .ThenInclude(cd => cd.Delegado) // Luego, para cada circuito delegado, incluye el delegado relacionado
                         .Where(m => m.ListCircuits.Any(c => c.ListCircuitDelegados.Any(cd => cd.DelegadoId == delegado.Id)))
+                        .Select(m => new
+                        {
+                            m.Id,
+                            m.Name,
+                            // CircuitIds = m.ListCircuits.Select(c => c.Id).ToList()
+                        })
                         .ToListAsync();
 
                     _response.StatusCode = HttpStatusCode.OK;
@@ -407,7 +418,7 @@ namespace DatalexionBackend.UI.Controllers.V1
                         Fullname = delegado.Name,
                         UserId = delegado.Id,
                         ListMunicipalities = municipalities,
-                        ListCircuitDelegados = delegado.ListCircuitDelegados,
+                        // ListCircuitDelegados = delegado.ListCircuitDelegados,
                         ClientId = delegado.ClientId
                     };
                     await SendLoginNotificationDelegado(delegado);

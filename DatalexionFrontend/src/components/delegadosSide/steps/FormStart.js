@@ -50,9 +50,6 @@ const FormStart = (props) => {
   const reduxListMunicipalitiesFromDelegado = useSelector(
     (state) => state.auth.listMunicipalities
   );
-  const userMunicipalityList = useSelector(
-    (state) => state.auth.listMunicipalities
-  );
   const userFullname = useSelector((state) => state.auth.fullname);
   const reduxCircuitList = useSelector(
     (state) => state.generalData.circuitListByClient
@@ -148,7 +145,7 @@ const FormStart = (props) => {
       );
 
       const enrichedList = filteredList.map((circuit) => {
-        const circuitParty = getCircuitParty(circuit, reduxClient); // Asumiendo que reduxClient está disponible y getCircuitParty está definida
+        const circuitParty = getCircuitParty(circuit, reduxClient);
         return {
           ...circuit,
           step1completed: circuitParty?.step1completed ?? false,
@@ -177,7 +174,7 @@ const FormStart = (props) => {
     let filteredList = reduxCircuitList;
 
     // Extraer IDs de municipios del usuario si es necesario
-    const userMunicipalityIds = userMunicipalityList.map(
+    const userMunicipalityIds = reduxListMunicipalitiesFromDelegado.map(
       (municipality) => municipality.id
     );
 
@@ -205,7 +202,7 @@ const FormStart = (props) => {
     }
 
     setCircuitList(filteredList);
-  }, [reduxCircuitList, userMunicipalityList, onlyOpen]);
+  }, [reduxCircuitList, reduxListMunicipalitiesFromDelegado, onlyOpen]);
 
   //#endregion Hooks ***********************************
 
