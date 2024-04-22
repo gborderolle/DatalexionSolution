@@ -38,14 +38,28 @@ import "./Dashboard.css";
 const Dashboard = () => {
   //#region Consts ***********************************
 
+  // redux
+  const dispatch = useDispatch();
+
+  // useSelector
+  const reduxClient = useSelector((state) => state.generalData.client);
+  const reduxPartyList = useSelector((state) => state.generalData.partyList);
+  const reduxWingList = useSelector((state) => state.generalData.wingList);
+  const reduxSlateList = useSelector((state) => state.generalData.slateList);
+  const reduxMunicipalityList = useSelector(
+    (state) => state.generalData.municipalityList
+  );
+  const reduxCircuitList = useSelector(
+    (state) => state.generalData.circuitList
+  );
+
+  // useStates
   // Votos totales de la selección (departamento, municipio o circuito; incluye todos los partidos)
   const [totalSelectedVotes, setTotalSelectedVotes] = useState(0);
   const [totalPartyVotes, setTotalPartyVotes] = useState(0);
-
   const [selectedProvince, setSelectedProvince] = useState(null);
   const [selectedMunicipality, setSelectedMunicipality] = useState(null);
   const [selectedCircuit, setSelectedCircuit] = useState(null);
-
   const [isExpanded, setIsExpanded] = useState(false);
 
   const [partyChartData, setPartyChartData] = useState({
@@ -56,7 +70,6 @@ const Dashboard = () => {
     datasets: [],
     labels: [],
   });
-
   const [isBumped, triggerBump] = useBumpEffect();
   const [filteredCircuitParties, setFilteredCircuitParties] = useState([]);
   const [filteredCircuitSlates, setFilteredCircuitSlates] = useState([]);
@@ -65,9 +78,6 @@ const Dashboard = () => {
 
   // Estado para la conexión de SignalR
   const [hubConnection, setHubConnection] = useState(null);
-
-  // redux
-  const dispatch = useDispatch();
 
   //#region RUTA PROTEGIDA
   const navigate = useNavigate();
@@ -79,18 +89,6 @@ const Dashboard = () => {
     }
   }, [userRole, navigate, dispatch]);
   //#endregion RUTA PROTEGIDA
-
-  // redux gets
-  const reduxClient = useSelector((state) => state.generalData.client);
-  const reduxPartyList = useSelector((state) => state.generalData.partyList);
-  const reduxWingList = useSelector((state) => state.generalData.wingList);
-  const reduxSlateList = useSelector((state) => state.generalData.slateList);
-  const reduxMunicipalityList = useSelector(
-    (state) => state.generalData.municipalityList
-  );
-  const reduxCircuitList = useSelector(
-    (state) => state.generalData.circuitList
-  );
 
   const [slateColors, setSlateColors] = useState({});
 
@@ -108,7 +106,7 @@ const Dashboard = () => {
 
     if (selectedCircuit && Array.isArray(selectedCircuit?.listCircuitParties)) {
       totalVotes = selectedCircuit?.listCircuitParties.reduce(
-        (sum, party) => sum + party.votes,
+        (sum, circuitParty) => sum + circuitParty.totalPartyVotes,
         0
       );
     } else if (selectedMunicipality) {
@@ -119,7 +117,7 @@ const Dashboard = () => {
       circuitsInMunicipality.forEach((circuit) => {
         if (Array.isArray(circuit.listCircuitParties)) {
           totalVotes += circuit.listCircuitParties.reduce(
-            (sum, party) => sum + party.votes,
+            (sum, circuitParty) => sum + circuitParty.totalPartyVotes,
             0
           );
         }
@@ -137,7 +135,7 @@ const Dashboard = () => {
       circuitsInProvince.forEach((circuit) => {
         if (Array.isArray(circuit.listCircuitParties)) {
           totalVotes += circuit.listCircuitParties.reduce(
-            (sum, party) => sum + party.votes,
+            (sum, circuitParty) => sum + circuitParty.totalPartyVotes,
             0
           );
         }
@@ -147,7 +145,7 @@ const Dashboard = () => {
       reduxCircuitList.forEach((circuit) => {
         if (Array.isArray(circuit.listCircuitParties)) {
           totalVotes += circuit.listCircuitParties.reduce(
-            (sum, party) => sum + party.votes,
+            (sum, circuitParty) => sum + circuitParty.totalPartyVotes,
             0
           );
         }
@@ -250,12 +248,12 @@ const Dashboard = () => {
       if (circuit.listCircuitParties) {
         circuit.listCircuitParties.forEach((circuitParties) => {
           if (totalVotesByParty[circuitParties.partyId]) {
-            totalVotesByParty[circuitParties.partyId].votes +=
-              circuitParties.votes;
+            totalVotesByParty[circuitParties.partyId].totalPartyVotes +=
+              circuitParties.totalPartyVotes;
           } else {
             totalVotesByParty[circuitParties.partyId] = {
               ...circuitParties,
-              votes: circuitParties.votes,
+              votes: circuitParties.totalPartyVotes,
             };
           }
         });
@@ -271,7 +269,7 @@ const Dashboard = () => {
       if (circuit.listCircuitSlates) {
         circuit.listCircuitSlates.forEach((circuitSlate) => {
           if (totalVotesBySlate[circuitSlate.slateId]) {
-            totalVotesBySlate[circuitSlate.slateId].votes +=
+            totalVotesBySlate[circuitSlate.slateId].totalSlateVotes +=
               circuitSlate.totalSlateVotes;
           } else {
             totalVotesBySlate[circuitSlate.slateId] = {
@@ -369,7 +367,7 @@ const Dashboard = () => {
 
     // Ordenar filteredCircuitParties por cantidad de votos de mayor a menor.
     const sortedFilteredCircuitParties = [...filteredPartyVotes1]?.sort(
-      (a, b) => b.votes - a.votes
+      (a, b) => b.totalPartyVotes - a.totalPartyVotes
     );
 
     // Actualizar el estado de los datos del gráfico
@@ -440,7 +438,7 @@ const Dashboard = () => {
 
     // Ordenar filteredCircuitParties por cantidad de votos de mayor a menor.
     const sortedFilteredCircuitSlates = [...filteredCircuitSlates1]?.sort(
-      (a, b) => b.votes - a.votes
+      (a, b) => b.totalSlateVotes - a.totalSlateVotes
     );
 
     sortedFilteredCircuitSlates.forEach((circuitSlate) => {

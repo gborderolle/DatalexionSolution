@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import "./ProfileCard.css"; // Tus estilos CSS
 import { CFormInput, CAlert, CRow, CCol } from "@coreui/react";
+
 import { LoadingSpinner } from "../../../utils/LoadingSpinner";
 import useInput from "../../../hooks/use-input";
+
+import "./ProfileCard.css";
 
 const ProfileCard = (props) => {
   // Agregar estado para controlar la carga de la imagen

@@ -40,7 +40,7 @@ const AppFooterMobileDelegados = () => {
   if (reduxSelectedCircuit) {
     clientPartyVotes = reduxSelectedCircuit?.listCircuitParties.find(
       (circuitParty) => circuitParty.partyId === reduxClient?.party?.id
-    )?.votes;
+    )?.totalPartyVotes;
   }
 
   const slateCount =

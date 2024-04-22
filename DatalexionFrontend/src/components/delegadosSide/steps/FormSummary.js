@@ -202,7 +202,7 @@ const FormSummary = () => {
         if (!slateDetail) return null; // Si no se encuentra detalle, filtrar fuera
         return {
           ...slateDetail,
-          votes: circuitSlate.totalSlateVotes || 0,
+          totalSlateVotes: circuitSlate.totalSlateVotes || 0,
         };
       })
       .filter(Boolean); // Eliminar cualquier elemento nulo resultante de no encontrar detalles
@@ -238,7 +238,7 @@ const FormSummary = () => {
   // ---------- Totales de votos
 
   const totalSlateVotes = filteredSlateList.reduce(
-    (acc, slate) => acc + Number(slate.votes),
+    (acc, circuitSlate) => acc + Number(circuitSlate.totalSlateVotes),
     0
   );
 
@@ -312,7 +312,7 @@ const FormSummary = () => {
                           </CTableHeaderCell>
                           <CTableDataCell>{slate.name}</CTableDataCell>
                           <CTableDataCell>
-                            {slate.votes ? slate.votes : 0}
+                            {slate.totalSlateVotes ? slate.totalSlateVotes : 0}
                           </CTableDataCell>
                         </CTableRow>
                       ))}
@@ -346,7 +346,7 @@ const FormSummary = () => {
                             {index + 1}
                           </CTableHeaderCell>
                           <CTableDataCell>
-                            {party.name ? party.shortName: party.name }
+                            {party.name ? party.shortName : party.name}
                           </CTableDataCell>
                           <CTableDataCell>
                             {party.votes ? party.votes : 0}

@@ -13,6 +13,8 @@ import classes from "./CircuitMap.module.css";
 // redux imports
 import { useSelector } from "react-redux";
 
+import { getCircuitParty } from "../../../utils/auxiliarFunctions";
+
 // Utilidad para el cálculo del porcentaje.
 const calculatePercentage = (partialValue, totalValue) => {
   return ((partialValue / totalValue) * 100).toFixed(2);
@@ -32,7 +34,7 @@ const CustomPopup = ({ circuit }) => {
 
   // Calcular la suma total de votos de tu partido
   const totalSlateVotes = circuit.listCircuitSlates.reduce(
-    (acc, slate) => acc + slate.votes,
+    (acc, circuitSlate) => acc + circuitSlate.totalSlateVotes,
     0
   );
 
@@ -98,6 +100,7 @@ const CircuitMap = (props) => {
   );
   const provinceZoom = useSelector((state) => state.liveSettings.provinceZoom);
   const isMobile = useSelector((state) => state.auth.isMobile);
+  const reduxClient = useSelector((state) => state.generalData.client);
 
   const defaultCenter = [-34.91911763324771, -56.15673823330682];
   const defaultZoom = provinceZoom ? provinceZoom : 13;
@@ -201,11 +204,15 @@ const CircuitMap = (props) => {
           if (circuit.latLong) {
             const [lat, lon] = circuit.latLong.split(",").map(Number);
             if (!isNaN(lat) && !isNaN(lon)) {
+              // Obtener el circuitParty correspondiente al cliente
+              const circuitParty = getCircuitParty(circuit, reduxClient);
+
               // Determinar si todos los pasos están completados
               const allStepsCompleted =
-                circuit.step1completed &&
-                circuit.step2completed &&
-                circuit.step3completed;
+                circuitParty &&
+                circuitParty.step1completed &&
+                circuitParty.step2completed &&
+                circuitParty.step3completed;
 
               return (
                 <Marker

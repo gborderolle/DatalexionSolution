@@ -49,7 +49,7 @@ const FormSlate = () => {
 
   const { uploadData, error } = useAPI();
 
-  // redux gets
+  // useSelector
   const reduxSelectedCircuit = useSelector(
     (state) => state.liveSettings.circuit
   );
@@ -63,19 +63,16 @@ const FormSlate = () => {
   const reduxWingList = useSelector(
     (state) => state.generalData.wingList || []
   );
-
-  //
-
-  const [isLoadingSlate, setIsLoadingSlate] = useState(false);
   const TOTALVotosGLOBAL = useSelector(
     (state) => state.form.reduxVotosTotalSteps
   );
-  const [votosSlateTotal, setVotosSlateTotal] = useState(0);
-  const [isBumped, triggerBump] = useBumpEffect();
-
-  const [updatedPartyVotesList, setUpdatedPartyVotesList] = useState([]);
   const delegadoId = useSelector((state) => state.auth.userId);
 
+  // useStates
+  const [isLoadingSlate, setIsLoadingSlate] = useState(false);
+  const [votosSlateTotal, setVotosSlateTotal] = useState(0);
+  const [isBumped, triggerBump] = useBumpEffect();
+  const [updatedPartyVotesList, setUpdatedPartyVotesList] = useState([]);
   const [isDisabledSlate, setIsDisabledSlate] = useState(false);
   const [isValidArraySlate, setIsValidArraySlate] = useState([true]);
   const [isValidFormSlate, setIsValidFormSlate] = useState(true);
@@ -113,16 +110,6 @@ const FormSlate = () => {
         0
       );
       setVotosSlateTotal(totalVotes);
-
-      setUpdatedPartyVotesList([
-        {
-          PartyId: reduxClient.party?.id,
-          totalPartyVotes: totalVotes,
-        },
-      ]);
-
-      // Dispatch the action with the updated list
-      // dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
     }
   }, [reduxSelectedCircuit, dispatch]);
 
@@ -135,11 +122,11 @@ const FormSlate = () => {
 
     fetchData();
 
-    let list = getFilteredSlates();
-    setFilteredSlateList(list);
+    let circuitSlates = getFilteredSlates();
+    setFilteredSlateList(circuitSlates);
 
-    const totalVotosSlate = list.reduce(
-      (total, slate) => total + Number(slate.votes),
+    const totalVotosSlate = circuitSlates.reduce(
+      (total, circuitSlate) => total + Number(circuitSlate.votes),
       0
     );
 
@@ -152,7 +139,7 @@ const FormSlate = () => {
   // Actualizo la cantidad de votos total para todas las listas (footer label)
   useEffect(() => {
     const totalVotosSlate = filteredSlateList.reduce(
-      (total, slate) => total + Number(slate.votes),
+      (total, circuitSlate) => total + Number(circuitSlate.votes),
       0
     );
 
@@ -230,10 +217,10 @@ const FormSlate = () => {
   };
 
   // Por cada Slate creo una card con su input votos
-  const slateList1 = filteredSlateList?.map((slate, index) => {
-    const candidate = SlateGetCandidate(slate, reduxCandidateList);
-    const partyImageURL = slate.photoURL
-      ? slate.photoURL
+  const slateList1 = filteredSlateList?.map((circuit, index) => {
+    const candidate = SlateGetCandidate(circuit, reduxCandidateList);
+    const partyImageURL = circuit.photoURL
+      ? circuit.photoURL
       : reduxClient?.party?.photoShort?.url;
     const candidateImageURL = candidate?.photoURL
       ? candidate.photoURL
@@ -241,23 +228,23 @@ const FormSlate = () => {
 
     return (
       <motion.div
-        key={slate.id}
+        key={circuit.id}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: index * 0.1 }}
       >
         <ProfileCard
-          key={slate.id}
-          id={String(slate.id)}
-          title={slate.name}
-          defaultValue={slate.votes}
+          key={circuit.id}
+          id={String(circuit.id)}
+          title={circuit.name}
+          defaultValue={circuit.votes}
           onValidityChange={(isValid) => validityHandlerSlate(index, isValid)}
           onUpdateVotes={(newVotes) =>
-            updateVotesHandlerSlate(slate.id, +newVotes)
+            updateVotesHandlerSlate(circuit.id, +newVotes)
           }
           disabled={isDisabledSlate}
           otherVotes={Number(TOTALVotosGLOBAL)}
-          name={slate.name}
+          name={circuit.name}
           partyImageURL={partyImageURL}
           candidateImageURL={candidateImageURL}
           maxValue={500}
@@ -294,13 +281,13 @@ const FormSlate = () => {
 
     // Actualizar SlateVotesList en reduxSelectedCircuit con los nuevos votos
     const updatedSlateVotesList = reduxSelectedCircuit?.listCircuitSlates?.map(
-      (slateVote) => {
+      (circuitSlate) => {
         const updatedVote = filteredSlateList.find(
-          (slate) => slate.id === slateVote.slateId
-        )?.votes;
+          (slate) => slate.id === circuitSlate.slateId
+        )?.totalSlateVotes;
         return updatedVote !== undefined
-          ? { ...slateVote, votes: updatedVote }
-          : slateVote;
+          ? { ...circuitSlate, totalSlateVotes: updatedVote }
+          : circuitSlate;
       }
     );
 
@@ -334,9 +321,6 @@ const FormSlate = () => {
 
     // Si el envío fue exitoso, intenta actualizar el circuito
     if (isSuccess) {
-      // dispatch(liveSettingsActions.setSlateVotesList(updatedSlateVotesList));
-      // dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
-
       // Actualizar step en Redux
       dispatch(liveSettingsActions.setStepCompletedCircuit(1));
 
@@ -395,7 +379,7 @@ const FormSlate = () => {
       listCircuitSlates: updatedListCircuitSlates.map((circuitSlate) => ({
         circuitId: circuitSlate.circuitId,
         slateId: circuitSlate.slateId,
-        totalSlateVotes: circuitSlate.votes,
+        totalSlateVotes: circuitSlate.totalSlateVotes,
       })),
     };
 

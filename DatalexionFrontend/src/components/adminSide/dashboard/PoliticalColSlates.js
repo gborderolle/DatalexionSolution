@@ -75,13 +75,18 @@ const PoliticalColSlates = ({
   //#region Hooks ***********************************
 
   useEffect(() => {
-    if (isRelativePercentage && filteredCircuitParties) {
+    if (
+      isRelativePercentage &&
+      filteredCircuitParties &&
+      reduxClient &&
+      reduxClient.party
+    ) {
       const partyData = filteredCircuitParties.find(
-        (party) => party.partyId === reduxClient.party?.id
+        (party) => party.partyId === reduxClient.party.id
       );
-      totalVotesOfSelectedParty = partyData ? partyData.votes : 0;
+      totalVotesOfSelectedParty = partyData ? partyData.totalPartyVotes : 0;
     }
-  }, [isRelativePercentage, filteredCircuitParties, reduxClient.party?.id]);
+  }, [isRelativePercentage, filteredCircuitParties, reduxClient]);
 
   //#endregion Hooks ***********************************
 
@@ -140,11 +145,11 @@ const PoliticalColSlates = ({
     const partyData = filteredCircuitParties.find(
       (party) => party.partyId === reduxClient.party?.id
     );
-    totalVotesOfSelectedParty = partyData ? partyData.votes : 0;
+    totalVotesOfSelectedParty = partyData ? partyData.totalPartyVotes : 0;
   }
 
   const sortedSlates = [...filteredCircuitSlates].sort(
-    (a, b) => b.votes - a.votes
+    (a, b) => b.totalSlateVotes - a.totalSlateVotes
   );
 
   //#endregion JSX ***********************************

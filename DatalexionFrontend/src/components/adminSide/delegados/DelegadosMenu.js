@@ -29,6 +29,7 @@ import {
   faBullhorn,
 } from "@fortawesome/free-solid-svg-icons";
 
+import { getCircuitParty } from "../../../utils/auxiliarFunctions";
 import useBumpEffect from "../../../utils/useBumpEffect";
 
 import { LoginGeneral } from "../../../utils/navigationPaths";
@@ -220,19 +221,24 @@ const DelegadosMenu = () => {
 
   const getCircuitsCompletedForDelegado = (delegado) => {
     // Filtra `reduxCircuitList` para encontrar circuitos modificados y completados por el delegado especificado
-    const completedCircuits = reduxCircuitList.filter(
-      (circuit) =>
-        circuit.lastUpdateDelegadoId === delegado.id &&
-        circuit.step1completed &&
-        circuit.step2completed &&
-        circuit.step3completed
-    );
+    const completedCircuits = reduxCircuitList.filter((circuit) => {
+      const circuitParty = circuit.listCircuitParties.find(
+        (party) => party.lastUpdateDelegadoId === delegado.id
+      );
+      return (
+        circuitParty &&
+        circuitParty.step1completed &&
+        circuitParty.step2completed &&
+        circuitParty.step3completed
+      );
+    });
 
     // Mapea los circuitos completados para extraer información relevante, por ejemplo, el número de cada circuito
     const circuitInfo = completedCircuits.map((circuit) => ({
       id: circuit.id,
       number: circuit.number, // Asume que 'number' es una propiedad que quieres mostrar
       name: circuit.name, // Asume que 'name' es otra propiedad que quieres mostrar
+      // Puedes agregar más propiedades si es necesario
     }));
 
     return circuitInfo; // Devuelve un array de objetos con los datos de los circuitos completados

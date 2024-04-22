@@ -17,6 +17,8 @@ import {
 } from "@coreui/react";
 import { motion } from "framer-motion";
 
+import { getCircuitParty } from "../../../utils/auxiliarFunctions";
+
 const DashboardFilter = ({
   selectedCircuit,
   setSelectedCircuit,
@@ -24,17 +26,33 @@ const DashboardFilter = ({
   setSelectedMunicipality,
   selectedProvince,
   setSelectedProvince,
-  setPartyChartData,
-  setSlateChartData,
   isExpanded,
 }) => {
   //#region Consts ***********************************
 
+  // useSelector
+  const reduxSlateList = useSelector((state) => state.generalData.slateList);
+  const reduxProvinceList = useSelector(
+    (state) => state.generalData.provinceList
+  );
+  const reduxMunicipalityList = useSelector(
+    (state) => state.generalData.municipalityList
+  );
+  const reduxCircuitList = useSelector(
+    (state) => state.generalData.circuitList
+  );
+  const reduxClient = useSelector((state) => state.generalData.client);
+
+  const isMobile = JSON.parse(localStorage.getItem("isMobile"));
+
+  // useStates
   const [searchProvince, setSearchProvince] = useState("");
   const [searchMunicipality, setSearchMunicipality] = useState("");
   const [searchCircuit, setSearchCircuit] = useState("");
-
   const [processedProvinces, setProcessedProvinces] = useState([]);
+  const [filteredProvinceList, setFilteredProvinceList] = useState([]);
+  const [activeKey, setActiveKey] = useState(1);
+  const [slateColors, setSlateColors] = useState({});
 
   //#region Pagination   ***********************************
 
@@ -52,25 +70,6 @@ const DashboardFilter = ({
 
   //#endregion Pagination ***********************************
 
-  const [filteredProvinceList, setFilteredProvinceList] = useState([]);
-
-  const [activeKey, setActiveKey] = useState(1);
-  const isMobile = JSON.parse(localStorage.getItem("isMobile"));
-
-  // redux gets
-  const reduxSlateList = useSelector((state) => state.generalData.slateList);
-  const reduxProvinceList = useSelector(
-    (state) => state.generalData.provinceList
-  );
-  const reduxMunicipalityList = useSelector(
-    (state) => state.generalData.municipalityList
-  );
-  const reduxCircuitList = useSelector(
-    (state) => state.generalData.circuitList
-  );
-
-  const [slateColors, setSlateColors] = useState({});
-
   // Filtrar municipios y circuitos basados en las selecciones
   const filteredMunicipalityList = selectedProvince
     ? reduxMunicipalityList?.filter(
@@ -85,28 +84,32 @@ const DashboardFilter = ({
     : [];
 
   const filteredCircuitList = selectedMunicipality
-    ? reduxCircuitList?.filter(
-        (circuit) =>
+    ? reduxCircuitList?.filter((circuit) => {
+        const circuitParty = getCircuitParty(circuit, reduxClient);
+        return (
           circuit.municipalityId === selectedMunicipality.id &&
-          circuit.step1completed &&
-          circuit.step2completed &&
-          circuit.step3completed &&
+          circuitParty?.step1completed &&
+          circuitParty?.step2completed &&
+          circuitParty?.step3completed &&
           (circuit.name
             ? circuit.name.toLowerCase().includes(searchCircuit.toLowerCase())
             : false)
-      )
+        );
+      })
     : [];
 
   function getFilteredCircuitList() {
     if (selectedMunicipality) {
-      return reduxCircuitList?.filter(
-        (circuit) =>
+      return reduxCircuitList?.filter((circuit) => {
+        const circuitParty = getCircuitParty(circuit, reduxClient);
+        return (
           circuit.municipalityId === selectedMunicipality.id && // Filtra por el ID del municipio seleccionado
           circuit.name.toLowerCase().includes(searchCircuit.toLowerCase()) && // Filtra por el texto de búsqueda en el nombre del circuito
-          circuit.step1completed && // Solo incluye circuitos donde el paso 1 está completado
-          circuit.step2completed && // Solo incluye circuitos donde el paso 2 está completado
-          circuit.step3completed // Solo incluye circuitos donde el paso 3 está completado
-      );
+          circuitParty?.step1completed && // Solo incluye circuitos donde el paso 1 está completado
+          circuitParty?.step2completed && // Solo incluye circuitos donde el paso 2 está completado
+          circuitParty?.step3completed // Solo incluye circuitos donde el paso 3 está completado
+        );
+      });
     }
   }
 
@@ -294,7 +297,7 @@ const DashboardFilter = ({
       circuitsInMunicipality.forEach((circuit) => {
         if (circuit?.listCircuitParties) {
           totalVotes += circuit?.listCircuitParties?.reduce(
-            (sum, partyVote) => sum + partyVote?.votes,
+            (sum, circuitParty) => sum + circuitParty?.totalPartyVotes,
             0
           );
         }
@@ -328,7 +331,7 @@ const DashboardFilter = ({
         circuitsInMunicipality.forEach((circuit) => {
           if (circuit?.listCircuitParties) {
             totalVotes += circuit?.listCircuitParties?.reduce(
-              (sum, partyVote) => sum + partyVote?.votes,
+              (sum, circuitParty) => sum + circuitParty?.totalPartyVotes,
               0
             );
           }
@@ -349,7 +352,7 @@ const DashboardFilter = ({
       circuitsInMunicipality.forEach((circuit) => {
         if (circuit?.listCircuitParties) {
           totalVotes += circuit?.listCircuitParties?.reduce(
-            (sum, partyVote) => sum + partyVote?.votes,
+            (sum, circuitParty) => sum + circuitParty?.totalPartyVotes,
             0
           );
         }
@@ -367,7 +370,7 @@ const DashboardFilter = ({
     circuitsInMunicipality.forEach((circuit) => {
       if (circuit?.listCircuitParties) {
         totalVotes += circuit?.listCircuitParties?.reduce(
-          (sum, partyVote) => sum + partyVote?.votes,
+          (sum, circuitParty) => sum + circuitParty?.totalPartyVotes,
           0
         );
       }
@@ -383,7 +386,7 @@ const DashboardFilter = ({
     }
 
     return circuit?.listCircuitParties.reduce(
-      (sum, partyVote) => sum + partyVote.votes,
+      (sum, circuitParty) => sum + circuitParty.totalPartyVotes,
       0
     );
   };

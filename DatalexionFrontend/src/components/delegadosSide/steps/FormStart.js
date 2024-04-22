@@ -42,10 +42,11 @@ import "./FormStart.css";
 const FormStart = (props) => {
   //#region Consts ***********************************
 
-  const [selectedCircuit, setSelectedCircuit] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  // redux
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // redux gets
+  // useSelector
   const reduxListMunicipalitiesFromDelegado = useSelector(
     (state) => state.auth.listMunicipalities
   );
@@ -53,12 +54,22 @@ const FormStart = (props) => {
     (state) => state.auth.listMunicipalities
   );
   const userFullname = useSelector((state) => state.auth.fullname);
-  const [selectedForBump, setSelectedForBump] = useState(null);
-  const [circuitList, setCircuitList] = useState([]);
   const reduxCircuitList = useSelector(
     (state) => state.generalData.circuitListByClient
   );
   const reduxClient = useSelector((state) => state.generalData.client);
+  const isToastAlreadyShown = useSelector((state) => state.ui.isToastShown);
+  const userRole = useSelector((state) => state.auth.userRole);
+
+  // useStates
+  const [selectedCircuit, setSelectedCircuit] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedForBump, setSelectedForBump] = useState(null);
+  const [circuitList, setCircuitList] = useState([]);
+  const [isBumped, triggerBump] = useBumpEffect();
+  const [onlyOpen, setOnlyOpen] = useState(false); // Nuevo estado para el checkbox
+  const [applyAnimation, setApplyAnimation] = useState(false);
+  const [containerClass, setContainerClass] = useState("");
 
   //#region Pagination   ***********************************
 
@@ -67,19 +78,6 @@ const FormStart = (props) => {
   const [pageCount, setPageCount] = useState(0);
 
   //#endregion Pagination ***********************************
-
-  const [isBumped, triggerBump] = useBumpEffect();
-
-  const isToastAlreadyShown = useSelector((state) => state.ui.isToastShown);
-
-  // redux
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const userRole = useSelector((state) => state.auth.userRole);
-  const [onlyOpen, setOnlyOpen] = useState(false); // Nuevo estado para el checkbox
-  const [applyAnimation, setApplyAnimation] = useState(false);
-  const [containerClass, setContainerClass] = useState("");
 
   // Antes de filtrar, asegúrate de que circuitList no sea null ni undefined.
   const filteredCircuitList = circuitList
@@ -149,16 +147,19 @@ const FormStart = (props) => {
         municipalityIdsFromDelegado.includes(circuit?.municipalityId)
       );
 
-      const enrichedList = filteredList.map((circuit) => ({
-        ...circuit,
-        step1completed: circuit.step1completed,
-        step2completed: circuit.step2completed,
-        step3completed: circuit.step3completed,
-      }));
+      const enrichedList = filteredList.map((circuit) => {
+        const circuitParty = getCircuitParty(circuit, reduxClient); // Asumiendo que reduxClient está disponible y getCircuitParty está definida
+        return {
+          ...circuit,
+          step1completed: circuitParty?.step1completed ?? false,
+          step2completed: circuitParty?.step2completed ?? false,
+          step3completed: circuitParty?.step3completed ?? false,
+        };
+      });
 
       setCircuitList(enrichedList);
     }
-  }, [reduxCircuitList, reduxListMunicipalitiesFromDelegado]);
+  }, [reduxCircuitList, reduxListMunicipalitiesFromDelegado, reduxClient]); // Agregar reduxClient a las dependencias si su estado o disponibilidad puede cambiar
 
   //#region Pagination ***********************************
 
@@ -187,16 +188,20 @@ const FormStart = (props) => {
       );
     }
 
-    // Filtrar por circuitos no completados si el checkbox está marcado
+    // Dentro de tu componente o función donde manejas los circuitos
     if (onlyOpen) {
-      filteredList = filteredList.filter(
-        (circuit) =>
-          !(
-            circuit.step1completed &&
-            circuit.step2completed &&
-            circuit.step3completed
-          )
-      );
+      filteredList = filteredList.filter((circuit) => {
+        const circuitParty = getCircuitParty(circuit, reduxClient);
+        if (!circuitParty) {
+          return true; // Si no hay circuitParty correspondiente, considera que el circuito no está completo
+        }
+        // Devuelve true si alguno de los pasos no está completado
+        return !(
+          circuitParty.step1completed &&
+          circuitParty.step2completed &&
+          circuitParty.step3completed
+        );
+      });
     }
 
     setCircuitList(filteredList);

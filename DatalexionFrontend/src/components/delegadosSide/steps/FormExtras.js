@@ -77,17 +77,18 @@ const FormExtras = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // redux gets
+  // useSelector
   const reduxSelectedCircuit = useSelector(
     (state) => state.liveSettings.circuit
   );
-  const [isLoadingExtras, setIsLoadingExtras] = useState(false);
   const TOTALVotosGLOBAL = useSelector(
     (state) => state.form.reduxVotosTotalSteps
   );
   const reduxClient = useSelector((state) => state.generalData.client);
   const delegadoId = useSelector((state) => state.auth.userId);
 
+  // useStates
+  const [isLoadingExtras, setIsLoadingExtras] = useState(false);
   const [TOTALVotosExtras, setTOTALVotosExtras] = useState(0);
   const [isBumped, triggerBump] = useBumpEffect();
   const [isDisabledExtras, setIsDisabledExtras] = useState(false);

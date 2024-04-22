@@ -123,7 +123,7 @@ const PoliticalColParties = ({
   };
 
   const sortedParties = [...filteredCircuitParties].sort(
-    (a, b) => b.votes - a.votes
+    (a, b) => b.totalPartyVotes - a.totalPartyVotes
   );
 
   //#endregion JSX ***********************************

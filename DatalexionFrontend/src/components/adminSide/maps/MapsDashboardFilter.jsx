@@ -19,6 +19,8 @@ import { motion } from "framer-motion";
 // redux imports
 import { useSelector } from "react-redux";
 
+import { getCircuitParty } from "../../../utils/auxiliarFunctions";
+
 const MapsDashboardFilter = ({
   selectedCircuit,
   setSelectedCircuit,
@@ -31,11 +33,29 @@ const MapsDashboardFilter = ({
 }) => {
   //#region Consts ***********************************
 
+  // useSelector
+  const reduxClient = useSelector((state) => state.generalData.client);
+  const reduxProvinceList = useSelector(
+    (state) => state.generalData.provinceList
+  );
+  const reduxMunicipalityList = useSelector(
+    (state) => state.generalData.municipalityList
+  );
+  const reduxCircuitList = useSelector(
+    (state) => state.generalData.circuitList
+  );
+
+  // useStates
+  const [municipalityList, setMunicipalityList] = useState([]);
+  const [circuitList, setCircuitList] = useState([]);
   const [searchProvince, setSearchProvince] = useState("");
   const [searchMunicipality, setSearchMunicipality] = useState("");
   const [searchCircuit, setSearchCircuit] = useState("");
-
   const [processedProvinces, setProcessedProvinces] = useState([]);
+  const [filteredProvinceList, setFilteredProvinceList] = useState([]);
+  const [completedCircuits, setCompletedCircuits] = useState(0);
+  const [filterType, setFilterType] = useState("todos");
+  const [activeKey, setActiveKey] = useState(1);
 
   //#region Pagination   ***********************************
 
@@ -53,27 +73,7 @@ const MapsDashboardFilter = ({
 
   //#endregion Pagination ***********************************
 
-  const [filteredProvinceList, setFilteredProvinceList] = useState([]);
-  const [completedCircuits, setCompletedCircuits] = useState(0);
-  const [filterType, setFilterType] = useState("todos");
-
-  const [activeKey, setActiveKey] = useState(1);
   const isMobile = JSON.parse(localStorage.getItem("isMobile"));
-
-  // redux gets
-  const reduxProvinceList = useSelector(
-    (state) => state.generalData.provinceList
-  );
-
-  const [municipalityList, setMunicipalityList] = useState([]);
-  const reduxMunicipalityList = useSelector(
-    (state) => state.generalData.municipalityList
-  );
-
-  const [circuitList, setCircuitList] = useState([]);
-  const reduxCircuitList = useSelector(
-    (state) => state.generalData.circuitList
-  );
 
   // Filtrar municipios y circuitos basados en las selecciones
   const filteredMunicipalityList = selectedProvince
@@ -97,26 +97,29 @@ const MapsDashboardFilter = ({
     : [];
 
   const getFilteredCircuitList = () => {
-    switch (filterType) {
-      case "completados":
-        return circuitList?.filter(
-          (circuit) =>
-            circuit.step1completed &&
-            circuit.step2completed &&
-            circuit.step3completed
-        );
-      case "sinCompletar":
-        return circuitList?.filter(
-          (circuit) =>
-            !(
-              circuit.step1completed &&
-              circuit.step2completed &&
-              circuit.step3completed
-            )
-        );
-      default:
-        return circuitList;
-    }
+    // Verifica si todos los pasos están completados para un circuitParty dado
+    const isCompleted = (circuitParty) => {
+      return (
+        circuitParty.step1completed &&
+        circuitParty.step2completed &&
+        circuitParty.step3completed
+      );
+    };
+
+    return circuitList?.filter((circuit) => {
+      // Obtiene el circuitParty correspondiente; suponemos que tienes una función que hace esto.
+      // Por ejemplo, puede depender de un cliente o de algún criterio de sesión.
+      const circuitParty = getCircuitParty(circuit, reduxClient);
+
+      switch (filterType) {
+        case "completados":
+          return circuitParty && isCompleted(circuitParty);
+        case "sinCompletar":
+          return circuitParty && !isCompleted(circuitParty);
+        default:
+          return true; // Si no hay filtro específico, incluye todos los circuitos.
+      }
+    });
   };
 
   const currentFilteredCircuitList = getFilteredCircuitList();
@@ -283,14 +286,24 @@ const MapsDashboardFilter = ({
 
   // Calcula el total de circuitos y los completados
   useEffect(() => {
-    const totalCompleted = reduxCircuitList?.filter(
-      (circuit) =>
-        circuit.step1completed &&
-        circuit.step2completed &&
-        circuit.step3completed
-    ).length;
-    setCompletedCircuits(totalCompleted);
-  }, [reduxCircuitList]);
+    const totalCompleted = reduxCircuitList?.reduce((acc, circuit) => {
+      // Obtener el circuitParty correspondiente; asumimos que tienes una función que hace esto.
+      const circuitParty = getCircuitParty(circuit, reduxClient); // Asumiendo que reduxClient es una referencia al cliente actual o algo similar.
+
+      // Verificar si todos los pasos están completados en circuitParty.
+      if (
+        circuitParty &&
+        circuitParty.step1completed &&
+        circuitParty.step2completed &&
+        circuitParty.step3completed
+      ) {
+        return acc + 1; // Sumar uno al acumulador si el circuito está completo.
+      }
+      return acc;
+    }, 0);
+
+    setCompletedCircuits(totalCompleted); // Actualizar el estado con el total de circuitos completados.
+  }, [reduxCircuitList, reduxClient]); // Agrega reduxClient a las dependencias si es necesario
 
   //#endregion Hooks ***********************************
 
@@ -331,10 +344,16 @@ const MapsDashboardFilter = ({
         // Usar tanto partyId como slateId para formar una key compuesta
         const key = `${circuit.id}-${index}`;
 
+        // Obtener el circuitParty correspondiente; asumimos que tienes una función que hace esto.
+        const circuitParty = getCircuitParty(circuit, reduxClient);
+
+        // Verificar si todos los pasos están completados en circuitParty
         const isCompleted =
-          circuit.step1completed &&
-          circuit.step2completed &&
-          circuit.step3completed;
+          circuitParty &&
+          circuitParty.step1completed &&
+          circuitParty.step2completed &&
+          circuitParty.step3completed;
+
         const listItemStyle = isCompleted ? { color: "green" } : {};
 
         return (
@@ -364,9 +383,9 @@ const MapsDashboardFilter = ({
     }
   };
 
-  const getTotalVotesByProvince = (id) => {
+  const getTotalVotesByProvince = (provinceId) => {
     const municipalitiesInProvince = reduxMunicipalityList?.filter(
-      (municipality) => municipality.provinceId === id
+      (municipality) => municipality.provinceId === provinceId
     );
 
     let totalVotes = 0;
@@ -378,7 +397,7 @@ const MapsDashboardFilter = ({
       circuitsInMunicipality.forEach((circuit) => {
         if (circuit.listCircuitParties) {
           totalVotes += circuit.listCircuitParties.reduce(
-            (sum, partyVote) => sum + partyVote.votes,
+            (sum, circuitParty) => sum + circuitParty.totalPartyVotes,
             0
           );
         }
@@ -412,7 +431,7 @@ const MapsDashboardFilter = ({
         circuitsInMunicipality.forEach((circuit) => {
           if (circuit.listCircuitParties) {
             totalVotes += circuit.listCircuitParties.reduce(
-              (sum, partyVote) => sum + partyVote.votes,
+              (sum, circuitParty) => sum + circuitParty.totalPartyVotes,
               0
             );
           }
@@ -433,7 +452,7 @@ const MapsDashboardFilter = ({
       circuitsInMunicipality.forEach((circuit) => {
         if (circuit.listCircuitParties) {
           totalVotes += circuit.listCircuitParties.reduce(
-            (sum, partyVote) => sum + partyVote.votes,
+            (sum, circuitParty) => sum + circuitParty.totalPartyVotes,
             0
           );
         }
@@ -451,7 +470,7 @@ const MapsDashboardFilter = ({
     circuitsInMunicipality.forEach((circuit) => {
       if (circuit.listCircuitParties) {
         totalVotes += circuit.listCircuitParties.reduce(
-          (sum, partyVote) => sum + partyVote.votes,
+          (sum, circuitParty) => sum + circuitParty.totalPartyVotes,
           0
         );
       }
@@ -468,7 +487,7 @@ const MapsDashboardFilter = ({
     }
 
     return circuit.listCircuitParties.reduce(
-      (sum, partyVote) => sum + partyVote.votes,
+      (sum, circuitParty) => sum + circuitParty.totalPartyVotes,
       0
     );
   };

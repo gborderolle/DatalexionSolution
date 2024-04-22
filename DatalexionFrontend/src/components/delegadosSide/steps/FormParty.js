@@ -44,7 +44,7 @@ const FormParty = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // redux gets
+  // useSelector
   const reduxSelectedCircuit = useSelector(
     (state) => state.liveSettings.circuit
   );
@@ -55,6 +55,7 @@ const FormParty = () => {
   const reduxPartyList = useSelector((state) => state.generalData.partyList);
   const delegadoId = useSelector((state) => state.auth.userId);
 
+  // useStates
   const [isLoadingParty, setIsLoadingParty] = useState(false);
   const [votosPartyTotal, setVotosPartyTotal] = useState(0);
   const [isDisabledParty, setIsDisabledParty] = useState(false);
@@ -236,13 +237,13 @@ const FormParty = () => {
 
     // Actualizar PartyVotesList en reduxSelectedCircuit con los nuevos votos
     const updatedPartyVotesList = reduxSelectedCircuit?.listCircuitParties?.map(
-      (partyVote) => {
+      (circuitParty) => {
         const updatedVote = filteredPartyList.find(
-          (party) => party.id == partyVote.partyId
-        )?.votes;
+          (party) => party.id == circuitParty.partyId
+        )?.totalPartyVotes;
         return updatedVote !== undefined
-          ? { ...partyVote, votes: updatedVote }
-          : partyVote;
+          ? { ...circuitParty, totalPartyVotes: updatedVote }
+          : circuitParty;
       }
     );
 
@@ -277,8 +278,6 @@ const FormParty = () => {
 
     // Si el envío fue exitoso, intenta actualizar el circuito
     if (isSuccess) {
-      // dispatch(liveSettingsActions.setPartyVotesList(updatedPartyVotesList));
-
       // Actualizar step en Redux
       dispatch(liveSettingsActions.setStepCompletedCircuit(2));
 
@@ -323,7 +322,7 @@ const FormParty = () => {
         ...circuitParty,
         circuitId: circuitParty.circuitId,
         partyId: circuitParty.partyId,
-        totalPartyVotes: circuitParty.votes,
+        totalPartyVotes: circuitParty.totalPartyVotes,
         step2completed: true,
       })),
       listCircuitSlates: reduxSelectedCircuit?.listCircuitSlates,

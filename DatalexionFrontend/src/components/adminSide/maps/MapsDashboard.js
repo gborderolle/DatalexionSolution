@@ -22,6 +22,7 @@ import { USER_ROLE_ADMIN, USER_ROLE_ANALYST } from "../../../userRoles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRefresh } from "@fortawesome/free-solid-svg-icons";
 
+import { getCircuitParty } from "../../../utils/auxiliarFunctions";
 import useBumpEffect from "../../../utils/useBumpEffect";
 import MapsDashboardFilter from "./MapsDashboardFilter";
 
@@ -46,30 +47,41 @@ import "./MapsDashboard.css";
 const MapsDashboard = () => {
   //#region Consts ***********************************
 
+  // redux
+  const dispatch = useDispatch();
+
+  // useSelector
+  const reduxClient = useSelector((state) => state.generalData.client);
+  const reduxWingList = useSelector((state) => state.generalData.wingList);
+  const reduxProvinceList = useSelector(
+    (state) => state.generalData.provinceList
+  );
+  const reduxMunicipalityList = useSelector(
+    (state) => state.generalData.municipalityList
+  );
+  const reduxCircuitList = useSelector(
+    (state) => state.generalData.circuitList
+  );
+
+  // useStates
   const [selectedProvince, setSelectedProvince] = useState(null);
   const [selectedMunicipality, setSelectedMunicipality] = useState(null);
   const [selectedCircuit, setSelectedCircuit] = useState(null);
-
   const [isExpanded, setIsExpanded] = useState(false);
+  const [circuitList, setCircuitList] = useState([]);
+  const [isBumped, triggerBump] = useBumpEffect();
+  const [completedCircuits, setCompletedCircuits] = useState(0);
+  const [filterType, setFilterType] = useState("todos");
+  const [activeKey, setActiveKey] = useState(null);
+  const isMobile = JSON.parse(localStorage.getItem("isMobile"));
 
-  // Pagination ***********************************
+  //#region Pagination   ***********************************
 
   const [currentPageProgressbar, setCurrentPageProgressbar] = useState(1);
   const itemsPerPageProgressbar = 5;
   const [pageCountProgressbar, setPageCountProgressbar] = useState(0);
 
-  // Pagination ***********************************
-
-  const [isBumped, triggerBump] = useBumpEffect();
-
-  const [completedCircuits, setCompletedCircuits] = useState(0);
-  const [filterType, setFilterType] = useState("todos");
-
-  const [activeKey, setActiveKey] = useState(null);
-  const isMobile = JSON.parse(localStorage.getItem("isMobile"));
-
-  // redux init
-  const dispatch = useDispatch();
+  //#endregion Pagination ***********************************
 
   //#region RUTA PROTEGIDA
   const navigate = useNavigate();
@@ -82,21 +94,6 @@ const MapsDashboard = () => {
   }, [userRole, navigate, dispatch]);
   //#endregion RUTA PROTEGIDA
 
-  // redux gets
-  const reduxWingList = useSelector((state) => state.generalData.wingList);
-  const reduxProvinceList = useSelector(
-    (state) => state.generalData.provinceList
-  );
-
-  const reduxMunicipalityList = useSelector(
-    (state) => state.generalData.municipalityList
-  );
-
-  const [circuitList, setCircuitList] = useState([]);
-  const reduxCircuitList = useSelector(
-    (state) => state.generalData.circuitList
-  );
-
   const dropdownVariants = {
     open: {
       opacity: 1,
@@ -107,23 +104,25 @@ const MapsDashboard = () => {
   };
 
   const getFilteredCircuitList = () => {
+    const checkStepsCompleted = (circuitParty) => {
+      return (
+        circuitParty.step1completed &&
+        circuitParty.step2completed &&
+        circuitParty.step3completed
+      );
+    };
+
     switch (filterType) {
       case "completados":
-        return circuitList?.filter(
-          (circuit) =>
-            circuit.step1completed &&
-            circuit.step2completed &&
-            circuit.step3completed
-        );
+        return circuitList?.filter((circuit) => {
+          const circuitParty = getCircuitParty(circuit, reduxClient);
+          return circuitParty && checkStepsCompleted(circuitParty);
+        });
       case "sinCompletar":
-        return circuitList?.filter(
-          (circuit) =>
-            !(
-              circuit.step1completed &&
-              circuit.step2completed &&
-              circuit.step3completed
-            )
-        );
+        return circuitList?.filter((circuit) => {
+          const circuitParty = getCircuitParty(circuit, reduxClient);
+          return circuitParty && !checkStepsCompleted(circuitParty);
+        });
       default:
         return circuitList;
     }
@@ -236,14 +235,21 @@ const MapsDashboard = () => {
 
   // Calcula el total de circuitos y los completados
   useEffect(() => {
-    const totalCompleted = reduxCircuitList?.filter(
-      (circuit) =>
-        circuit.step1completed &&
-        circuit.step2completed &&
-        circuit.step3completed
-    ).length;
+    const totalCompleted = reduxCircuitList?.reduce((acc, circuit) => {
+      const circuitParty = getCircuitParty(circuit, reduxClient); // Asumiendo que reduxClient está disponible
+      if (
+        circuitParty &&
+        circuitParty.step1completed &&
+        circuitParty.step2completed &&
+        circuitParty.step3completed
+      ) {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
+
     setCompletedCircuits(totalCompleted);
-  }, [reduxCircuitList]);
+  }, [reduxCircuitList, reduxClient]); // Añade reduxClient a las dependencias si es necesario
 
   //#endregion Hooks ***********************************
 
@@ -474,12 +480,21 @@ const MapsDashboard = () => {
                                 const totalCircuitsInProvince =
                                   circuitsInProvince.length;
                                 const completedCircuitsInProvince =
-                                  circuitsInProvince?.filter(
-                                    (circuit) =>
-                                      circuit.step1completed &&
-                                      circuit.step2completed &&
-                                      circuit.step3completed
-                                  ).length;
+                                  circuitsInProvince?.reduce((acc, circuit) => {
+                                    const circuitParty = getCircuitParty(
+                                      circuit,
+                                      reduxClient
+                                    );
+                                    if (
+                                      circuitParty &&
+                                      circuitParty.step1completed &&
+                                      circuitParty.step2completed &&
+                                      circuitParty.step3completed
+                                    ) {
+                                      return acc + 1;
+                                    }
+                                    return acc;
+                                  }, 0);
 
                                 // Calcular el progreso de la provincia
                                 const provinceProgress =
