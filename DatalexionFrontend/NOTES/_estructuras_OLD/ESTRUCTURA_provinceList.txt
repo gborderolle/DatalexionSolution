@@ -1,9 +1,0 @@
-Estructura de provinceList:
-{
-    "provinceCenter":"-34.894793, -56.165121",
-    "provinceDescription": "",
-    "provinceId": 1,
-    "provinceName": "Montevideo",
-    "provinceZoom": 13,
-    "pushId": "-NhDy9XTuiK8A8okHnSa"
-}

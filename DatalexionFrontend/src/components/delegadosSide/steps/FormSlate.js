@@ -284,7 +284,7 @@ const FormSlate = () => {
       (circuitSlate) => {
         const updatedVote = filteredSlateList.find(
           (slate) => slate.id === circuitSlate.slateId
-        )?.totalSlateVotes;
+        )?.votes;
         return updatedVote !== undefined
           ? { ...circuitSlate, totalSlateVotes: updatedVote }
           : circuitSlate;
@@ -294,13 +294,13 @@ const FormSlate = () => {
     setIsLoadingSlate(true);
 
     let isSuccess = false;
-    const updatedCircuitPayload = preparePayload(updatedSlateVotesList);
+    const circuitStep1DTO = preparePayload(updatedSlateVotesList);
 
     try {
       // HTTP Put (especial) a Circuits
       // debugger;
       await uploadData(
-        JSON.stringify(updatedCircuitPayload),
+        JSON.stringify(circuitStep1DTO),
         // urlCircuitPut,
         urlCircuitUpdateStep1,
         true,
@@ -386,7 +386,7 @@ const FormSlate = () => {
     // Update reduxSelectedCircuit
     dispatch(liveSettingsActions.setSelectedCircuit(updatedCircuit));
 
-    const updatedCircuitPayload = {
+    const circuitStep1DTO = {
       Id: reduxSelectedCircuit?.id,
       Number: reduxSelectedCircuit?.number,
       Name: reduxSelectedCircuit?.name,
@@ -395,7 +395,7 @@ const FormSlate = () => {
       ClientId: reduxClient.id,
     };
 
-    return updatedCircuitPayload;
+    return circuitStep1DTO;
   };
 
   const labelSelectCircuit = (

@@ -1,8 +1,0 @@
-Estructura de candidateList:
-{
-    "candidateId": 1,
-    "candidateName": "Rodrigo",
-    "pushId": "-NjEIcmjOj3qzuGcP7Mx",
-    "candidateImageURL": "https://firebasestorage.googleapis.com/v0/b/react-http-23a93.appspot.com/o/assets%2Fimages%2Fcandidates%2Fcandidato_2023-11-22-194225?alt=media&token=bb15bcef-83be-4ba5-9b03-0d6a89d4e39c"
-:
-}

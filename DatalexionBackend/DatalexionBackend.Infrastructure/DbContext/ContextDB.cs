@@ -236,7 +236,9 @@ namespace DatalexionBackend.Infrastructure.DbContext
             const int CLIENTID_PC = 3;
             const int CLIENTID_CA = 4;
 
-            //
+            // ==== Update 2024-04-22: Deshabilito a los usuarios no-PN (Partido Nacional) porque debería crear un registro de votos 
+            // de cada partido creado para cada cliente y es muy complejo, porque cada delegado de cada partido ingresan sus propios registros de votación (no es único para todos).
+
             // Usuarios FA
             // Administrador: adminfa / adminfa1234
             // Analista: analystfa / analystfa1234
@@ -306,26 +308,26 @@ namespace DatalexionBackend.Infrastructure.DbContext
             };
 
             // Guardar en BD
-            modelBuilder.Entity<DatalexionUser>()
-                .HasData(adminfa);
+            // modelBuilder.Entity<DatalexionUser>()
+            //     .HasData(adminfa);
 
             // Asignar rol y guardar en BD
-            modelBuilder.Entity<IdentityUserClaim<string>>()
-                .HasData(new IdentityUserClaim<string>()
-                {
-                    Id = 1,
-                    ClaimType = "role",
-                    UserId = adminfaId,
-                    ClaimValue = UserTypeOptions.Admin.ToString(),
-                });
+            // modelBuilder.Entity<IdentityUserClaim<string>>()
+            //     .HasData(new IdentityUserClaim<string>()
+            //     {
+            //         Id = 1,
+            //         ClaimType = "role",
+            //         UserId = adminfaId,
+            //         ClaimValue = UserTypeOptions.Admin.ToString(),
+            //     });
 
             // Asignar roles a usuarios
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
-                new IdentityUserRole<string>
-                {
-                    RoleId = rolAdminId,
-                    UserId = adminfaId
-                });
+            // modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+            //     new IdentityUserRole<string>
+            //     {
+            //         RoleId = rolAdminId,
+            //         UserId = adminfaId
+            //     });
 
             // ------- Admin PN
 
@@ -384,26 +386,26 @@ namespace DatalexionBackend.Infrastructure.DbContext
             };
 
             // Guardar en BD
-            modelBuilder.Entity<DatalexionUser>()
-                .HasData(adminpc);
+            // modelBuilder.Entity<DatalexionUser>()
+            //     .HasData(adminpc);
 
             // Asignar rol y guardar en BD
-            modelBuilder.Entity<IdentityUserClaim<string>>()
-                .HasData(new IdentityUserClaim<string>()
-                {
-                    Id = 3,
-                    ClaimType = "role",
-                    UserId = adminpcId,
-                    ClaimValue = UserTypeOptions.Admin.ToString(),
-                });
+            // modelBuilder.Entity<IdentityUserClaim<string>>()
+            //     .HasData(new IdentityUserClaim<string>()
+            //     {
+            //         Id = 3,
+            //         ClaimType = "role",
+            //         UserId = adminpcId,
+            //         ClaimValue = UserTypeOptions.Admin.ToString(),
+            //     });
 
             // Asignar roles a usuarios
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
-                new IdentityUserRole<string>
-                {
-                    RoleId = rolAdminId,
-                    UserId = adminpcId
-                });
+            // modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+            //     new IdentityUserRole<string>
+            //     {
+            //         RoleId = rolAdminId,
+            //         UserId = adminpcId
+            //     });
 
             // Analistas (2)
 
@@ -424,26 +426,26 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 ClientId = CLIENTID_FA,
             };
             // Guardar en BD
-            modelBuilder.Entity<DatalexionUser>()
-                .HasData(userUser);
+            // modelBuilder.Entity<DatalexionUser>()
+            //     .HasData(userUser);
 
             // Asignar rol y guardar en BD
-            modelBuilder.Entity<IdentityUserClaim<string>>()
-                .HasData(new IdentityUserClaim<string>()
-                {
-                    Id = 4,
-                    ClaimType = "role",
-                    UserId = analystfaId,
-                    ClaimValue = UserTypeOptions.Analyst.ToString(),
-                });
+            // modelBuilder.Entity<IdentityUserClaim<string>>()
+            //     .HasData(new IdentityUserClaim<string>()
+            //     {
+            //         Id = 4,
+            //         ClaimType = "role",
+            //         UserId = analystfaId,
+            //         ClaimValue = UserTypeOptions.Analyst.ToString(),
+            //     });
 
             // Asignar roles a usuarios
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
-                new IdentityUserRole<string>
-                {
-                    RoleId = rolAnalystId,
-                    UserId = analystfaId
-                });
+            // modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+            //     new IdentityUserRole<string>
+            //     {
+            //         RoleId = rolAnalystId,
+            //         UserId = analystfaId
+            //     });
 
             // ------- Analista PN
 
@@ -500,72 +502,28 @@ namespace DatalexionBackend.Infrastructure.DbContext
                 ClientId = CLIENTID_PC,
             };
             // Guardar en BD
-            modelBuilder.Entity<DatalexionUser>()
-                .HasData(userUser);
+            // modelBuilder.Entity<DatalexionUser>()
+            //     .HasData(userUser);
 
             // Asignar rol y guardar en BD
-            modelBuilder.Entity<IdentityUserClaim<string>>()
-                .HasData(new IdentityUserClaim<string>()
-                {
-                    Id = 6,
-                    ClaimType = "role",
-                    UserId = analystpcId,
-                    ClaimValue = UserTypeOptions.Analyst.ToString(),
-                });
-
-            // Asignar roles a usuarios
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
-                new IdentityUserRole<string>
-                {
-                    RoleId = rolAnalystId,
-                    UserId = analystpcId
-                });
-
-            // -------
-
-            #endregion
-
-            #region Asignación de roles a usuarios
+            // modelBuilder.Entity<IdentityUserClaim<string>>()
+            //     .HasData(new IdentityUserClaim<string>()
+            //     {
+            //         Id = 6,
+            //         ClaimType = "role",
+            //         UserId = analystpcId,
+            //         ClaimValue = UserTypeOptions.Analyst.ToString(),
+            //     });
 
             // Asignar roles a usuarios
             // modelBuilder.Entity<IdentityUserRole<string>>().HasData(
             //     new IdentityUserRole<string>
             //     {
-            //         RoleId = rolAdminId,
-            //         UserId = userAdminId
-            //     },
-            //     new IdentityUserRole<string>
-            //     {
-            //         RoleId = rolAdminId,
-            //         UserId = adminfaId
-            //     },
-            //     new IdentityUserRole<string>
-            //     {
-            //         RoleId = rolAdminId,
-            //         UserId = adminpnId
-            //     },
-            //     new IdentityUserRole<string>
-            //     {
-            //         RoleId = rolAdminId,
-            //         UserId = adminpcId
-            //     },
-            //     //
-            //     new IdentityUserRole<string>
-            //     {
-            //         RoleId = rolAnalystId,
-            //         UserId = analystfaId
-            //     },
-            //     new IdentityUserRole<string>
-            //     {
-            //         RoleId = rolAnalystId,
-            //         UserId = analystpnId
-            //     },
-            //     new IdentityUserRole<string>
-            //     {
             //         RoleId = rolAnalystId,
             //         UserId = analystpcId
-            //     }
-            // );
+            //     });
+
+            // -------
 
             #endregion
 
@@ -1108,7 +1066,10 @@ namespace DatalexionBackend.Infrastructure.DbContext
             };
 
             modelBuilder.Entity<Delegado>()
-                .HasData(delegadoPN1, delegadoPN2, delegadoFA, delegadoPC);
+                .HasData(delegadoPN1, delegadoPN2);
+
+            // modelBuilder.Entity<Delegado>()
+            //     .HasData(delegadoPN1, delegadoPN2, delegadoFA, delegadoPC);
 
             #endregion Delegados
 

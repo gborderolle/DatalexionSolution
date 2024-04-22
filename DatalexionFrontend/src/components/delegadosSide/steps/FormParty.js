@@ -240,7 +240,7 @@ const FormParty = () => {
       (circuitParty) => {
         const updatedVote = filteredPartyList.find(
           (party) => party.id == circuitParty.partyId
-        )?.totalPartyVotes;
+        )?.votes;
         return updatedVote !== undefined
           ? { ...circuitParty, totalPartyVotes: updatedVote }
           : circuitParty;

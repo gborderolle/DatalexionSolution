@@ -11,13 +11,6 @@ Clase Circuit:
         public required string Name { get; set; }
         public string Address { get; set; }
         public string? LatLong { get; set; }
-        public int BlankVotes { get; set; }
-        public int NullVotes { get; set; }
-        public int ObservedVotes { get; set; }
-        public int RecurredVotes { get; set; }
-        public bool Step1completed { get; set; } = false;
-        public bool Step2completed { get; set; } = false;
-        public bool Step3completed { get; set; } = false;
         public List<CircuitDelegado> ListCircuitDelegates { get; set; }
         public List<CircuitSlate> ListCircuitSlates { get; set; }
         public List<CircuitParty> ListCircuitParties { get; set; }
@@ -31,7 +24,7 @@ Clase Circuit:
         public Circuit Circuit { get; set; }
         public int SlateId { get; set; }
         public Slate Slate { get; set; }
-        public int? Votes { get; set; }
+        public int? TotalSlateVotes { get; set; }
     }
 
     public class CircuitParty
@@ -40,7 +33,17 @@ Clase Circuit:
         public Circuit Circuit { get; set; }
         public int PartyId { get; set; }
         public Party Party { get; set; }
-        public int? Votes { get; set; }
+        public int? TotalPartyVotes { get; set; }
+        public int BlankVotes { get; set; }
+        public int NullVotes { get; set; }
+        public int ObservedVotes { get; set; }
+        public int RecurredVotes { get; set; }
+        public bool Step1completed { get; set; } = false;
+        public bool Step2completed { get; set; } = false;
+        public bool Step3completed { get; set; } = false;
+        public int? LastUpdateDelegadoId { get; set; } = null;
+        public int ImagesUploadedCount { get; set; } = 0;
+        public List<Photo> ListPhotos { get; set; }
     }
 
     Clase Slate
@@ -79,7 +82,6 @@ Clase Party
         public List<CircuitParty> ListCircuitParties { get; set; }
     }
 
-
 Clase Wing
     {
         public int Id { get; set; }
@@ -107,15 +109,84 @@ Clase Wing
     }
 
     Clase Municipality
-{
+    {
+      public int Id { get; set; }
+      public DateTime Creation { get; set; } = DateTime.Now;
+      public DateTime Update { get; set; } = DateTime.Now;
+      public string? Comments { get; set; }
+      public required string Name { get; set; }
+      public List<Circuit> ListCircuits { get; set; }
+      public int ProvinceId { get; set; }
+      public Province Province { get; set; }
+      public int? DelegadoId { get; set; }
+      public Delegado? Delegado { get; set; }
+  }
+
+  Clase Delegado
+    {
+      public int Id { get; set; }
+      public DateTime Creation { get; set; } = DateTime.Now;
+      public DateTime Update { get; set; } = DateTime.Now;
+      public string? Comments { get; set; }
+      public string CI { get; set; }
+      public required string Name { get; set; }
+      public string Email { get; set; }
+      public string Phone { get; set; }
+      public List<CircuitDelegado> ListCircuitDelegados { get; set; }
+      public List<Municipality> ListMunicipalities { get; set; }
+      public int ClientId { get; set; }
+      public Client Client { get; set; }
+    }
+
+    Clase CircuitDelegado
+    {
+        public int CircuitId { get; set; }
+        public Circuit Circuit { get; set; }
+        public int DelegadoId { get; set; }
+        public Delegado Delegado { get; set; }
+    }
+
+    Clase Photo
+  {
+    public int Id { get; set; }
+    public DateTime Creation { get; set; } = DateTime.Now;
+    public DateTime Update { get; set; } = DateTime.Now;
+    public string URL { get; set; }
+    public int? CircuitId { get; set; }
+    public CircuitParty? Circuit { get; set; }
+    public int? CandidateId { get; set; }
+    public Candidate? Candidate { get; set; }
+    public int? PartyLongId { get; set; }
+    public Party? PartyLong { get; set; }
+    public int? PartyShortId { get; set; }
+    public Party? PartyShort { get; set; }
+    public int? WingId { get; set; }
+    public Wing? Wing { get; set; }
+    public int? SlateId { get; set; }
+    public Slate? Slate { get; set; }
+  }
+
+  Clase Candidate
+  {
     public int Id { get; set; }
     public DateTime Creation { get; set; } = DateTime.Now;
     public DateTime Update { get; set; } = DateTime.Now;
     public string? Comments { get; set; }
     public required string Name { get; set; }
-    public List<Circuit> ListCircuits { get; set; }
-    public int ProvinceId { get; set; }
-    public Province Province { get; set; }
-    public int? DelegadoId { get; set; }
-    public Delegado? Delegado { get; set; }
-}
+    public int? PhotoId { get; set; }
+    public Photo Photo { get; set; }
+  }
+
+    Clase Client
+    {
+        public int Id { get; set; }
+        public DateTime Creation { get; set; } = DateTime.Now;
+        public DateTime Update { get; set; } = DateTime.Now;
+        public string? Comments { get; set; }
+        public required string Name { get; set; }
+        public int PartyId { get; set; }
+        public Party Party { get; set; }
+        public List<DatalexionUser> ListUsers { get; set; } = new();
+        public List<Delegado> ListDelegados { get; set; } = new();
+    }
+

@@ -1,7 +1,0 @@
-Estructura de municipalityList:
-{
-    "municipalityId": 1,
-    "municipalityName": "A",
-    "pushId": "-NjEIcmjOj3qzuGcP7Mx",
-    "provinceId": 1,
-}
