@@ -81,11 +81,13 @@ export const getCircuitParty = (circuit, client) => {
     circuit.listCircuitParties.length > 0 &&
     client
   ) {
-    const circuitPartyReturn = circuit.listCircuitParties.find((circuitParty) => {
-      const partyId = circuitParty.partyId.toString();
-      const reduxPartyId = client.party ? client.party.id : null;
-      return partyId == reduxPartyId;
-    });
+    const circuitPartyReturn = circuit.listCircuitParties.find(
+      (circuitParty) => {
+        const partyId = circuitParty.partyId.toString();
+        const reduxPartyId = client.party ? client.party.id : null;
+        return partyId == reduxPartyId;
+      }
+    );
     return circuitPartyReturn;
   }
   return null;
@@ -133,10 +135,20 @@ export function UserGetUserRole(user, userRoleList) {
 
 // Utilidad para el cálculo del porcentaje.
 export const calculatePercentage = (partialValue, totalValue) => {
-  if (totalValue === 0) {
-    return 0; // O cualquier valor que consideres apropiado para divisiones por cero
+  // Comprueba que ambos valores son números
+  if (typeof partialValue !== "number" || typeof totalValue !== "number") {
+    console.error("Error: Both partialValue and totalValue must be numbers.");
+    return 0;
   }
-  return Math.round((partialValue / totalValue) * 100);
+
+  // Comprueba si el totalValue es 0 para evitar la división por cero
+  if (totalValue === 0) {
+    return 0;
+  }
+
+  // Calcula el porcentaje y redondea el resultado
+  const result = (partialValue / totalValue) * 100;
+  return Number.isNaN(result) ? 0 : Math.round(result);
 };
 
 export function getRandomColor() {

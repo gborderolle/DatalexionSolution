@@ -74,11 +74,21 @@ const SlateTable = (props) => {
   const dispatch = useDispatch();
 
   // Redux
-  const slateList = useSelector((state) => state.generalData.slateListByClient);
-  const wingList = useSelector((state) => state.generalData.wingListByClient);
-  const partyList = useSelector((state) => state.generalData.partyListByClient);
-  const candidateList = useSelector((state) => state.generalData.candidateList);
-  const provinceList = useSelector((state) => state.generalData.provinceList);
+  const reduxSlateList = useSelector(
+    (state) => state.generalData.slateListByClient
+  );
+  const reduxWingList = useSelector(
+    (state) => state.generalData.wingListByClient
+  );
+  const reduxPartyList = useSelector(
+    (state) => state.generalData.partyListByClient
+  );
+  const reduxCandidateList = useSelector(
+    (state) => state.generalData.candidateList
+  );
+  const reduxProvinceList = useSelector(
+    (state) => state.generalData.provinceList
+  );
 
   const [sortConfig, setSortConfig] = useState({
     key: null,
@@ -92,8 +102,8 @@ const SlateTable = (props) => {
   const [pageCount, setPageCount] = useState(0);
 
   useEffect(() => {
-    setPageCount(Math.ceil(slateList.length / itemsPerPage));
-  }, [slateList, itemsPerPage]);
+    setPageCount(Math.ceil(reduxSlateList.length / itemsPerPage));
+  }, [reduxSlateList, itemsPerPage]);
 
   //#endregion Pagination ***********************************
 
@@ -118,7 +128,7 @@ const SlateTable = (props) => {
   //#region Hooks ***********************************
 
   const sortedList = useMemo(() => {
-    let sortableList = [...slateList];
+    let sortableList = [...reduxSlateList];
     if (sortConfig.key !== null) {
       sortableList.sort((a, b) => {
         // Comparación especial para el rol
@@ -145,7 +155,7 @@ const SlateTable = (props) => {
       });
     }
     return sortableList;
-  }, [slateList, sortConfig]);
+  }, [reduxSlateList, sortConfig]);
 
   //#endregion Hooks ***********************************
 
@@ -165,11 +175,11 @@ const SlateTable = (props) => {
     if (slate) {
       // Establece los valores iniciales directamente
       inputReset1(slate.name);
-      const wing = SlateGetWing(slate, wingList);
+      const wing = SlateGetWing(slate, reduxWingList);
       setDdlSelectdWing(wing || null);
-      const province = SlateGetProvince(slate, provinceList);
+      const province = SlateGetProvince(slate, reduxProvinceList);
       setDdlSelectdProvince(province || null);
-      const candidate = SlateGetCandidate(slate, candidateList);
+      const candidate = SlateGetCandidate(slate, reduxCandidateList);
       setDdlSelectdCandidate(candidate || null);
     } else {
       // Resetea los campos si es un nuevo usuario
@@ -347,16 +357,19 @@ const SlateTable = (props) => {
                     <CTableDataCell>{index + 1}</CTableDataCell>
                     <CTableDataCell>{slate.name}</CTableDataCell>
                     <CTableDataCell>
-                      {SlateGetCandidate(slate, candidateList)?.name}
+                      {SlateGetCandidate(slate, reduxCandidateList)?.name}
                     </CTableDataCell>
                     <CTableDataCell>
-                      {SlateGetWing(slate, wingList)?.name}
+                      {SlateGetWing(slate, reduxWingList)?.name}
                     </CTableDataCell>
                     <CTableDataCell>
-                      {SlateGetParty(slate, wingList, partyList)?.name}
+                      {
+                        SlateGetParty(slate, reduxWingList, reduxPartyList)
+                          ?.name
+                      }
                     </CTableDataCell>
                     <CTableDataCell>
-                      {SlateGetProvince(slate, provinceList)?.name}
+                      {SlateGetProvince(slate, reduxProvinceList)?.name}
                     </CTableDataCell>
                     <CTableDataCell>
                       <CButton
@@ -443,9 +456,9 @@ const SlateTable = (props) => {
                           : "Seleccionar"}
                       </CDropdownToggle>
                       <CDropdownMenu>
-                        {candidateList &&
-                          candidateList.length > 0 &&
-                          candidateList.map((candidate) => (
+                        {reduxCandidateList &&
+                          reduxCandidateList.length > 0 &&
+                          reduxCandidateList.map((candidate) => (
                             <CDropdownItem
                               key={candidate.id}
                               onClick={() =>
@@ -475,9 +488,9 @@ const SlateTable = (props) => {
                         {ddlSelectedWing ? ddlSelectedWing.name : "Seleccionar"}
                       </CDropdownToggle>
                       <CDropdownMenu>
-                        {wingList &&
-                          wingList.length > 0 &&
-                          wingList.map((wing) => (
+                        {reduxWingList &&
+                          reduxWingList.length > 0 &&
+                          reduxWingList.map((wing) => (
                             <CDropdownItem
                               key={wing.id}
                               onClick={() => handleSelectDdlWing(wing)}
@@ -507,9 +520,9 @@ const SlateTable = (props) => {
                           : "Seleccionar"}
                       </CDropdownToggle>
                       <CDropdownMenu>
-                        {provinceList &&
-                          provinceList.length > 0 &&
-                          provinceList.map((province) => (
+                        {reduxProvinceList &&
+                          reduxProvinceList.length > 0 &&
+                          reduxProvinceList.map((province) => (
                             <CDropdownItem
                               key={province.id}
                               onClick={() => handleSelectDdlProvince(province)}

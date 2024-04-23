@@ -50,7 +50,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="paginationDTO">Parámetros de paginación.</param>
         /// <returns>Una lista paginada de circuitos.</returns>
         [HttpGet("GetCircuit")]
-        [ResponseCache(Duration = 60)]
+        [ResponseCache(Duration = 20)]
         public async Task<ActionResult<APIResponse>> Get([FromQuery] PaginationDTO paginationDTO)
         {
             // 1..n
@@ -97,7 +97,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        // [ResponseCache(Duration = 60)]
+        // [ResponseCache(Duration = 20)]
         [HttpGet("GetCircuitsByClient")]
         public async Task<ActionResult<APIResponse>> GetCircuitsByClient([FromQuery] int clientId)
         {
@@ -198,7 +198,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="id">ID del circuito.</param>
         /// <returns>Un circuito específico.</returns>
         [HttpGet("{id:int}")] // url completa: https://localhost:7003/api/Circuits/1
-        [ResponseCache(Duration = 60)]
+        [ResponseCache(Duration = 20)]
         public async Task<ActionResult<APIResponse>> Get([FromRoute] int id)
         {
             // 1..n
@@ -245,7 +245,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         /// <param name="id">ID del circuito.</param>
         /// <param name="clientId">ID del cliente.</param>
         /// <returns>Un circuito específico.</returns>
-        [ResponseCache(Duration = 60)]
+        [ResponseCache(Duration = 20)]
         [HttpGet("GetCircuitByClient/{id:int}")]
         public async Task<ActionResult<APIResponse>> GetCircuitByClient([FromRoute] int id, [FromQuery] int clientId)
         {

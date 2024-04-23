@@ -41,7 +41,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         #region Endpoints genéricos
 
         [HttpGet("GetDelegado")]
-        [ResponseCache(Duration = 60)]
+        [ResponseCache(Duration = 20)]
         public async Task<ActionResult<APIResponse>> Get([FromQuery] PaginationDTO paginationDTO)
         {
             // 1..n
@@ -76,7 +76,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpGet("{id:int}")] // url completa: https://localhost:7003/api/Delegate1s/1
-        [ResponseCache(Duration = 60)]
+        [ResponseCache(Duration = 20)]
         public async Task<ActionResult<APIResponse>> Get([FromRoute] int id)
         {
             // 1..n
@@ -239,7 +239,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         #region Endpoints específicos
 
         [HttpGet("GetDelegadosByClient")]
-        [ResponseCache(Duration = 60)]
+        [ResponseCache(Duration = 20)]
         public async Task<ActionResult<APIResponse>> GetDelegadosByClient([FromQuery] int clientId)
         {
             try

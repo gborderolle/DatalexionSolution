@@ -22,7 +22,7 @@ import { USER_ROLE_ADMIN, USER_ROLE_ANALYST } from "../../../userRoles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRefresh } from "@fortawesome/free-solid-svg-icons";
 
-import { getCircuitParty } from "../../../utils/auxiliarFunctions";
+import { getCircuitParty, calculatePercentage } from "../../../utils/auxiliarFunctions";
 import useBumpEffect from "../../../utils/useBumpEffect";
 import MapsDashboardFilter from "./MapsDashboardFilter";
 
@@ -254,14 +254,6 @@ const MapsDashboard = () => {
   //#endregion Hooks ***********************************
 
   //#region Functions ***********************************
-
-  // Utilidad para el cálculo del porcentaje.
-  const calculatePercentage = (partialValue, totalValue) => {
-    if (totalValue === 0) {
-      return 0; // O cualquier valor que consideres apropiado para divisiones por cero
-    }
-    return Math.round((partialValue / totalValue) * 100);
-  };
 
   const municipalityMap = new Map();
   reduxMunicipalityList.forEach((municipality) => {

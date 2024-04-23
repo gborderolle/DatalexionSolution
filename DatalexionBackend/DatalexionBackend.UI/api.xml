@@ -290,6 +290,26 @@
             <param name="setPartyPhotoAction"></param>
             <returns></returns>
         </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.SlatesController.Get(DatalexionBackend.Core.DTO.PaginationDTO)">
+            <summary>
+            Retrieves a specific slate based on the pagination information.
+            </summary>
+            <param name="paginationDTO">The pagination information.</param>
+            <returns>The API response containing the slate.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.SlatesController.All">
+            <summary>
+            Retrieves all slates.
+            </summary>
+            <returns>The API response containing the slates.</returns>
+        </member>
+        <member name="M:DatalexionBackend.UI.Controllers.V1.SlatesController.GetSlatesByClient(System.Int32)">
+            <summary>
+            Retrieves the slates associated with a client.
+            </summary>
+            <param name="clientId">The ID of the client.</param>
+            <returns>The slates associated with the client.</returns>
+        </member>
         <member name="M:DatalexionBackend.UI.Controllers.V1.SlatesController.HandlePhotoUpload(Microsoft.AspNetCore.Http.IFormFile,DatalexionBackend.Core.Domain.Entities.Slate)">
             <summary>
             Sube una foto sola.

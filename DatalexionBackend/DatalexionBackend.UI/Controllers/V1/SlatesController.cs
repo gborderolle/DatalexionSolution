@@ -46,46 +46,56 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         #region Endpoints genéricos
 
+        /// <summary>
+        /// Retrieves a specific slate based on the pagination information.
+        /// </summary>
+        /// <param name="paginationDTO">The pagination information.</param>
+        /// <returns>The API response containing the slate.</returns>
         [HttpGet("GetSlate")]
-        [ResponseCache(Duration = 60)]
+        [ResponseCache(Duration = 20)]
         public async Task<ActionResult<APIResponse>> Get([FromQuery] PaginationDTO paginationDTO)
         {
             // 1..n
             var includes = new List<IncludePropertyConfiguration<Slate>>
             {
-                    new IncludePropertyConfiguration<Slate>
-                    {
-                        IncludeExpression = b => b.ListParticipants
-                    },
-                     new IncludePropertyConfiguration<Slate>
-                    {
-                        IncludeExpression = b => b.Candidate
-                    },
-                    new IncludePropertyConfiguration<Slate>
-                    {
-                        IncludeExpression = b => b.Photo
-                    },
-                    new IncludePropertyConfiguration<Slate>
-                    {
-                        IncludeExpression = b => b.Wing
-                    },
-                    new IncludePropertyConfiguration<Slate>
-                    {
-                        IncludeExpression = b => b.Province
-                    },
-                };
-            // n..n
-            var thenIncludes = new List<ThenIncludePropertyConfiguration<Slate>>
-            {
-                new ThenIncludePropertyConfiguration<Slate>
+                new IncludePropertyConfiguration<Slate>
                 {
-                    IncludeExpression = b => b.ListCircuitSlates,
-                    ThenIncludeExpression = ab => ((CircuitSlate)ab).Circuit
+                    IncludeExpression = b => b.ListParticipants
+                },
+                new IncludePropertyConfiguration<Slate>
+                {
+                    IncludeExpression = b => b.Candidate
+                },
+                // new IncludePropertyConfiguration<Slate>
+                // {
+                //     IncludeExpression = b => b.Photo
+                // },
+                new IncludePropertyConfiguration<Slate>
+                {
+                    IncludeExpression = b => b.Wing
+                },
+                new IncludePropertyConfiguration<Slate>
+                {
+                    IncludeExpression = b => b.Province
                 },
             };
-            return await Get<Slate, SlateDTO>(paginationDTO: paginationDTO, includes: includes, thenIncludes: thenIncludes);
+            // n..n
+            // var thenIncludes = new List<ThenIncludePropertyConfiguration<Slate>>
+            // {
+            //     new ThenIncludePropertyConfiguration<Slate>
+            //     {
+            //         IncludeExpression = b => b.ListCircuitSlates,
+            //         ThenIncludeExpression = ab => ((CircuitSlate)ab).Circuit
+            //     },
+            // };
+            // return await Get<Slate, SlateDTO>(paginationDTO: paginationDTO, includes: includes, thenIncludes: thenIncludes);
+            return await Get<Slate, SlateDTO>(paginationDTO: paginationDTO, includes: includes);
         }
 
+        /// <summary>
+        /// Retrieves all slates.
+        /// </summary>
+        /// <returns>The API response containing the slates.</returns>
         [HttpGet("all")]
         [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> All()
@@ -97,7 +107,7 @@ namespace DatalexionBackend.UI.Controllers.V1
         }
 
         [HttpGet("{id:int}")] // url completa: https://localhost:7003/api/Slates/1
-        [ResponseCache(Duration = 60)]
+        [ResponseCache(Duration = 20)]
         public async Task<ActionResult<APIResponse>> Get([FromRoute] int id)
         {
             // 1..n
@@ -338,14 +348,19 @@ namespace DatalexionBackend.UI.Controllers.V1
 
         #region Endpoints específicos
 
+        /// <summary>
+        /// Retrieves the slates associated with a client.
+        /// </summary>
+        /// <param name="clientId">The ID of the client.</param>
+        /// <returns>The slates associated with the client.</returns>
         [HttpGet("GetSlatesByClient")]
-        [ResponseCache(Duration = 60)]
+        [ResponseCache(Duration = 20)]
         public async Task<ActionResult<APIResponse>> GetSlatesByClient([FromQuery] int clientId)
         {
             try
             {
                 var includesClient = new List<IncludePropertyConfiguration<Client>>
-            {
+                {
                     new IncludePropertyConfiguration<Client>
                     {
                         IncludeExpression = b => b.Party
@@ -379,28 +394,28 @@ namespace DatalexionBackend.UI.Controllers.V1
 
                     // 1..n
                     var includes = new List<IncludePropertyConfiguration<Slate>>
+                    {
+                        new IncludePropertyConfiguration<Slate>
                         {
-                            new IncludePropertyConfiguration<Slate>
-                            {
-                                IncludeExpression = b => b.ListParticipants
-                            },
-                            new IncludePropertyConfiguration<Slate>
-                            {
-                                IncludeExpression = b => b.Candidate
-                            },
-                            new IncludePropertyConfiguration<Slate>
-                            {
-                                IncludeExpression = b => b.Photo
-                            },
-                            new IncludePropertyConfiguration<Slate>
-                            {
-                                IncludeExpression = b => b.Wing
-                            },
-                            new IncludePropertyConfiguration<Slate>
-                            {
-                                IncludeExpression = b => b.Province
-                            },
-                        };
+                            IncludeExpression = b => b.ListParticipants
+                        },
+                        new IncludePropertyConfiguration<Slate>
+                        {
+                            IncludeExpression = b => b.Candidate
+                        },
+                        new IncludePropertyConfiguration<Slate>
+                        {
+                            IncludeExpression = b => b.Photo
+                        },
+                        new IncludePropertyConfiguration<Slate>
+                        {
+                            IncludeExpression = b => b.Wing
+                        },
+                        new IncludePropertyConfiguration<Slate>
+                        {
+                            IncludeExpression = b => b.Province
+                        },
+                    };
                     // n..n
                     var thenIncludes = new List<ThenIncludePropertyConfiguration<Slate>>
                     {

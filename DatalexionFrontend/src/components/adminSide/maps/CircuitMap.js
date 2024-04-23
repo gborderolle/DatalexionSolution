@@ -13,24 +13,11 @@ import classes from "./CircuitMap.module.css";
 // redux imports
 import { useSelector } from "react-redux";
 
-import { getCircuitParty } from "../../../utils/auxiliarFunctions";
-
-// Utilidad para el cálculo del porcentaje.
-const calculatePercentage = (partialValue, totalValue) => {
-  return ((partialValue / totalValue) * 100).toFixed(2);
-};
+import { getCircuitParty, calculatePercentage } from "../../../utils/auxiliarFunctions";
 
 // Componente Popup personalizado
 const CustomPopup = ({ circuit }) => {
-  // redux gets
-  const reduxClient = useSelector((state) => state.generalData.client);
-  const reduxSlateList = useSelector((state) => state.generalData.slateList);
-
-  let totalCircuitPartiesVotes = getCircuitPartiesVotes(
-    circuit,
-    reduxClient,
-    reduxSlateList
-  );
+  let totalCircuitPartiesVotes = getCircuitPartiesVotes(circuit);
 
   // Calcular la suma total de votos de tu partido
   const totalSlateVotes = circuit.listCircuitSlates.reduce(
@@ -81,7 +68,7 @@ const completedIcon = L.icon({
   iconSize: [20, 30],
 });
 
-function getCircuitPartiesVotes(circuit, reduxClient, reduxSlateList) {
+function getCircuitPartiesVotes(circuit) {
   let totalVotes = 0;
   if (circuit && circuit.listCircuitParties) {
     circuit.listCircuitParties.forEach((circuitParty) => {

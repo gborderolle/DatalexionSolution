@@ -78,8 +78,8 @@ const PoliticalColSlates = ({
     if (
       isRelativePercentage &&
       filteredCircuitParties &&
-      reduxClient &&
-      reduxClient.party
+      filteredCircuitParties.length > 0 &&
+      reduxClient?.party
     ) {
       const partyData = filteredCircuitParties.find(
         (party) => party.partyId === reduxClient.party.id
