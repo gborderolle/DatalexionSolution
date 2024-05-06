@@ -19,22 +19,37 @@ const AppFooterMobileAdmin = (props) => {
     {
       icon: cilChartPie,
       color: "info",
-      requiredRoleNumber: 1,
+      requiredRole: ["Admin", "Analyst"],
       path: "/dashboard",
     },
-    { icon: cilMap, color: "info", requiredRoleNumber: 1, path: "/maps" },
+    {
+      icon: cilMap,
+      color: "info",
+      requiredRole: ["Admin", "Analyst"],
+      path: "/maps",
+    },
     {
       icon: cilPeople,
       color: "info",
-      requiredRoleNumber: 1,
+      requiredRole: ["Admin", "Analyst"],
       path: "/delegates",
     },
-    { icon: cilTags, color: "info", requiredRoleNumber: 1, path: "/datos" },
-    { icon: cilCog, color: "info", requiredRoleNumber: 1, path: "/admin" },
+    {
+      icon: cilTags,
+      color: "info",
+      requiredRole: ["Admin", "Analyst"],
+      path: "/datos",
+    },
+    {
+      icon: cilCog,
+      color: "info",
+      requiredRole: "Admin",
+      path: "/admin",
+    },
     {
       icon: cilFeaturedPlaylist,
       color: "info",
-      requiredRoleNumber: 2,
+      requiredRole: "Delegado",
       path: "/form",
     },
   ];
@@ -49,7 +64,7 @@ const AppFooterMobileAdmin = (props) => {
             color="dark"
             path={button.path}
             userRole={props.userRole}
-            requiredRoleNumber={button.requiredRoleNumber}
+            requiredRole={button.requiredRole}
           />
         ))}
       </CRow>
